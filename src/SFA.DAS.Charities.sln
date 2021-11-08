@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.Charities.Data", "S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.Charities.Domain", "SFA.DAS.Charities.Domain\SFA.DAS.Charities.Domain.csproj", "{4BE280F7-4B40-4F5D-8267-1AA53162B0F8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.Charities.Api", "SFA.DAS.Charities.Api\SFA.DAS.Charities.Api.csproj", "{A0B460E3-8633-4704-9CF0-1869619D5F74}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,18 @@ Global
 		{4BE280F7-4B40-4F5D-8267-1AA53162B0F8}.Release|x64.Build.0 = Release|Any CPU
 		{4BE280F7-4B40-4F5D-8267-1AA53162B0F8}.Release|x86.ActiveCfg = Release|Any CPU
 		{4BE280F7-4B40-4F5D-8267-1AA53162B0F8}.Release|x86.Build.0 = Release|Any CPU
+		{A0B460E3-8633-4704-9CF0-1869619D5F74}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0B460E3-8633-4704-9CF0-1869619D5F74}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A0B460E3-8633-4704-9CF0-1869619D5F74}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A0B460E3-8633-4704-9CF0-1869619D5F74}.Debug|x64.Build.0 = Debug|Any CPU
+		{A0B460E3-8633-4704-9CF0-1869619D5F74}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A0B460E3-8633-4704-9CF0-1869619D5F74}.Debug|x86.Build.0 = Debug|Any CPU
+		{A0B460E3-8633-4704-9CF0-1869619D5F74}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A0B460E3-8633-4704-9CF0-1869619D5F74}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0B460E3-8633-4704-9CF0-1869619D5F74}.Release|x64.ActiveCfg = Release|Any CPU
+		{A0B460E3-8633-4704-9CF0-1869619D5F74}.Release|x64.Build.0 = Release|Any CPU
+		{A0B460E3-8633-4704-9CF0-1869619D5F74}.Release|x86.ActiveCfg = Release|Any CPU
+		{A0B460E3-8633-4704-9CF0-1869619D5F74}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
