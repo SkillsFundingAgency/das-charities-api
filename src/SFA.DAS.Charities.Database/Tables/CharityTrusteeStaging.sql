@@ -10,3 +10,7 @@
     [AppointmentDate] DATETIME2 NULL,
     [LastUpdatedDate] DATETIME2 NOT NULL DEFAULT GetUtcDate()
 )
+
+GO
+
+CREATE NONCLUSTERED INDEX [IX_CharityTrusteeStaging_CharityId] ON [dbo].[CharityTrusteeStaging] ([CharityId])

@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[Charity]
 (
-    [Id] INT NOT NULL PRIMARY KEY, 
+    [Id] INT NOT NULL CONSTRAINT PK_Charity PRIMARY KEY, 
     [Name] VARCHAR(MAX) NOT NULL, 
     [CompanyNumber] VARCHAR(MAX) NOT NULL, 
     [RegisteredCharityNumber] INT NOT NULL, 
