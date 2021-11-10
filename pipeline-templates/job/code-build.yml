@@ -23,6 +23,16 @@ jobs:
         modifyOutputPath: true
         zipAfterPublish: true
 
+    - task: DotNetCoreCLI@2
+      displayName: Publish - dotnet publish SFA.DAS.Charities.Import.Functions
+      inputs:
+        command: publish
+        publishWebProjects: false #set to false as this setting (which defaults to true) will parse the entire repo for web projects
+        projects: src/SFA.DAS.Charities.Import.Functions/SFA.DAS.Charities.Import.Functions.csproj
+        arguments: -o $(build.artifactstagingdirectory)/publish -c ${{ parameters.BuildConfiguration }} --no-build
+        modifyOutputPath: true
+        zipAfterPublish: true
+
     - task: CopyFiles@2
       displayName: Copy Files to $(build.artifactstagingdirectory)/publish
       inputs:
@@ -32,7 +42,7 @@ jobs:
         OverWrite: true
 
     - task: PublishPipelineArtifact@1
-      displayName: Publish Artifact drop
+      displayName: Publish Artifact ${{ parameters.SolutionBaseName }}
       inputs:
         targetPath: $(build.artifactstagingdirectory)/publish
-        artifactName: drop
+        artifactName: ${{ parameters.SolutionBaseName }}

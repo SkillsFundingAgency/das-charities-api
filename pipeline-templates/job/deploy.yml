@@ -1,0 +1,66 @@
+parameters:  
+  Environment:
+  ServiceConnection:
+  SolutionBaseName:
+  RunBlockOnPossibleDataLoss: false
+
+jobs:
+- deployment: DeployInfrastructure
+  pool:
+    name: DAS - Continuous Deployment Agents
+  environment: ${{ parameters.Environment }}
+  strategy:
+    runOnce:
+      deploy:
+        steps:
+        - template: azure-pipelines-templates/deploy/step/set-backendaccessrestrictions-variable.yml@das-platform-building-blocks
+          parameters:
+            ServiceConnection: ${{ parameters.ServiceConnection }}
+            SharedEnvResourceGroup: $(SharedEnvResourceGroup)
+            SharedEnvVirtualNetworkName : $(SharedEnvVirtualNetworkName)
+            BackEndAccessRestrictionsExcludedSubnets: $(BackEndAccessRestrictionsExcludedSubnets)
+            ResourceEnvironmentName: $(ResourceEnvironmentName)
+            UnrestrictedEnvironments: $(UnrestrictedEnvironments)
+            UptimeMonitoringAccessRestrictions: $(UptimeMonitoringAccessRestrictions)
+        - template: azure-pipelines-templates/deploy/step/arm-deploy.yml@das-platform-building-blocks
+          parameters:
+            ServiceConnection: ${{ parameters.ServiceConnection }}
+            SubscriptionId: $(SubscriptionId)
+            Location: $(ResourceGroupLocation)
+            Environment: ${{ parameters.Environment }}
+            TemplatePath: $(Pipeline.Workspace)/${{ parameters.SolutionBaseName }}/azure/template.json
+            ParametersPath: $(Pipeline.Workspace)/${{ parameters.SolutionBaseName }}/azure/template.parameters.json
+            IsMultiRepoCheckout: true
+            TemplateSecrets:
+              LoggingRedisConnectionString: $(LoggingRedisConnectionString)
+              ConfigurationStorageConnectionString: $(ConfigurationStorageConnectionString)
+        - template: azure-pipelines-templates/deploy/step/sql-dacpac-deploy.yml
+          parameters:
+            AzureSubscription: ${{ parameters.ServiceConnection }}
+            DacpacFile: $(Pipeline.Workspace)/DacpacArtifact/src/SFA.DAS.Charities.Database/bin/Output/SFA.DAS.Charities.Database.dacpac
+            Environment: ${{ parameters.Environment }}
+            ServerName: $(SharedSQLServerFQDN)
+            SqlUsername: $(SharedSQLServerUsername)
+            SqlPassword: $(SharedSQLServerPassword)            
+            RunBlockOnPossibleDataLoss: ${{ parameters.RunBlockOnPossibleDataLoss }}
+        - template: azure-pipelines-templates/deploy/step/generate-config.yml@das-platform-building-blocks
+          parameters:
+            ServiceConnection: ${{ parameters.ServiceConnection }}
+            SourcePath: $(Pipeline.Workspace)/das-employer-config/Configuration/das-charities-api
+            TargetFileName: '*.schema.json'
+            TableName: Configuration
+        - template: azure-pipelines-templates/deploy/step/app-deploy.yml@das-platform-building-blocks
+          parameters:
+            ServiceConnection: ${{ parameters.ServiceConnection }}
+            AppServiceName: $(ApiAppServiceName)
+            DeploymentPackagePath: $(Pipeline.Workspace)/${{ parameters.SolutionBaseName }}/${{ parameters.SolutionBaseName }}.zip
+        - template: azure-pipelines-templates/deploy/step/app-deploy.yml@das-platform-building-blocks
+          parameters:
+            ServiceConnection: ${{ parameters.ServiceConnection }}
+            AppServiceName: $(ApiAppServiceName)
+            DeploymentPackagePath: $(Pipeline.Workspace)/${{ parameters.SolutionBaseName }}/${{ parameters.SolutionBaseName }}.zip  
+        - template: azure-pipelines-templates/deploy/step/function-deploy.yml@das-platform-building-blocks
+          parameters:
+            ServiceConnection: ${{ parameters.ServiceConnection }}
+            FunctionAppName: $(FunctionAppName)
+            DeploymentPackagePath: $(Pipeline.Workspace)/${{ parameters.SolutionBaseName }}/SFA.DAS.Charities.Import.Functions.zip
