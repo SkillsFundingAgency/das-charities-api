@@ -7,7 +7,7 @@ trigger:
 variables:
 - name: SolutionBaseName
   value: SFA.DAS.Charities.Api
-  name: DACPACSolutionBaseName
+- name: DACPACSolutionBaseName
   value: SFA.DAS.Charities.Database
 
 resources:
