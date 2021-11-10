@@ -2,6 +2,7 @@ parameters:
   Environment:
   ServiceConnection:
   SolutionBaseName:
+  DACPACSolutionBaseName:
   RunBlockOnPossibleDataLoss: false
 
 jobs:
@@ -37,7 +38,7 @@ jobs:
         - template: azure-pipelines-templates/deploy/step/sql-dacpac-deploy.yml
           parameters:
             AzureSubscription: ${{ parameters.ServiceConnection }}
-            DacpacFile: $(Pipeline.Workspace)/DacpacArtifact/src/SFA.DAS.Charities.Database/bin/Output/SFA.DAS.Charities.Database.dacpac
+            DacpacFile: $(Pipeline.Workspace)/DacpacArtifact/src/${{ parameters.DACPACSolutionBaseName }}/bin/Output/${{ parameters.DACPACSolutionBaseName }}.dacpac
             Environment: ${{ parameters.Environment }}
             ServerName: $(SharedSQLServerFQDN)
             SqlUsername: $(SharedSQLServerUsername)
