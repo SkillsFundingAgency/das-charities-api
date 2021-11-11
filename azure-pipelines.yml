@@ -7,6 +7,8 @@ trigger:
 variables:
 - group: Release Management Resources
 - group: RELEASE das-charities-api
+- name: BuildConfiguration
+  value: release
 - name: SolutionBaseName
   value: SFA.DAS.Charities.Api
 - name: DACPACSolutionBaseName
@@ -36,7 +38,7 @@ stages:
   - template: pipeline-templates/job/code-build.yml
     parameters:
       SolutionBaseName: $(SolutionBaseName)
-      BuildConfiguration: release
+      BuildConfiguration: $(BuildConfiguration)
   - template: azure-pipelines-templates/build/job/dacpac-template.yml@das-platform-building-blocks
     parameters:
       SolutionBaseName: $(DACPACSolutionBaseName)
