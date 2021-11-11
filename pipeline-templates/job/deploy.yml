@@ -41,6 +41,7 @@ jobs:
             TemplateSecrets:
               LoggingRedisConnectionString: $(LoggingRedisConnectionString)
               ConfigurationStorageConnectionString: $(ConfigurationStorageConnectionString)
+              SharedStorageAccountConnectionString: $(SharedStorageAccountConnectionString)
         # - template: azure-pipelines-templates/deploy/step/sql-dacpac-deploy.yml
         #   parameters:
         #     AzureSubscription: ${{ parameters.ServiceConnection }}
