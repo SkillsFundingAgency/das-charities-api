@@ -100,7 +100,7 @@
         "resourceNamePrefix": "[toLower(concat('das-', parameters('resourceEnvironmentName'),'-', parameters('serviceName')))]",
         "resourceGroupName": "[concat(variables('resourceNamePrefix'), '-rg')]",
         "functionAppName": "[concat(variables('resourceNamePrefix'), 'wkr-fa')]",
-        "apiAppServiceName": "[concat(variables('resourceNamePrefix'), '-as')]",
+        "apiAppServiceName": "[concat(variables('resourceNamePrefix'), 'api-as')]",
         "appServicePlanName": "[concat(variables('resourceNamePrefix'), 'wkr-asp')]",
         "databaseName": "[concat(variables('resourceNamePrefix'), '-db')]",
         "configNames": "SFA.DAS.Charities.Api"
