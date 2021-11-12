@@ -1,12 +1,13 @@
 ﻿using Microsoft.Azure.WebJobs.Extensions.DurableTask;
 using Microsoft.Extensions.Logging;
 using Moq;
+using SFA.DAS.Charities.Import.Functions;
 using SFA.DAS.Charities.Import.Infrastructure;
 using System;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace SFA.DAS.Charities.Import.Functions.UnitTests.CharityDataRefreshWorkflowTests
+namespace SFA.DAS.Charities.Import.UnitTests.Functions.CharityDataRefreshWorkflowTests
 {
     public class RefreshCharityDataTimerTriggerTests
     {
