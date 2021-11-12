@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using Moq.Sequences;
 using SFA.DAS.Charities.Import.Functions.ImportCharityCommissionData;
-using SFA.DAS.Charities.Import.Functions.Infrastructure;
+using SFA.DAS.Charities.Import.Infrastructure;
 using SFA.DAS.Charities.Import.Functions.LoadActiveDataFromStaging.Activities;
 using SFA.DAS.Charities.Import.Functions.LoadChairtyCommissionsDataInToStaging;
 using System.Threading.Tasks;
