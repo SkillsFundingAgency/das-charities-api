@@ -10,7 +10,7 @@ namespace SFA.DAS.Charities.Import.Functions.UnitTests.CharityDataRefreshWorkflo
 {
     public class RefreshCharityDataTimerTriggerTests
     {
-        private readonly Mock<ITimeProvider> _timeProviderMock = new Mock<ITimeProvider>();
+        private readonly Mock<IDateTimeProvider> _timeProviderMock = new Mock<IDateTimeProvider>();
         private readonly DateTime _today = new DateTime(2021, 11, 11);
         private readonly Mock<IDurableOrchestrationClient> _durableOrchestrationClientMock = new Mock<IDurableOrchestrationClient>();
         private readonly Mock<ILogger> _loggerMock = new Mock<ILogger>();

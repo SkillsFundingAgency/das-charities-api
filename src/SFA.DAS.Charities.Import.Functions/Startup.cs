@@ -11,7 +11,7 @@ namespace SFA.DAS.Charities.Import.Functions
     {
         public override void Configure(IFunctionsHostBuilder builder)
         {
-            builder.Services.AddTransient<ITimeProvider, TimeProvider>();
+            builder.Services.AddTransient<IDateTimeProvider, DateTimeProvider>();
         }
     }
 }

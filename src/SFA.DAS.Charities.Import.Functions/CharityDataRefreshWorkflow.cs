@@ -11,9 +11,9 @@ namespace SFA.DAS.Charities.Import.Functions
 {
     public class CharityDataRefreshWorkflow
     {
-        private readonly ITimeProvider _timeProvider;
+        private readonly IDateTimeProvider _timeProvider;
 
-        public CharityDataRefreshWorkflow(ITimeProvider timeProvider)
+        public CharityDataRefreshWorkflow(IDateTimeProvider timeProvider)
         {
             _timeProvider = timeProvider;
         }

@@ -2,12 +2,12 @@
 
 namespace SFA.DAS.Charities.Import.Functions.Infrastructure
 {
-    public interface ITimeProvider
+    public interface IDateTimeProvider
     {
         DateTime Today { get;  }
     }
 
-    internal class TimeProvider : ITimeProvider
+    internal class DateTimeProvider : IDateTimeProvider
     {
         public DateTime Today { get; } = DateTime.Today;
     }

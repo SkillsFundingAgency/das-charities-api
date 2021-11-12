@@ -24,7 +24,7 @@ namespace SFA.DAS.Charities.Import.Functions.UnitTests.CharityDataRefreshWorkflo
         [Fact]
         public async Task RefreshCharityDataOrchestrationTrigger_InvokesWorkflows_InOrder()
         {
-            var subject = new CharityDataRefreshWorkflow(Mock.Of<ITimeProvider>());
+            var subject = new CharityDataRefreshWorkflow(Mock.Of<IDateTimeProvider>());
             
             var sequence = new MockSequence();
             
