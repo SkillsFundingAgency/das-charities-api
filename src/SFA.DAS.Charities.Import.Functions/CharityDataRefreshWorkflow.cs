@@ -26,10 +26,7 @@ namespace SFA.DAS.Charities.Import.Functions
         {
             var instanceId = $"charity-data-refresh-instance-{_timeProvider.Today:yyyy-MM-dd}";
             var existingInstance = await starter.GetStatusAsync(instanceId);
-            if (existingInstance != null
-                && existingInstance.RuntimeStatus != OrchestrationRuntimeStatus.Completed
-                && existingInstance.RuntimeStatus != OrchestrationRuntimeStatus.Failed
-                && existingInstance.RuntimeStatus != OrchestrationRuntimeStatus.Terminated)
+            if (existingInstance?.RuntimeStatus == OrchestrationRuntimeStatus.Running)
             {
                 log.LogError($"An instance with ID '{instanceId}' already exists.");
                 return;
