@@ -1,7 +1,7 @@
 ﻿using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using SFA.DAS.Charities.Import.Functions;
-using SFA.DAS.Charities.Import.Functions.Infrastructure;
+using SFA.DAS.Charities.Import.Infrastructure;
 
 [assembly: FunctionsStartup(typeof(Startup))]
 

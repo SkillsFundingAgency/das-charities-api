@@ -2,7 +2,7 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.DurableTask;
 using Microsoft.Extensions.Logging;
 using SFA.DAS.Charities.Import.Functions.ImportCharityCommissionData;
-using SFA.DAS.Charities.Import.Functions.Infrastructure;
+using SFA.DAS.Charities.Import.Infrastructure;
 using SFA.DAS.Charities.Import.Functions.LoadActiveDataFromStaging.Activities;
 using SFA.DAS.Charities.Import.Functions.LoadChairtyCommissionsDataInToStaging;
 using System.Threading.Tasks;

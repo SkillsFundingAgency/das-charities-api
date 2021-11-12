@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SFA.DAS.Charities.Import.Functions.Infrastructure
+namespace SFA.DAS.Charities.Import.Infrastructure
 {
     public interface IDateTimeProvider
     {
