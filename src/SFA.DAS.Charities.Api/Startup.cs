@@ -10,6 +10,7 @@ namespace SFA.DAS.Charities.Api
 {
     public class Startup
     {
+        private IConfigurationRoot _configuration;
         public Startup(IConfiguration configuration)
         {
             var config = new ConfigurationBuilder()
@@ -22,7 +23,7 @@ namespace SFA.DAS.Charities.Api
                     options.PreFixConfigurationKeys = false;
                 });
 
-            config.Build();
+            _configuration = config.Build();
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -31,6 +32,9 @@ namespace SFA.DAS.Charities.Api
             services.AddApiVersioning(opt => {
                 opt.ApiVersionReader = new HeaderApiVersionReader("X-Version");
             });
+            services
+                .AddHealthChecks()
+                .AddSqlServer(_configuration["SqlConnectionString"]);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -41,6 +45,8 @@ namespace SFA.DAS.Charities.Api
             }
 
             app.UseRouting();
+
+            app.UseHealthChecks("/health");
 
             app.UseEndpoints(endpoints =>
             {
