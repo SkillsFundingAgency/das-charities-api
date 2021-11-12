@@ -8,8 +8,9 @@ using SFA.DAS.Charities.Import.Functions.LoadActiveDataFromStaging.Activities;
 using SFA.DAS.Charities.Import.Functions.LoadChairtyCommissionsDataInToStaging;
 using System.Threading.Tasks;
 using Xunit;
+using SFA.DAS.Charities.Import.Functions;
 
-namespace SFA.DAS.Charities.Import.Functions.UnitTests.CharityDataRefreshWorkflowTests
+namespace SFA.DAS.Charities.Import.UnitTests.Functions.CharityDataRefreshWorkflowTests
 {
     public class RefreshCharityDataOrchestrationTriggerTests
     {
