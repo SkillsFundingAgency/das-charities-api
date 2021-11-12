@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31729.503
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.Charities.Import.Functions", "SFA.DAS.Charities.Import.Functions\SFA.DAS.Charities.Import.Functions.csproj", "{6D579386-A252-4218-91A8-24D15F286863}"
 EndProject
@@ -9,9 +9,13 @@ Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "SFA.DAS.Charities.Database"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.Charities.Data", "SFA.DAS.Charities.Data\SFA.DAS.Charities.Data.csproj", "{9B149034-FE8A-4104-9CCF-E8E4113D8608}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.Charities.Domain", "SFA.DAS.Charities.Domain\SFA.DAS.Charities.Domain.csproj", "{4BE280F7-4B40-4F5D-8267-1AA53162B0F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.Charities.Domain", "SFA.DAS.Charities.Domain\SFA.DAS.Charities.Domain.csproj", "{4BE280F7-4B40-4F5D-8267-1AA53162B0F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.Charities.Api", "SFA.DAS.Charities.Api\SFA.DAS.Charities.Api.csproj", "{A0B460E3-8633-4704-9CF0-1869619D5F74}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.Charities.Api", "SFA.DAS.Charities.Api\SFA.DAS.Charities.Api.csproj", "{A0B460E3-8633-4704-9CF0-1869619D5F74}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{85C56D6C-C5FE-452C-8C15-23776F4652D0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.Charities.Import.Functions.UnitTests", "SFA.DAS.Charities.Import.Functions.UnitTests\SFA.DAS.Charities.Import.Functions.UnitTests.csproj", "{91FA6EB4-1AD0-451B-A9CA-C8F36395CCDC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -89,9 +93,24 @@ Global
 		{A0B460E3-8633-4704-9CF0-1869619D5F74}.Release|x64.Build.0 = Release|Any CPU
 		{A0B460E3-8633-4704-9CF0-1869619D5F74}.Release|x86.ActiveCfg = Release|Any CPU
 		{A0B460E3-8633-4704-9CF0-1869619D5F74}.Release|x86.Build.0 = Release|Any CPU
+		{91FA6EB4-1AD0-451B-A9CA-C8F36395CCDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91FA6EB4-1AD0-451B-A9CA-C8F36395CCDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91FA6EB4-1AD0-451B-A9CA-C8F36395CCDC}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{91FA6EB4-1AD0-451B-A9CA-C8F36395CCDC}.Debug|x64.Build.0 = Debug|Any CPU
+		{91FA6EB4-1AD0-451B-A9CA-C8F36395CCDC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{91FA6EB4-1AD0-451B-A9CA-C8F36395CCDC}.Debug|x86.Build.0 = Debug|Any CPU
+		{91FA6EB4-1AD0-451B-A9CA-C8F36395CCDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91FA6EB4-1AD0-451B-A9CA-C8F36395CCDC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91FA6EB4-1AD0-451B-A9CA-C8F36395CCDC}.Release|x64.ActiveCfg = Release|Any CPU
+		{91FA6EB4-1AD0-451B-A9CA-C8F36395CCDC}.Release|x64.Build.0 = Release|Any CPU
+		{91FA6EB4-1AD0-451B-A9CA-C8F36395CCDC}.Release|x86.ActiveCfg = Release|Any CPU
+		{91FA6EB4-1AD0-451B-A9CA-C8F36395CCDC}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{91FA6EB4-1AD0-451B-A9CA-C8F36395CCDC} = {85C56D6C-C5FE-452C-8C15-23776F4652D0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {95E2B9FE-B119-433A-A4DE-6E2D2D3CA522}
