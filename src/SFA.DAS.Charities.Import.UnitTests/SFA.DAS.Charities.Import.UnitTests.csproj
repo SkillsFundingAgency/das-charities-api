@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SFA.DAS.Charities.Import.Functions\SFA.DAS.Charities.Import.csproj" />
+    <ProjectReference Include="..\SFA.DAS.Charities.Import\SFA.DAS.Charities.Import.csproj" />
   </ItemGroup>
 
 </Project>
