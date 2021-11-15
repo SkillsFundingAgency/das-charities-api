@@ -1,6 +1,5 @@
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.DurableTask;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
@@ -13,13 +12,11 @@ namespace SFA.DAS.Charities.Import.Functions.ImportCharityCommissionData.Activit
 {
     public class ImportCharityCommissionDataActivity
     {
-        private readonly string downloadUrl;
-        private readonly HttpClient _httpClient;
+        private readonly IHttpClientFactory _httpClientFactory;
 
-        public ImportCharityCommissionDataActivity(IConfiguration configuration, HttpClient httpClient)
+        public ImportCharityCommissionDataActivity(IHttpClientFactory factory)
         {
-            downloadUrl = configuration["CharityFilesDownloadUrl"];
-            _httpClient = httpClient;
+            _httpClientFactory = factory;
         }
 
         [FunctionName(nameof(ImportCharityCommissionDataActivity))]
@@ -28,22 +25,25 @@ namespace SFA.DAS.Charities.Import.Functions.ImportCharityCommissionData.Activit
             [Blob("charity-files/{fileName}", FileAccess.Write)] Stream file,
             ILogger log)
         {
-            var charityFileDownloadUri = new Uri(Path.Combine(downloadUrl, fileName));
-            log.LogDebug("Downloading file: {charityFileDownloadUrl}", charityFileDownloadUri);
+            var client = _httpClientFactory.CreateClient("CharityCommissions");
 
-            byte[] response;
+            log.LogDebug("Downloading file: {fileName}", fileName);
+
+            byte[] content;
 
             try
             {
-                response = await _httpClient.GetByteArrayAsync(charityFileDownloadUri);
+                var response = await client.GetAsync(fileName);
+                response.EnsureSuccessStatusCode();
+                content = await response.Content.ReadAsByteArrayAsync();
             }
-            catch (Exception ex)
+            catch (HttpRequestException ex)
             {
-                log.LogError(ex, "An unexpected error occurred when trying to download {charityFileDownloadUrl}", charityFileDownloadUri);
+                log.LogError(ex, "An unexpected error occurred when trying to download {fileName}", fileName);
                 throw;
             }
 
-            await using (var memoryStream = new MemoryStream(response))
+            await using (var memoryStream = new MemoryStream(content))
             {
                 using (var archive = new ZipArchive(memoryStream, ZipArchiveMode.Read))
                 {
@@ -54,12 +54,12 @@ namespace SFA.DAS.Charities.Import.Functions.ImportCharityCommissionData.Activit
                     if (archive.Entries.Count > 1)
                         throw new InvalidOperationException(
                             $"Unsupported charity data zip file for {fileName}. File contained more than 1 file.  Files: {archive.Entries.Aggregate(string.Empty, (currText, zippedFile) => $"{currText}{zippedFile.Name}, ")}");
-                    log.LogDebug($"File: {fileName} appears to be ok.");
+                    log.LogDebug("File: {fileName} appears to be ok.", fileName);
                 }
             }
 
-            await file.WriteAsync(response, 0, response.Length);
-            log.LogInformation($"Finished writing {fileName} to blob storage.");
+            await file.WriteAsync(content, 0, content.Length);
+            log.LogInformation("Finished writing {fileName} to blob storage.", fileName);
         }
     }
 }
