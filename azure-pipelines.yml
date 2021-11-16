@@ -18,7 +18,7 @@ variables:
 - name: SolutionBaseName
   value: SFA.DAS.Charities
 - name: Deploy
-  value: $[or(eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq(variables['Build.Reason'], 'Manual'))]
+  value: $[or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.Reason'], 'Manual'))]
 
 resources:
   repositories:
