@@ -48,7 +48,7 @@ stages:
   - template: azure-pipelines-templates/build/job/dacpac-template.yml@das-platform-building-blocks
     parameters:
       SolutionBaseName: $(SolutionBaseName).dacpac
-      SqlProjectPath: src/$(SolutionBaseName).dacpac/$(SolutionBaseName).dacpac.sqlproj
+      SqlProjectPath: src/$(SolutionBaseName).Database/$(SolutionBaseName).Database.sqlproj
 
 - stage: Deploy_AT
   dependsOn: Build
@@ -63,7 +63,6 @@ stages:
       Environment: AT
       ServiceConnection: SFA-DAS-DevTest-ARM
       SolutionBaseName: $(SolutionBaseName)
-      DACPACSolutionBaseName: $(DACPACSolutionBaseName)
 
 - stage: Deploy_TEST
   dependsOn: Build
@@ -78,7 +77,6 @@ stages:
       Environment: TEST
       ServiceConnection: SFA-DAS-DevTest-ARM
       SolutionBaseName: $(SolutionBaseName)
-      DACPACSolutionBaseName: $(DACPACSolutionBaseName)
 
 - stage: Deploy_TEST2
   dependsOn: Build
@@ -93,7 +91,6 @@ stages:
       Environment: TEST2
       ServiceConnection: SFA-DAS-DevTest-ARM
       SolutionBaseName: $(SolutionBaseName)
-      DACPACSolutionBaseName: $(DACPACSolutionBaseName)
 
 - stage: Deploy_PP
   dependsOn: Build
@@ -108,7 +105,6 @@ stages:
       Environment: PP
       ServiceConnection: SFA-DIG-PreProd-ARM
       SolutionBaseName: $(SolutionBaseName)
-      DACPACSolutionBaseName: $(DACPACSolutionBaseName)
 
 # - stage: Deploy_PROD
 #   dependsOn: Build
