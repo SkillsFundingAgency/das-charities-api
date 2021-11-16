@@ -4,7 +4,7 @@ using System;
 
 namespace SFA.DAS.Charities.Import.Functions.LoadChairtyCommissionsDataInToStaging.CharityCommissionModels
 {
-    internal class CharityTrusteeModel
+    public class CharityTrusteeModel
     {
         [JsonProperty("date_of_extract")]
         public DateTime ExtractedDate { get; set; }
@@ -31,6 +31,7 @@ namespace SFA.DAS.Charities.Import.Functions.LoadChairtyCommissionsDataInToStagi
                 CharityId = model.CharityId,
                 RegisteredCharityNumber = model.RegisteredCharityNumber,
                 TrusteeId = model.TrusteeId,
+                Name = model.TrusteeName,
                 IsChair = model.IsChair,
                 AppointmentDate = model.AppointmentDate,
                 TrusteeType = model.IndividualOrOrganisation == 'I' ? TrusteeType.Individual : TrusteeType.Organisation

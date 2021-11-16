@@ -4,7 +4,7 @@ using System;
 
 namespace SFA.DAS.Charities.Import.Functions.LoadChairtyCommissionsDataInToStaging.CharityCommissionModels
 {
-    internal class CharityModel
+    public class CharityModel
     {
         [JsonProperty("date_of_extract")]
         public DateTime ExtractedDate { get; set; }
@@ -85,8 +85,8 @@ namespace SFA.DAS.Charities.Import.Functions.LoadChairtyCommissionsDataInToStagi
                 RegisteredCharityNumber = model.RegisteredCharityNumber,
                 LinkedCharityId = model.LinkedCharityNumber,
                 RegistrationDate = model.RegistrationDate,
-                RegistrationStatus = Enum.Parse<RegistrationStatus>(model.RegistrationStatus),
-                CharityType = Enum.Parse<CharityType>(model.Type),
+                RegistrationStatus = Enum.Parse<RegistrationStatus>(model.RegistrationStatus, true),
+                CharityType = Enum.Parse<CharityType>(model.Type, true),
                 AddressLine1 = model.AddressLine1,
                 AddressLine2 = model.AddressLine2,
                 AddressLine3 = model.AddressLine3,
