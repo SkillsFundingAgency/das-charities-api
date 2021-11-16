@@ -6,9 +6,4 @@ namespace SFA.DAS.Charities.Import.Infrastructure
     {
         DateTime Today { get;  }
     }
-
-    internal class DateTimeProvider : IDateTimeProvider
-    {
-        public DateTime Today { get; } = DateTime.Today;
-    }
 }

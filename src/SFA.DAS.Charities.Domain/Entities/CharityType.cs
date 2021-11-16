@@ -2,6 +2,10 @@
 {
     public enum CharityType
     {
-        Other
+        Trust = 1,
+        Other = 2,
+        CIO = 3,
+        CharitableCompany = 4,
+        PreviouslyExcepted = 5
     }
 }

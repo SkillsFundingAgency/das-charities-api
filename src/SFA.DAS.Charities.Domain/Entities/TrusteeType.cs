@@ -2,7 +2,7 @@
 {
     public enum TrusteeType
     {
-        Individual,
-        Organisation
+        Individual = 1,
+        Organisation = 2
     }
 }
