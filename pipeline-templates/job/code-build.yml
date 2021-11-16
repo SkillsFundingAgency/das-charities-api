@@ -19,21 +19,21 @@ jobs:
   - template: azure-pipelines-templates/build/step/dependency-check.yml@das-platform-building-blocks
 
   - task: DotNetCoreCLI@2
-    displayName: Publish - dotnet publish ${{ parameters.SolutionBaseName }}
+    displayName: Publish - dotnet publish ${{ parameters.SolutionBaseName }}.Api
     inputs:
       command: publish
       publishWebProjects: false
-      projects: src/${{ parameters.SolutionBaseName }}/${{ parameters.SolutionBaseName }}.csproj
+      projects: src/${{ parameters.SolutionBaseName }}.Api/${{ parameters.SolutionBaseName }}.Api.csproj
       arguments: -o $(build.artifactstagingdirectory)/publish -c ${{ parameters.BuildConfiguration }} --no-build
       modifyOutputPath: true
       zipAfterPublish: true
 
   - task: DotNetCoreCLI@2
-    displayName: Publish - dotnet publish SFA.DAS.Charities.Import
+    displayName: Publish - dotnet publish ${{ parameters.SolutionBaseName }}.Import
     inputs:
       command: publish
       publishWebProjects: false
-      projects: src/SFA.DAS.Charities.Import/SFA.DAS.Charities.Import.csproj
+      projects: src/${{ parameters.SolutionBaseName }}.Import/${{ parameters.SolutionBaseName }}.Import.csproj
       arguments: -o $(build.artifactstagingdirectory)/publish -c ${{ parameters.BuildConfiguration }} --no-build
       modifyOutputPath: true
       zipAfterPublish: true
