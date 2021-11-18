@@ -15,7 +15,7 @@ namespace SFA.DAS.Charities.Import.UnitTests.Functions
         public async Task ImportCharityCommissionData_ForEachFileInConfig_CallsDownloadActivity()
         {
             var configMock = new Mock<IConfiguration>();
-            configMock.SetupGet(x => x["CharityDownloadFileNames"]).Returns("file1, file2");
+            configMock.SetupGet(x => x["CharitiesDownloadFileNames"]).Returns("file1, file2");
 
             var subject = new ImportCharityCommissionDataWorkflow(configMock.Object);
             var contextMock = new Mock<IDurableOrchestrationContext>();
