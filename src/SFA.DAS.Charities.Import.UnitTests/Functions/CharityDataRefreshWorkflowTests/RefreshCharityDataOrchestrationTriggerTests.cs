@@ -2,27 +2,30 @@
 using Microsoft.Extensions.Logging;
 using Moq;
 using Moq.Sequences;
+using NUnit.Framework;
+using SFA.DAS.Charities.Import.Functions;
 using SFA.DAS.Charities.Import.Functions.ImportCharityCommissionData;
-using SFA.DAS.Charities.Import.Infrastructure;
 using SFA.DAS.Charities.Import.Functions.LoadActiveDataFromStaging.Activities;
 using SFA.DAS.Charities.Import.Functions.LoadChairtyCommissionsDataInToStaging;
+using SFA.DAS.Charities.Import.Infrastructure;
 using System.Threading.Tasks;
-using Xunit;
-using SFA.DAS.Charities.Import.Functions;
 
 namespace SFA.DAS.Charities.Import.UnitTests.Functions.CharityDataRefreshWorkflowTests
 {
+    [TestFixture]
     public class RefreshCharityDataOrchestrationTriggerTests
     {
-        private readonly Mock<IDurableOrchestrationContext> _contextMock = new Mock<IDurableOrchestrationContext>();
         private readonly Mock<ILogger> _loggerMock = new Mock<ILogger>();
+        private Mock<IDurableOrchestrationContext> _contextMock;
 
-        public RefreshCharityDataOrchestrationTriggerTests()
+        [SetUp]
+        public void SetUp()
         {
+            _contextMock = new Mock<IDurableOrchestrationContext>();
             Sequence.ContextMode = SequenceContextMode.Async;
         }
 
-        [Fact]
+        [Test]
         public async Task RefreshCharityDataOrchestrationTrigger_InvokesWorkflows_InOrder()
         {
             var subject = new CharityDataRefreshWorkflow(Mock.Of<IDateTimeProvider>());

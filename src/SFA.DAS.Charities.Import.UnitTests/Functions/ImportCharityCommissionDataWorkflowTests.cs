@@ -2,16 +2,18 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Moq;
+using NUnit.Framework;
 using SFA.DAS.Charities.Import.Functions.ImportCharityCommissionData;
 using SFA.DAS.Charities.Import.Functions.ImportCharityCommissionData.Activities;
 using System.Threading.Tasks;
-using Xunit;
+
 
 namespace SFA.DAS.Charities.Import.UnitTests.Functions
 {
+    [TestFixture]
     public class ImportCharityCommissionDataWorkflowTests
     {
-        [Fact]
+        [Test]
         public async Task ImportCharityCommissionData_ForEachFileInConfig_CallsDownloadActivity()
         {
             var configMock = new Mock<IConfiguration>();
