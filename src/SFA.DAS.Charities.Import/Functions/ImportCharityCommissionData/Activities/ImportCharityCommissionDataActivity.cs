@@ -21,8 +21,8 @@ namespace SFA.DAS.Charities.Import.Functions.ImportCharityCommissionData.Activit
 
         [FunctionName(nameof(ImportCharityCommissionDataActivity))]
         public async Task Run(
-            [ActivityTrigger] string fileName, 
-            [Blob("charity-files/{fileName}", FileAccess.Write)] Stream file,
+            [ActivityTrigger] string fileName,
+            [Blob("charity-files/{fileName}", access: FileAccess.Write, Connection = "CharitiesStorageConnectionString")] Stream file,
             ILogger log)
         {
             var client = _httpClientFactory.CreateClient("CharityCommissions");

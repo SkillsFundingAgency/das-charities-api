@@ -15,7 +15,7 @@ namespace SFA.DAS.Charities.Import.Functions.ImportCharityCommissionData
 
         public ImportCharityCommissionDataWorkflow(IConfiguration configuration)
         {
-            filenames = configuration["CharityDownloadFileNames"].Split(',', System.StringSplitOptions.RemoveEmptyEntries);
+            filenames = configuration["CharitiesDownloadFileNames"].Split(',', System.StringSplitOptions.RemoveEmptyEntries);
         }
 
         [FunctionName(nameof(ImportCharityCommissionDataWorkflow))]
