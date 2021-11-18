@@ -1,15 +1,14 @@
 ﻿using AutoFixture;
+using NUnit.Framework;
 using SFA.DAS.Charities.Domain.Entities;
 using SFA.DAS.Charities.Import.Functions.LoadChairtyCommissionsDataInToStaging.CharityCommissionModels;
-using System;
-using System.Collections.Generic;
-using Xunit;
 
 namespace SFA.DAS.Charities.Import.UnitTests.Functions.LoadChairtyCommissionsDataInToStaging.CharityCommissionModels
 {
+    [TestFixture]
     public class CharityModelTests
     {
-        [Fact]
+        [Test]
         public void CharityModel_Operator_ReturnsInstanceOfCharityStaging()
         {
             var fixture = new Fixture();
@@ -22,29 +21,28 @@ namespace SFA.DAS.Charities.Import.UnitTests.Functions.LoadChairtyCommissionsDat
 
             CharityStaging outcome = model;
 
-            Assert.Equal(model.CharityId, outcome.Id);
-            Assert.Equal(model.Name, outcome.Name);
-            Assert.Equal(model.CompaniesHouseNumber, outcome.CompaniesHouseNumber);
-            Assert.Equal(model.RegisteredCharityNumber, outcome.RegisteredCharityNumber);
-            Assert.Equal(model.LinkedCharityNumber, outcome.LinkedCharityId);
-            Assert.Equal(model.RegistrationDate, outcome.RegistrationDate);
-            Assert.Equal(model.AddressLine1, outcome.AddressLine1);
-            Assert.Equal(model.AddressLine2, outcome.AddressLine2);
-            Assert.Equal(model.AddressLine3, outcome.AddressLine3);
-            Assert.Equal(model.AddressLine4, outcome.AddressLine4);
-            Assert.Equal(model.AddressLine5, outcome.AddressLine5);
-            Assert.Equal(model.PostCode, outcome.Postcode);
-            Assert.Equal(model.IsInsolvent, outcome.IsInsolvent);
-            Assert.Equal(model.IsInAdministration, outcome.IsInAdministration);
-            Assert.Equal(model.WasPreviouslyExcepted, outcome.WasPreviouslyExcepted);
-            Assert.Equal(model.RemovalDate, outcome.RemovalDate);
-            Assert.Equal(model.RegistrationStatus, outcome.RegistrationStatus.ToString());
-            Assert.Equal(model.Type, outcome.CharityType.ToString());
+            Assert.AreEqual(model.CharityId, outcome.Id);
+            Assert.AreEqual(model.Name, outcome.Name);
+            Assert.AreEqual(model.CompaniesHouseNumber, outcome.CompaniesHouseNumber);
+            Assert.AreEqual(model.RegisteredCharityNumber, outcome.RegisteredCharityNumber);
+            Assert.AreEqual(model.LinkedCharityNumber, outcome.LinkedCharityId);
+            Assert.AreEqual(model.RegistrationDate, outcome.RegistrationDate);
+            Assert.AreEqual(model.AddressLine1, outcome.AddressLine1);
+            Assert.AreEqual(model.AddressLine2, outcome.AddressLine2);
+            Assert.AreEqual(model.AddressLine3, outcome.AddressLine3);
+            Assert.AreEqual(model.AddressLine4, outcome.AddressLine4);
+            Assert.AreEqual(model.AddressLine5, outcome.AddressLine5);
+            Assert.AreEqual(model.PostCode, outcome.Postcode);
+            Assert.AreEqual(model.IsInsolvent, outcome.IsInsolvent);
+            Assert.AreEqual(model.IsInAdministration, outcome.IsInAdministration);
+            Assert.AreEqual(model.WasPreviouslyExcepted, outcome.WasPreviouslyExcepted);
+            Assert.AreEqual(model.RemovalDate, outcome.RemovalDate);
+            Assert.AreEqual(model.RegistrationStatus, outcome.RegistrationStatus.ToString());
+            Assert.AreEqual(model.Type, outcome.CharityType.ToString());
         }
 
-        [Theory]
-        [MemberData(nameof(statusEnumValues))]
-        public void CharityModel_Operator_ReturnsCharityStagingWithCorrectStatus(RegistrationStatus status)
+        [Test]
+        public void CharityModel_Operator_ReturnsCharityStagingWithCorrectStatus([Values] RegistrationStatus status)
         {
             var fixture = new Fixture();
 
@@ -55,20 +53,11 @@ namespace SFA.DAS.Charities.Import.UnitTests.Functions.LoadChairtyCommissionsDat
                 .Create();
 
             CharityStaging outcome = model;
-            Assert.Equal(model.RegistrationStatus, outcome.RegistrationStatus.ToString());
+            Assert.AreEqual(model.RegistrationStatus, outcome.RegistrationStatus.ToString());
         }
 
-        public static IEnumerable<object[]> statusEnumValues()
-        {
-            foreach (var thing in Enum.GetValues(typeof(RegistrationStatus)))
-            {
-                yield return new object[] { thing };
-            }
-        }
-
-        [Theory]
-        [MemberData(nameof(typeEnumValues))]
-        public void CharityModel_Operator_ReturnsCharityStagingWithCorrectType(CharityType charityType)
+        [Test]
+        public void CharityModel_Operator_ReturnsCharityStagingWithCorrectType([Values] CharityType charityType)
         {
             var fixture = new Fixture();
 
@@ -79,15 +68,7 @@ namespace SFA.DAS.Charities.Import.UnitTests.Functions.LoadChairtyCommissionsDat
                 .Create();
 
             CharityStaging outcome = model;
-            Assert.Equal(model.Type, outcome.CharityType.ToString());
-        }
-
-        public static IEnumerable<object[]> typeEnumValues()
-        {
-            foreach (var thing in Enum.GetValues(typeof(CharityType)))
-            {
-                yield return new object[] { thing };
-            }
+            Assert.AreEqual(model.Type, outcome.CharityType.ToString());
         }
     }
 }
