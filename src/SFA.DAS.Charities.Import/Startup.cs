@@ -24,6 +24,7 @@ namespace SFA.DAS.Charities.Import.Functions
             RegisterCharityCommissionsHttpClient(builder, configuration);
 
             builder.Services.AddTransient<IDateTimeProvider, DateTimeProvider>();
+            builder.Services.AddTransient<ICharityCommissionDataExtractService, CharityCommissionDataExtractService>();
         }
 
         private static void AddNLog(IFunctionsHostBuilder builder)
