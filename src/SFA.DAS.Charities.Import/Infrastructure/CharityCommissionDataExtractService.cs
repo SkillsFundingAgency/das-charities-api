@@ -1,12 +1,10 @@
 ﻿using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace SFA.DAS.Charities.Import.Infrastructure
 {
@@ -18,7 +16,7 @@ namespace SFA.DAS.Charities.Import.Infrastructure
         {
             _logger = logger;
         }
-        public async Task<List<T>> ExtractData<T>(Stream zipFile)
+        public List<T> ExtractData<T>(Stream zipFile)
         {
             var stopWatch = Stopwatch.StartNew();
 
@@ -28,7 +26,7 @@ namespace SFA.DAS.Charities.Import.Infrastructure
             try
             {
                 var reader = new StreamReader(zipEntry.Open());
-                var json = await reader.ReadToEndAsync();
+                var json = reader.ReadToEnd();
                 var result = JsonConvert.DeserializeObject<List<T>>(json);
                 _logger.LogInformation($"It took {stopWatch.ElapsedMilliseconds}ms to extract {zipEntry.Name}");
 

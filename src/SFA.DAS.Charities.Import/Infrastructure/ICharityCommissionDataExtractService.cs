@@ -6,6 +6,6 @@ namespace SFA.DAS.Charities.Import.Infrastructure
 {
     internal interface ICharityCommissionDataExtractService
     {
-        Task<List<T>> ExtractData<T>(Stream zipFile);
+        List<T> ExtractData<T>(Stream zipFile);
     }
 }

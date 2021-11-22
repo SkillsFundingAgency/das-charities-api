@@ -13,11 +13,11 @@ namespace SFA.DAS.Charities.Import.UnitTests.Infrastructure
     public class CharityCommissionDataExtractServiceTests
     {        
         [Test]
-        public async Task ExtractData_ValidDataFile_ReturnsData()
+        public void ExtractData_ValidDataFile_ReturnsData()
         {
             var jsonData = @"[{'name':'Pumbaa','type':'Warthog'},{'name':'Timon','type':'Meerkat'}]";
             var subject = new CharityCommissionDataExtractService(Mock.Of<ILogger<CharityCommissionDataExtractService>>());            
-            var data = await subject.ExtractData<Character>(GetZipFile(jsonData));
+            var data = subject.ExtractData<Character>(GetZipFile(jsonData));
             Assert.IsNotNull(data);
             Assert.AreEqual(2, data.Count);
 
@@ -27,7 +27,7 @@ namespace SFA.DAS.Charities.Import.UnitTests.Infrastructure
         public void ExtractData_InvalidDataFile_ThrowsException()
         {
             var subject = new CharityCommissionDataExtractService(Mock.Of<ILogger<CharityCommissionDataExtractService>>());
-            Assert.ThrowsAsync(typeof(JsonReaderException), () => subject.ExtractData<Character>(GetZipFile("bad json data")));
+            Assert.Throws(typeof(JsonReaderException), () => subject.ExtractData<Character>(GetZipFile("bad json data")));
 
         }
 
