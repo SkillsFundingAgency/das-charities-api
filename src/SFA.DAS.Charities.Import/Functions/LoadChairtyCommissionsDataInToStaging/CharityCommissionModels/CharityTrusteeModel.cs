@@ -23,7 +23,7 @@ namespace SFA.DAS.Charities.Import.Functions.LoadChairtyCommissionsDataInToStagi
         [JsonProperty("individual_or_organisation")]
         public char IndividualOrOrganisation { get; set; }
         [JsonProperty("trustee_date_of_appointment")]
-        public DateTime AppointmentDate { get; set; }
+        public DateTime? AppointmentDate { get; set; }
 
         public static implicit operator CharityTrusteeStaging (CharityTrusteeModel model) 
             => new CharityTrusteeStaging 
