@@ -19,6 +19,7 @@
     <PackageReference Include="SFA.DAS.NLog.Targets.Redis" Version="1.2.1" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\SFA.DAS.Charities.Data\SFA.DAS.Charities.Data.csproj" />
     <ProjectReference Include="..\SFA.DAS.Charities.Domain\SFA.DAS.Charities.Domain.csproj" />
   </ItemGroup>
   <ItemGroup>

@@ -6,6 +6,8 @@ using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
 using Polly;
 using Polly.Extensions.Http;
+using SFA.DAS.Charities.Data.Extensions;
+using SFA.DAS.Charities.Data.Repositories;
 using SFA.DAS.Charities.Import.Functions;
 using SFA.DAS.Charities.Import.Infrastructure;
 using SFA.DAS.Configuration.AzureTableStorage;
@@ -20,11 +22,18 @@ namespace SFA.DAS.Charities.Import.Functions
         public override void Configure(IFunctionsHostBuilder builder)
         {
             var configuration = BuildConfiguration(builder);
+
+            AddNLog(builder);
+
+            var connectionString = configuration["SqlDatabaseConnectionString"];
+            var environment = configuration["EnvironmentName"];
+
+            builder.Services.AddCharityDataContext(connectionString, environment);
             
             RegisterCharityCommissionsHttpClient(builder, configuration);
 
             builder.Services.AddTransient<IDateTimeProvider, DateTimeProvider>();
-            builder.Services.AddTransient<ICharityCommissionDataExtractService, CharityCommissionDataExtractService>();
+            builder.Services.AddTransient<ICharityTrusteeStagingRepository, CharityTrusteeStagingRepository>();
         }
 
         private static void AddNLog(IFunctionsHostBuilder builder)

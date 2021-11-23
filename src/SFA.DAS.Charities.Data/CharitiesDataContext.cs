@@ -3,12 +3,14 @@ using SFA.DAS.Charities.Domain.Entities;
 
 namespace SFA.DAS.Charities.Data
 {
-    internal class CharitiesDataContext : DbContext
+    public class CharitiesDataContext : DbContext
     {
         public DbSet<Charity> Charities { get; set; }
         public DbSet<CharityStaging> CharitiesStaging { get; set; }
         public DbSet<CharityTrustee> CharityTrustees { get; set; }
         public DbSet<CharityTrusteeStaging> CharityTrusteesStaging { get; set; }
+
+        public CharitiesDataContext(DbContextOptions<CharitiesDataContext> options) : base(options) {}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

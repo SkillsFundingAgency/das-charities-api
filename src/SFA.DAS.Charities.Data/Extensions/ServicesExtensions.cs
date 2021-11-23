@@ -1,0 +1,38 @@
+﻿using Microsoft.Azure.Services.AppAuthentication;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Data.SqlClient;
+using System.Threading.Tasks;
+
+namespace SFA.DAS.Charities.Data.Extensions
+{
+    public static class ServicesExtensions
+    {
+        public static IServiceCollection AddCharityDataContext(this IServiceCollection services, string connectionString, string environmentName)
+        {
+            services.AddDbContext<CharitiesDataContext>((serviceProvider, options) =>
+            {
+                var connection = new SqlConnection(connectionString);
+
+                if (!environmentName.Equals("LOCAL", StringComparison.CurrentCultureIgnoreCase))
+                {
+                    var generateTokenTask = GenerateTokenAsync();
+                    connection.AccessToken = generateTokenTask.GetAwaiter().GetResult();
+                }
+
+                options.UseSqlServer(connection);
+            });
+            return services;
+        }
+
+        public static async Task<string> GenerateTokenAsync()
+        {
+            const string AzureResource = "https://database.windows.net/";
+            var azureServiceTokenProvider = new AzureServiceTokenProvider();
+            var accessToken = await azureServiceTokenProvider.GetAccessTokenAsync(AzureResource);
+
+            return accessToken;
+        }
+    }
+}
