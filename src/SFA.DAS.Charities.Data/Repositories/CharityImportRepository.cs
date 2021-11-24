@@ -4,11 +4,11 @@ using System.Threading.Tasks;
 
 namespace SFA.DAS.Charities.Data.Repositories
 {
-    public class ChairtyImportRepository : ICharityImportRepository
+    public class CharityImportRepository : ICharityImportRepository
     {
         private readonly CharitiesDataContext _charitiesDataContext;
 
-        public ChairtyImportRepository(CharitiesDataContext charitiesDataContext)
+        public CharityImportRepository(CharitiesDataContext charitiesDataContext)
         {
             _charitiesDataContext = charitiesDataContext;
         }

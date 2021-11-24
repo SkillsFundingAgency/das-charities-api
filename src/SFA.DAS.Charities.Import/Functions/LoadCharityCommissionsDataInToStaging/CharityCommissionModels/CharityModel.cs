@@ -2,7 +2,7 @@
 using SFA.DAS.Charities.Domain.Entities;
 using System;
 
-namespace SFA.DAS.Charities.Import.Functions.LoadChairtyCommissionsDataInToStaging.CharityCommissionModels
+namespace SFA.DAS.Charities.Import.Functions.LoadCharityCommissionsDataInToStaging.CharityCommissionModels
 {
     public class CharityModel
     {
@@ -76,8 +76,8 @@ namespace SFA.DAS.Charities.Import.Functions.LoadChairtyCommissionsDataInToStagi
         [JsonProperty("charity_has_land")]
         public bool? HasLand { get; set; }
 
-        public static implicit operator CharityStaging (CharityModel model) 
-            => new CharityStaging 
+        public static implicit operator CharityStaging(CharityModel model)
+            => new CharityStaging
             {
                 Id = model.CharityId,
                 Name = model.Name,

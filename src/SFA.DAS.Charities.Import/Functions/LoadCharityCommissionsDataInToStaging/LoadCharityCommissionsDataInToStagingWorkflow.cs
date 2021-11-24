@@ -2,10 +2,10 @@
 using Microsoft.Azure.WebJobs.Extensions.DurableTask;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using SFA.DAS.Charities.Import.Functions.LoadChairtyCommissionsDataInToStaging.Activities;
+using SFA.DAS.Charities.Import.Functions.LoadCharityCommissionsDataInToStaging.Activities;
 using System.Threading.Tasks;
 
-namespace SFA.DAS.Charities.Import.Functions.LoadChairtyCommissionsDataInToStaging
+namespace SFA.DAS.Charities.Import.Functions.LoadCharityCommissionsDataInToStaging
 {
     public class LoadCharityCommissionsDataInToStagingWorkflow
     {

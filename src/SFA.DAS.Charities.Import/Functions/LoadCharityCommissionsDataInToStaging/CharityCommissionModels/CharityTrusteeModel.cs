@@ -2,7 +2,7 @@
 using SFA.DAS.Charities.Domain.Entities;
 using System;
 
-namespace SFA.DAS.Charities.Import.Functions.LoadChairtyCommissionsDataInToStaging.CharityCommissionModels
+namespace SFA.DAS.Charities.Import.Functions.LoadCharityCommissionsDataInToStaging.CharityCommissionModels
 {
     public class CharityTrusteeModel
     {
@@ -25,8 +25,8 @@ namespace SFA.DAS.Charities.Import.Functions.LoadChairtyCommissionsDataInToStagi
         [JsonProperty("trustee_date_of_appointment")]
         public DateTime? AppointmentDate { get; set; }
 
-        public static implicit operator CharityTrusteeStaging (CharityTrusteeModel model) 
-            => new CharityTrusteeStaging 
+        public static implicit operator CharityTrusteeStaging(CharityTrusteeModel model)
+            => new CharityTrusteeStaging
             {
                 CharityId = model.CharityId,
                 RegisteredCharityNumber = model.RegisteredCharityNumber,

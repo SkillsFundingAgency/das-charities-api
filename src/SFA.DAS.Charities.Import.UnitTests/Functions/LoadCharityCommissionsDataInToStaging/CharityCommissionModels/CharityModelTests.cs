@@ -1,9 +1,9 @@
 ﻿using AutoFixture;
 using NUnit.Framework;
 using SFA.DAS.Charities.Domain.Entities;
-using SFA.DAS.Charities.Import.Functions.LoadChairtyCommissionsDataInToStaging.CharityCommissionModels;
+using SFA.DAS.Charities.Import.Functions.LoadCharityCommissionsDataInToStaging.CharityCommissionModels;
 
-namespace SFA.DAS.Charities.Import.UnitTests.Functions.LoadChairtyCommissionsDataInToStaging.CharityCommissionModels
+namespace SFA.DAS.Charities.Import.UnitTests.Functions.LoadCharityCommissionsDataInToStaging.CharityCommissionModels
 {
     [TestFixture]
     public class CharityModelTests
