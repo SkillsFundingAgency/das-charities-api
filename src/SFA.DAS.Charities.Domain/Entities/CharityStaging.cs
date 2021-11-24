@@ -12,7 +12,7 @@ namespace SFA.DAS.Charities.Domain.Entities
         public int LinkedCharityId { get; set; }
         public DateTime RegistrationDate { get; set; }
         public RegistrationStatus RegistrationStatus { get; set; }
-        public CharityType? CharityType { get; set; }
+        public CharityType? Type { get; set; }
         public string AddressLine1 { get; set; }
         public string AddressLine2 { get; set; }
         public string AddressLine3 { get; set; }

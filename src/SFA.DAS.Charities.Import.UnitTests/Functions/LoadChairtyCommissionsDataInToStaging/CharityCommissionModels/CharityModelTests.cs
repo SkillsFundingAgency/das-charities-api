@@ -38,7 +38,7 @@ namespace SFA.DAS.Charities.Import.UnitTests.Functions.LoadChairtyCommissionsDat
             Assert.AreEqual(model.WasPreviouslyExcepted, outcome.WasPreviouslyExcepted);
             Assert.AreEqual(model.RemovalDate, outcome.RemovalDate);
             Assert.AreEqual(model.RegistrationStatus, outcome.RegistrationStatus.ToString());
-            Assert.AreEqual(model.Type, outcome.CharityType.ToString());
+            Assert.AreEqual(model.Type, outcome.Type.ToString());
         }
 
         [Test]
@@ -68,7 +68,7 @@ namespace SFA.DAS.Charities.Import.UnitTests.Functions.LoadChairtyCommissionsDat
                 .Create();
 
             CharityStaging outcome = model;
-            Assert.AreEqual(model.Type, outcome.CharityType.ToString());
+            Assert.AreEqual(model.Type, outcome.Type.ToString());
         }
     }
 }

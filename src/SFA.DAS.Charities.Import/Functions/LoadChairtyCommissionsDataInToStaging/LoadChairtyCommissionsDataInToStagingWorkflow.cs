@@ -10,15 +10,20 @@ namespace SFA.DAS.Charities.Import.Functions.LoadChairtyCommissionsDataInToStagi
     public class LoadChairtyCommissionsDataInToStagingWorkflow
     {
         private readonly string _charityTrusteeFileName;
+        private readonly string _charityFileName;
         public LoadChairtyCommissionsDataInToStagingWorkflow(IConfiguration configuration)
         {
             _charityTrusteeFileName = configuration["CharityTrusteeFileName"];
+            _charityFileName = configuration["CharityFileName"];
         }
 
         [FunctionName(nameof(LoadChairtyCommissionsDataInToStagingWorkflow))]
         public async Task LoadChairtyCommissionsData([OrchestrationTrigger] IDurableOrchestrationContext context, ILogger logger)
         {
-            await context.CallActivityAsync(nameof(LoadCharityTrusteeDataInToStagingActivity), _charityTrusteeFileName);
+
+            var charityTask = context.CallActivityAsync(nameof(LoadCharityDataInToStagingActivity), _charityFileName);
+            var trusteeTask = context.CallActivityAsync(nameof(LoadCharityTrusteeDataInToStagingActivity), _charityTrusteeFileName);
+            await Task.WhenAll(charityTask, trusteeTask);
         }
     }
 }
