@@ -7,18 +7,18 @@ using System.Threading.Tasks;
 
 namespace SFA.DAS.Charities.Import.Functions.LoadChairtyCommissionsDataInToStaging
 {
-    public class LoadChairtyCommissionsDataInToStagingWorkflow
+    public class LoadCharityCommissionsDataInToStagingWorkflow
     {
         private readonly string _charityTrusteeFileName;
         private readonly string _charityFileName;
-        public LoadChairtyCommissionsDataInToStagingWorkflow(IConfiguration configuration)
+        public LoadCharityCommissionsDataInToStagingWorkflow(IConfiguration configuration)
         {
             _charityTrusteeFileName = configuration["CharityTrusteeFileName"];
             _charityFileName = configuration["CharityFileName"];
         }
 
-        [FunctionName(nameof(LoadChairtyCommissionsDataInToStagingWorkflow))]
-        public async Task LoadChairtyCommissionsData([OrchestrationTrigger] IDurableOrchestrationContext context, ILogger logger)
+        [FunctionName(nameof(LoadCharityCommissionsDataInToStagingWorkflow))]
+        public async Task LoadCharityCommissionsData([OrchestrationTrigger] IDurableOrchestrationContext context, ILogger logger)
         {
 
             var charityTask = context.CallActivityAsync(nameof(LoadCharityDataInToStagingActivity), _charityFileName);

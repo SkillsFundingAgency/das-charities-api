@@ -45,7 +45,7 @@ namespace SFA.DAS.Charities.Import.Functions
             log.LogInformation($"Starting refresh of charity data: {context.CurrentUtcDateTime:F}", context.InstanceId);
             await context.CallSubOrchestratorAsync<Task>(nameof(ImportCharityCommissionDataWorkflow), null);
             log.LogDebug($"Finished download orchestration, now performing import to staging", context.InstanceId);
-            await context.CallSubOrchestratorAsync<Task>(nameof(LoadChairtyCommissionsDataInToStagingWorkflow), null);
+            await context.CallSubOrchestratorAsync<Task>(nameof(LoadCharityCommissionsDataInToStagingWorkflow), null);
             log.LogDebug("Finished populating staging tables workflow", context.InstanceId);
             await context.CallActivityAsync<Task>(nameof(LoadActiveDataFromStagingActivity), null);
             log.LogInformation($"Finished refreshing charity data: {context.CurrentUtcDateTime:F}", context.InstanceId);
