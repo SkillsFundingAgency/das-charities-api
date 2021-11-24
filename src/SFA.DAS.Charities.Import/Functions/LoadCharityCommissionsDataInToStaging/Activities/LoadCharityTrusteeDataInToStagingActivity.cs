@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace SFA.DAS.Charities.Import.Functions.LoadCharityCommissionsDataInToStaging.Activities
 {
-    internal class LoadCharityTrusteeDataInToStagingActivity
+    public class LoadCharityTrusteeDataInToStagingActivity
     {
         private readonly ICharityImportRepository _charityTrusteeStagingRepository;
 

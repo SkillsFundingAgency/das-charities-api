@@ -18,7 +18,7 @@ namespace SFA.DAS.Charities.Import.Functions.LoadCharityCommissionsDataInToStagi
         }
 
         [FunctionName(nameof(LoadCharityCommissionsDataInToStagingWorkflow))]
-        public async Task LoadCharityCommissionsData([OrchestrationTrigger] IDurableOrchestrationContext context, ILogger logger)
+        public async Task LoadCharityCommissionsDataInToStaging([OrchestrationTrigger] IDurableOrchestrationContext context, ILogger logger)
         {
             await context.CallActivityAsync(nameof(ClearStagingDataActivity), null);
 
