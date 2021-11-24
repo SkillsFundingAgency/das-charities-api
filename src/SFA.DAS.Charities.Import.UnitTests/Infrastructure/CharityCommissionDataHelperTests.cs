@@ -1,23 +1,19 @@
-﻿using Microsoft.Extensions.Logging;
-using Moq;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using NUnit.Framework;
 using SFA.DAS.Charities.Import.Infrastructure;
 using System.IO;
 using System.IO.Compression;
-using System.Threading.Tasks;
 
 namespace SFA.DAS.Charities.Import.UnitTests.Infrastructure
 {
     [TestFixture]
-    public class CharityCommissionDataExtractServiceTests
+    public class CharityCommissionDataHelperTests
     {        
         [Test]
-        public async Task ExtractData_ValidDataFile_ReturnsData()
+        public void ExtractData_ValidDataFile_ReturnsData()
         {
             var jsonData = @"[{'name':'Pumbaa','type':'Warthog'},{'name':'Timon','type':'Meerkat'}]";
-            var subject = new CharityCommissionDataExtractService(Mock.Of<ILogger<CharityCommissionDataExtractService>>());            
-            var data = await subject.ExtractData<Character>(GetZipFile(jsonData));
+            var data = CharityCommissionDataHelper.ExtractData<Character>(GetZipFile(jsonData));
             Assert.IsNotNull(data);
             Assert.AreEqual(2, data.Count);
 
@@ -26,9 +22,7 @@ namespace SFA.DAS.Charities.Import.UnitTests.Infrastructure
         [Test]
         public void ExtractData_InvalidDataFile_ThrowsException()
         {
-            var subject = new CharityCommissionDataExtractService(Mock.Of<ILogger<CharityCommissionDataExtractService>>());
-            Assert.ThrowsAsync(typeof(JsonReaderException), () => subject.ExtractData<Character>(GetZipFile("bad json data")));
-
+            Assert.Throws(typeof(JsonReaderException), () => CharityCommissionDataHelper.ExtractData<Character>(GetZipFile("bad json data")));
         }
 
 

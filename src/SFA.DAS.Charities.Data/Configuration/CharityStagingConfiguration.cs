@@ -8,6 +8,7 @@ namespace SFA.DAS.Charities.Data.Configuration
     {
         public void Configure(EntityTypeBuilder<CharityStaging> builder)
         {
+            builder.ToTable(nameof(CharityStaging));
             builder.HasMany(c => c.Trustees).WithOne().HasPrincipalKey(x => x.Id).HasForeignKey(x => x.CharityId);
         }
     }

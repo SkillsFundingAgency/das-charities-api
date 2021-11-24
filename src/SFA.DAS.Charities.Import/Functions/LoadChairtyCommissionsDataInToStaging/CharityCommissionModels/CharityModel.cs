@@ -86,7 +86,7 @@ namespace SFA.DAS.Charities.Import.Functions.LoadChairtyCommissionsDataInToStagi
                 LinkedCharityId = model.LinkedCharityNumber,
                 RegistrationDate = model.RegistrationDate,
                 RegistrationStatus = Enum.Parse<RegistrationStatus>(model.RegistrationStatus, true),
-                CharityType = Enum.Parse<CharityType>(model.Type, true),
+                Type = Enum.TryParse<CharityType>(model.Type, true, out var charityType) ? charityType : (CharityType?)null,
                 AddressLine1 = model.AddressLine1,
                 AddressLine2 = model.AddressLine2,
                 AddressLine3 = model.AddressLine3,

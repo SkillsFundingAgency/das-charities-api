@@ -35,7 +35,7 @@ namespace SFA.DAS.Charities.Import.UnitTests.Functions.CharityDataRefreshWorkflo
             using (Sequence.Create())
             {
                 _contextMock.Setup(c => c.CallSubOrchestratorAsync<Task>(nameof(ImportCharityCommissionDataWorkflow), null)).InSequence();
-                _contextMock.Setup(c => c.CallSubOrchestratorAsync<Task>(nameof(LoadChairtyCommissionsDataInToStagingWorkflow), null)).InSequence();
+                _contextMock.Setup(c => c.CallSubOrchestratorAsync<Task>(nameof(LoadCharityCommissionsDataInToStagingWorkflow), null)).InSequence();
                 _contextMock.Setup(c => c.CallActivityAsync<Task>(nameof(LoadActiveDataFromStagingActivity), null)).InSequence();
                 await subject.RefreshCharityDataOrchestrationTrigger(_contextMock.Object, _loggerMock.Object);
 
