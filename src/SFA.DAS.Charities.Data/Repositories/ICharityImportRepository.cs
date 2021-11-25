@@ -8,5 +8,6 @@ namespace SFA.DAS.Charities.Data.Repositories
     {
         Task BulkInsert<T>(IList<T> data) where T : class;
         Task ClearStagingData();
+        Task LoadDataFromStagingInToLive();
     }
 }
