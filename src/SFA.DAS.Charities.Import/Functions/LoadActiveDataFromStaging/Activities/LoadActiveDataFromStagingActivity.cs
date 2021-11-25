@@ -1,17 +1,23 @@
 ﻿using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.DurableTask;
 using Microsoft.Extensions.Logging;
-using System;
+using SFA.DAS.Charities.Data.Repositories;
 using System.Threading.Tasks;
 
 namespace SFA.DAS.Charities.Import.Functions.LoadActiveDataFromStaging.Activities
 {
     public class LoadActiveDataFromStagingActivity
     {
-        [FunctionName(nameof(LoadActiveDataFromStagingActivity))]
-        public static async Task LoadActiveDataFromStaging([ActivityTrigger] IDurableActivityContext context, ILogger logger)
+        private readonly ICharityImportRepository _charityImportRepository;
+
+        public LoadActiveDataFromStagingActivity(ICharityImportRepository charityImportRepository)
         {
-            await Task.Delay(TimeSpan.FromSeconds(10));
+            _charityImportRepository = charityImportRepository;
+        }
+        [FunctionName(nameof(LoadActiveDataFromStagingActivity))]
+        public async Task LoadActiveDataFromStaging([ActivityTrigger] IDurableActivityContext context, ILogger logger)
+        {
+            await _charityImportRepository.LoadDataFromStagingInToLive();
         }
 
     }
