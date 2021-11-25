@@ -6,7 +6,7 @@ using NUnit.Framework;
 using SFA.DAS.Charities.Import.Functions;
 using SFA.DAS.Charities.Import.Functions.ImportCharityCommissionData;
 using SFA.DAS.Charities.Import.Functions.LoadActiveDataFromStaging.Activities;
-using SFA.DAS.Charities.Import.Functions.LoadChairtyCommissionsDataInToStaging;
+using SFA.DAS.Charities.Import.Functions.LoadCharityCommissionsDataInToStaging;
 using SFA.DAS.Charities.Import.Infrastructure;
 using System.Threading.Tasks;
 

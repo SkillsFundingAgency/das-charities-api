@@ -3,13 +3,13 @@ using Microsoft.Azure.WebJobs.Extensions.DurableTask;
 using Microsoft.Extensions.Logging;
 using SFA.DAS.Charities.Data.Repositories;
 using SFA.DAS.Charities.Domain.Entities;
-using SFA.DAS.Charities.Import.Functions.LoadChairtyCommissionsDataInToStaging.CharityCommissionModels;
+using SFA.DAS.Charities.Import.Functions.LoadCharityCommissionsDataInToStaging.CharityCommissionModels;
 using SFA.DAS.Charities.Import.Infrastructure;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SFA.DAS.Charities.Import.Functions.LoadChairtyCommissionsDataInToStaging.Activities
+namespace SFA.DAS.Charities.Import.Functions.LoadCharityCommissionsDataInToStaging.Activities
 {
     public class LoadCharityDataInToStagingActivity
     {

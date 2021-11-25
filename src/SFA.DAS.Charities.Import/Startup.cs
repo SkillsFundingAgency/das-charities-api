@@ -33,7 +33,7 @@ namespace SFA.DAS.Charities.Import.Functions
             RegisterCharityCommissionsHttpClient(builder, configuration);
 
             builder.Services.AddTransient<IDateTimeProvider, DateTimeProvider>();
-            builder.Services.AddTransient<ICharityImportRepository, ChairtyImportRepository>();
+            builder.Services.AddTransient<ICharityImportRepository, CharityImportRepository>();
         }
 
         private static void AddNLog(IFunctionsHostBuilder builder)
