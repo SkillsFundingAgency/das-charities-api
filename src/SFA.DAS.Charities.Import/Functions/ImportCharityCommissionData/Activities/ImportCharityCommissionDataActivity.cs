@@ -1,6 +1,7 @@
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.DurableTask;
 using Microsoft.Extensions.Logging;
+using SFA.DAS.Charities.Domain;
 using SFA.DAS.Charities.Import.Infrastructure;
 using System;
 using System.IO;
@@ -24,6 +25,7 @@ namespace SFA.DAS.Charities.Import.Functions.ImportCharityCommissionData.Activit
             [Blob("charity-files/{fileName}", access: FileAccess.Write, Connection = "CharitiesStorageConnectionString")] Stream file,
             ILogger log)
         {
+            using var performanceLogger = new PerformanceLogger($"Download and save file {fileName}", log);
             var client = _httpClientFactory.CreateClient("CharityCommissions");
 
             log.LogDebug("Downloading file: {fileName}", fileName);
@@ -54,7 +56,6 @@ namespace SFA.DAS.Charities.Import.Functions.ImportCharityCommissionData.Activit
             log.LogDebug("File: {fileName} appears to be ok.", fileName);
 
             await file.WriteAsync(content, 0, content.Length);
-            log.LogInformation("Finished writing {fileName} to blob storage.", fileName);
         }
     }
 }

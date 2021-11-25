@@ -2,6 +2,7 @@
 using Microsoft.Azure.WebJobs.Extensions.DurableTask;
 using Microsoft.Extensions.Logging;
 using SFA.DAS.Charities.Data.Repositories;
+using SFA.DAS.Charities.Domain;
 using SFA.DAS.Charities.Domain.Entities;
 using SFA.DAS.Charities.Import.Functions.LoadCharityCommissionsDataInToStaging.CharityCommissionModels;
 using SFA.DAS.Charities.Import.Infrastructure;
@@ -26,6 +27,7 @@ namespace SFA.DAS.Charities.Import.Functions.LoadCharityCommissionsDataInToStagi
             [Blob("charity-files/{fileName}", FileAccess.Read, Connection = "CharitiesStorageConnectionString")] Stream fileStream,
             ILogger logger)
         {
+            using var performanceLogger = new PerformanceLogger($"Load trustees in staging", logger);
 
             var trusteeData = CharityCommissionDataHelper.ExtractData<CharityTrusteeModel>(fileStream);
 
@@ -33,7 +35,7 @@ namespace SFA.DAS.Charities.Import.Functions.LoadCharityCommissionsDataInToStagi
 
             await _charityTrusteeStagingRepository.BulkInsert(data);
 
-            logger.LogWarning($"Total trustees {trusteeData.Count}");
+            logger.LogInformation("Total trustees {trusteesCount}", trusteeData.Count);
         }
     }
 }
