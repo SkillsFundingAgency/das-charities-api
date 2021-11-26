@@ -21,7 +21,9 @@ namespace SFA.DAS.Charities.Data.Extensions
                     connection.AccessToken = generateTokenTask.GetAwaiter().GetResult();
                 }
 
-                options.UseSqlServer(connection);
+                options.UseSqlServer(
+                    connection, 
+                    options => options.CommandTimeout((int)TimeSpan.FromMinutes(5).TotalSeconds));
             });
             return services;
         }
