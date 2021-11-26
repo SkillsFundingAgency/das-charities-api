@@ -13,7 +13,7 @@ namespace SFA.DAS.Charities.Import
     {
         public void ConfigureNLog()
         {
-            var appName = Environment.GetEnvironmentVariable("das-charities-import");
+            var appName = "das-charities-import";
             var env = Environment.GetEnvironmentVariable("EnvironmentName");
             var config = new LoggingConfiguration();
 
