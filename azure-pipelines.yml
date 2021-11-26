@@ -18,7 +18,7 @@ variables:
 - name: SolutionBaseName
   value: SFA.DAS.Charities
 - name: Deploy
-  value: $[or(eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq(variables['Build.Reason'], 'Manual'), eq(variables['Build.Reason'], 'PullRequest'))]
+  value: $[or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.Reason'], 'Manual'), eq(variables['Build.Reason'], 'PullRequest'))]
 
 resources:
   repositories:
@@ -135,7 +135,6 @@ stages:
 - stage: Deploy_DEMO
   dependsOn: Build
   displayName: Deploy to DEMO
-  condition: and(succeeded(), eq(variables.Deploy, 'true'))
   variables:
   - group: DevTest Management Resources
   - group: DEMO DevTest Shared Resources
