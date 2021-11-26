@@ -102,8 +102,7 @@
         "functionAppName": "[concat(variables('resourceNamePrefix'), 'wkr-fa')]",
         "apiAppServiceName": "[concat(variables('resourceNamePrefix'), 'api-as')]",
         "appServicePlanName": "[concat(variables('resourceNamePrefix'), 'wkr-asp')]",
-        "databaseName": "[concat(variables('resourceNamePrefix'), '-db')]",
-        "configNames": "SFA.DAS.Charities.Api"
+        "databaseName": "[concat(variables('resourceNamePrefix'), '-db')]"
     },
     "resources": [
         {
@@ -239,7 +238,7 @@
                                 },
                                 {
                                     "name": "ConfigNames",
-                                    "value": "[variables('configNames')]"
+                                    "value": "SFA.DAS.Charities.Import.Functions"
                                 },
                                 {
                                     "name": "Version",
@@ -351,7 +350,7 @@
                                 },
                                 {
                                     "name": "ConfigNames",
-                                    "value": "[variables('configNames')]"
+                                    "value": "SFA.DAS.Charities.Api"
                                 },
                                 {
                                     "name": "Version",

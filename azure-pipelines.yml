@@ -18,7 +18,7 @@ variables:
 - name: SolutionBaseName
   value: SFA.DAS.Charities
 - name: Deploy
-  value: $[or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.Reason'], 'Manual'))]
+  value: $[or(eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq(variables['Build.Reason'], 'Manual'), eq(variables['Build.Reason'], 'PullRequest'))]
 
 resources:
   repositories:
@@ -26,7 +26,7 @@ resources:
   - repository: das-platform-building-blocks
     type: github
     name: SkillsFundingAgency/das-platform-building-blocks
-    ref: refs/tags/0.4.22
+    ref: refs/tags/0.4.23
     endpoint: SkillsFundingAgency
   - repository: das-platform-automation
     type: github
@@ -67,7 +67,6 @@ stages:
 - stage: Deploy_TEST
   dependsOn: Build
   displayName: Deploy to TEST
-  condition: and(succeeded(), eq(variables.Deploy, 'true'))
   variables:
   - group: DevTest Management Resources
   - group: TEST DevTest Shared Resources
@@ -81,7 +80,6 @@ stages:
 - stage: Deploy_TEST2
   dependsOn: Build
   displayName: Deploy to TEST2
-  condition: and(succeeded(), eq(variables.Deploy, 'true'))
   variables:
   - group: DevTest Management Resources
   - group: TEST2 DevTest Shared Resources
@@ -95,7 +93,6 @@ stages:
 - stage: Deploy_PP
   dependsOn: Build
   displayName: Deploy to PP
-  condition: and(succeeded(), eq(variables.Deploy, 'true'))
   variables:
   - group: PREPROD Management Resources
   - group: PREPROD Shared Resources
@@ -109,7 +106,6 @@ stages:
 # - stage: Deploy_PROD
 #   dependsOn: Build
 #   displayName: Deploy to PROD
-#   condition: and(succeeded(), eq(variables.Deploy, 'true'))
 #   variables:
 #   - group: PROD Management Resources
 #   - group: PROD Shared Resources
@@ -125,7 +121,6 @@ stages:
 # - stage: Deploy_MO
 #   dependsOn: Build
 #   displayName: Deploy to MO
-#   condition: and(succeeded(), eq(variables.Deploy, 'true'))
 #   variables:
 #   - group: MO Management Resources
 #   - group: MO Shared Resources
