@@ -21,7 +21,7 @@ namespace SFA.DAS.Charities.Import.UnitTests.Functions.LoadCharityCommissionsDat
             CharityTrusteeStaging outcome = subject;
 
             Assert.AreEqual(subject.CharityId, outcome.CharityId);
-            Assert.AreEqual(subject.RegisteredCharityNumber, outcome.RegisteredCharityNumber);
+            Assert.AreEqual(subject.RegisteredCharityNumber, outcome.RegistrationNumber);
             Assert.AreEqual(subject.TrusteeId, outcome.TrusteeId);
             Assert.AreEqual(subject.TrusteeName, outcome.Name);
             Assert.AreEqual(subject.IsChair, outcome.IsChair);
