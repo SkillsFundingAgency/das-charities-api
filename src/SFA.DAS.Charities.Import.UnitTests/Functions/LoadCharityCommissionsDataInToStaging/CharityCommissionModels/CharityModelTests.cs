@@ -24,7 +24,7 @@ namespace SFA.DAS.Charities.Import.UnitTests.Functions.LoadCharityCommissionsDat
             Assert.AreEqual(model.CharityId, outcome.Id);
             Assert.AreEqual(model.Name, outcome.Name);
             Assert.AreEqual(model.CompaniesHouseNumber, outcome.CompaniesHouseNumber);
-            Assert.AreEqual(model.RegisteredCharityNumber, outcome.RegisteredCharityNumber);
+            Assert.AreEqual(model.RegisteredCharityNumber, outcome.RegistrationNumber);
             Assert.AreEqual(model.LinkedCharityNumber, outcome.LinkedCharityId);
             Assert.AreEqual(model.RegistrationDate, outcome.RegistrationDate);
             Assert.AreEqual(model.AddressLine1, outcome.AddressLine1);

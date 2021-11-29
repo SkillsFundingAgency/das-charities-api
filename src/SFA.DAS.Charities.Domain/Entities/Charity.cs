@@ -8,7 +8,7 @@ namespace SFA.DAS.Charities.Domain.Entities
         public int Id { get; set; }
         public string Name { get; set; }
         public string CompaniesHouseNumber { get; set; }
-        public int RegisteredCharityNumber { get; set; }
+        public int RegistrationNumber { get; set; }
         public int LinkedCharityId { get; set; }
         public DateTime RegistrationDate { get; set; }
         public RegistrationStatus RegistrationStatus { get; set; }

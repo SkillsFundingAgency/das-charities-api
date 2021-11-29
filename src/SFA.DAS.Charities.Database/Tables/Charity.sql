@@ -3,7 +3,7 @@
     [Id] INT NOT NULL CONSTRAINT PK_Charity PRIMARY KEY, 
     [Name] VARCHAR(MAX) NOT NULL, 
     [CompaniesHouseNumber] VARCHAR(MAX) NULL, 
-    [RegisteredCharityNumber] INT NOT NULL, 
+    [RegistrationNumber] INT NOT NULL, 
     [LinkedCharityId] INT NOT NULL, 
     [RegistrationDate] DATETIME2 NOT NULL, 
     [RegistrationStatus] TINYINT NOT NULL, 

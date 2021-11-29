@@ -82,7 +82,7 @@ namespace SFA.DAS.Charities.Import.Functions.LoadCharityCommissionsDataInToStagi
                 Id = model.CharityId,
                 Name = model.Name,
                 CompaniesHouseNumber = model.CompaniesHouseNumber,
-                RegisteredCharityNumber = model.RegisteredCharityNumber,
+                RegistrationNumber = model.RegisteredCharityNumber,
                 LinkedCharityId = model.LinkedCharityNumber,
                 RegistrationDate = model.RegistrationDate,
                 RegistrationStatus = Enum.Parse<RegistrationStatus>(model.RegistrationStatus, true),
