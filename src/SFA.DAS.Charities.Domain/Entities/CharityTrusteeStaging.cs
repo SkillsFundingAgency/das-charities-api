@@ -6,7 +6,7 @@ namespace SFA.DAS.Charities.Domain.Entities
     {
         public int Id { get; set; }
         public int CharityId { get; set; }
-        public int RegisteredCharityNumber { get; set; }
+        public int RegistrationNumber { get; set; }
         public int TrusteeId { get; set; }
         public string Name { get; set; }
         public bool IsChair { get; set; }

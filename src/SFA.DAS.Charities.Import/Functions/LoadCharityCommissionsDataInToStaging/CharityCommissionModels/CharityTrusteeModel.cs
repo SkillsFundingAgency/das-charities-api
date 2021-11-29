@@ -29,7 +29,7 @@ namespace SFA.DAS.Charities.Import.Functions.LoadCharityCommissionsDataInToStagi
             => new CharityTrusteeStaging
             {
                 CharityId = model.CharityId,
-                RegisteredCharityNumber = model.RegisteredCharityNumber,
+                RegistrationNumber = model.RegisteredCharityNumber,
                 TrusteeId = model.TrusteeId,
                 Name = model.TrusteeName,
                 IsChair = model.IsChair,

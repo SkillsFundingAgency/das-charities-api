@@ -2,7 +2,7 @@
 (
     [Id] INT NOT NULL CONSTRAINT PK_CharityTrustee PRIMARY KEY,
     [CharityId] INT NOT NULL, 
-    [RegisteredCharityNumber] INT NOT NULL,
+    [RegistrationNumber] INT NOT NULL,
     [TrusteeId] INT NOT NULL, 
     [Name] VARCHAR(MAX) NOT NULL, 
     [IsChair] BIT NOT NULL,
