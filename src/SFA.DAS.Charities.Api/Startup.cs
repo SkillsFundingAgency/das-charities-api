@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -32,10 +33,11 @@ namespace SFA.DAS.Charities.Api
             var connectionString = _configuration["SqlDatabaseConnectionString"];
             var environment = _configuration["Environment"];
 
-            //services.AddOptions();
-            //services.AddApiVersioning(opt => {
-            //    opt.ApiVersionReader = new HeaderApiVersionReader("X-Version");
-            //});
+            services.AddApiVersioning(opt =>
+            {
+                opt.ApiVersionReader = new HeaderApiVersionReader("X-Version");
+                opt.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1, 0);
+            });
 
             services
                 .AddHealthChecks()
