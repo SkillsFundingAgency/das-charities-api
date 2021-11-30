@@ -31,6 +31,7 @@ namespace SFA.DAS.Charities.Api.Controllers
                 return new NotFoundObjectResult($"Charity with registration number: {registrationNumber} not found");
             }
 
+            _logger.LogInformation("Found charity with registration number: {registrationNumber} and name {charityName}", registrationNumber, charity.Name);
             return new OkObjectResult(charity);
         }
     }
