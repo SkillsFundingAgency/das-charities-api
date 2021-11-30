@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace SFA.DAS.Charities.Api.Controllers
 {
+    [ApiVersion("1")]
     [Route("api/[controller]")]
     [ApiController]
     public class CharitiesController : ControllerBase
