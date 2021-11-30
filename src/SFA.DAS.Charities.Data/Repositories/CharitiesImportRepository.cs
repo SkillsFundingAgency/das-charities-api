@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace SFA.DAS.Charities.Data.Repositories
 {
-    public class CharityImportRepository : ICharityImportRepository
+    public class CharitiesImportRepository : ICharitiesImportRepository
     {
         private readonly CharitiesDataContext _charitiesDataContext;
-        private readonly ILogger<CharityImportRepository> _logger;
+        private readonly ILogger<CharitiesImportRepository> _logger;
 
-        public CharityImportRepository(CharitiesDataContext charitiesDataContext, ILogger<CharityImportRepository> logger)
+        public CharitiesImportRepository(CharitiesDataContext charitiesDataContext, ILogger<CharitiesImportRepository> logger)
         {
             _charitiesDataContext = charitiesDataContext;
             _logger = logger;
