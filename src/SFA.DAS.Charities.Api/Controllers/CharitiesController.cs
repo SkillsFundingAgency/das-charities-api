@@ -23,6 +23,11 @@ namespace SFA.DAS.Charities.Api.Controllers
         [Route("{registrationNumber}")]
         public async Task<IActionResult> GetCharityDetails(int registrationNumber)
         {
+            if (registrationNumber <= 0)
+            {
+                return new BadRequestObjectResult(new {Error = "RegistrationNumber is expected to have a positive non-zero value."});
+            }
+
             var charity = await _charityReadRepository.GetCharityById(registrationNumber);
 
             if (charity == null)

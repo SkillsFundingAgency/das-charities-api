@@ -16,6 +16,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.Charities.Import", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.Charities.Import.UnitTests", "SFA.DAS.Charities.Import.UnitTests\SFA.DAS.Charities.Import.UnitTests.csproj", "{7DB1B8E2-AAAD-437D-BAB2-FCFDD11ED77E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.Charities.Api.UnitTests", "SFA.DAS.Charities.Api.UnitTests\SFA.DAS.Charities.Api.UnitTests.csproj", "{20008F4C-3930-4566-AC8D-F058B260F6D3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -104,12 +106,25 @@ Global
 		{7DB1B8E2-AAAD-437D-BAB2-FCFDD11ED77E}.Release|x64.Build.0 = Release|Any CPU
 		{7DB1B8E2-AAAD-437D-BAB2-FCFDD11ED77E}.Release|x86.ActiveCfg = Release|Any CPU
 		{7DB1B8E2-AAAD-437D-BAB2-FCFDD11ED77E}.Release|x86.Build.0 = Release|Any CPU
+		{20008F4C-3930-4566-AC8D-F058B260F6D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20008F4C-3930-4566-AC8D-F058B260F6D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20008F4C-3930-4566-AC8D-F058B260F6D3}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{20008F4C-3930-4566-AC8D-F058B260F6D3}.Debug|x64.Build.0 = Debug|Any CPU
+		{20008F4C-3930-4566-AC8D-F058B260F6D3}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{20008F4C-3930-4566-AC8D-F058B260F6D3}.Debug|x86.Build.0 = Debug|Any CPU
+		{20008F4C-3930-4566-AC8D-F058B260F6D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20008F4C-3930-4566-AC8D-F058B260F6D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20008F4C-3930-4566-AC8D-F058B260F6D3}.Release|x64.ActiveCfg = Release|Any CPU
+		{20008F4C-3930-4566-AC8D-F058B260F6D3}.Release|x64.Build.0 = Release|Any CPU
+		{20008F4C-3930-4566-AC8D-F058B260F6D3}.Release|x86.ActiveCfg = Release|Any CPU
+		{20008F4C-3930-4566-AC8D-F058B260F6D3}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{7DB1B8E2-AAAD-437D-BAB2-FCFDD11ED77E} = {85C56D6C-C5FE-452C-8C15-23776F4652D0}
+		{20008F4C-3930-4566-AC8D-F058B260F6D3} = {85C56D6C-C5FE-452C-8C15-23776F4652D0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {95E2B9FE-B119-433A-A4DE-6E2D2D3CA522}
