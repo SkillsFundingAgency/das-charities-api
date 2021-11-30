@@ -9,9 +9,9 @@ namespace SFA.DAS.Charities.Import.Functions.LoadCharityCommissionsDataInToStagi
 {
     public class ClearStagingDataActivity
     {
-        private readonly ICharityImportRepository _charityImportRepository;
+        private readonly ICharitiesImportRepository _charityImportRepository;
 
-        public ClearStagingDataActivity(ICharityImportRepository charityImportRepository)
+        public ClearStagingDataActivity(ICharitiesImportRepository charityImportRepository)
         {
             _charityImportRepository = charityImportRepository;
         }

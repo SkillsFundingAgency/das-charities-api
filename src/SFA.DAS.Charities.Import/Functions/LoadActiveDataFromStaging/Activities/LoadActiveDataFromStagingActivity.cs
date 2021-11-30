@@ -9,9 +9,9 @@ namespace SFA.DAS.Charities.Import.Functions.LoadActiveDataFromStaging.Activitie
 {
     public class LoadActiveDataFromStagingActivity
     {
-        private readonly ICharityImportRepository _charityImportRepository;
+        private readonly ICharitiesImportRepository _charityImportRepository;
 
-        public LoadActiveDataFromStagingActivity(ICharityImportRepository charityImportRepository)
+        public LoadActiveDataFromStagingActivity(ICharitiesImportRepository charityImportRepository)
         {
             _charityImportRepository = charityImportRepository;
         }
