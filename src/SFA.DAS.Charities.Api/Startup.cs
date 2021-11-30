@@ -10,6 +10,7 @@ using SFA.DAS.Charities.Data;
 using SFA.DAS.Charities.Data.Extensions;
 using SFA.DAS.Charities.Data.Repositories;
 using SFA.DAS.Configuration.AzureTableStorage;
+using System.Text.Json.Serialization;
 
 namespace SFA.DAS.Charities.Api
 {
@@ -46,7 +47,12 @@ namespace SFA.DAS.Charities.Api
                 .AddDbContextCheck<CharitiesDataContext>();
 
 
-            services.AddControllers();
+            services
+                .AddControllers()
+                .AddJsonOptions(options => 
+                {
+                    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                });
 
             services.AddTransient<ICharitiesReadRepository, CharitiesReadRepository>();
 
