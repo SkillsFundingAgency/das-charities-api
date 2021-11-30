@@ -2,7 +2,7 @@
 {
     public enum RegistrationStatus
     {
-        Registered,
-        Removed
+        Registered = 1,
+        Removed = 2
     }
 }
