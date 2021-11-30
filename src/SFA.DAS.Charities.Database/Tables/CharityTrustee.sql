@@ -6,7 +6,7 @@
     [TrusteeId] INT NOT NULL, 
     [Name] VARCHAR(MAX) NOT NULL, 
     [IsChair] BIT NOT NULL,
-    [TrusteeType] TINYINT NOT NULL,
+    [TrusteeType] INT NOT NULL,
     [AppointmentDate] DATETIME2 NULL,
     [LastUpdatedDate] DATETIME2 NOT NULL DEFAULT GetUtcDate()
 )
