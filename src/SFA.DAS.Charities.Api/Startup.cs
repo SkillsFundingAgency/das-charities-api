@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SFA.DAS.Charities.Data;
 using SFA.DAS.Charities.Data.Extensions;
 using SFA.DAS.Charities.Data.Repositories;
 using SFA.DAS.Configuration.AzureTableStorage;
@@ -30,20 +31,18 @@ namespace SFA.DAS.Charities.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
-            var connectionString = _configuration["SqlDatabaseConnectionString"];
-            var environment = _configuration["Environment"];
-
             services.AddApiVersioning(opt =>
             {
                 opt.ApiVersionReader = new HeaderApiVersionReader("X-Version");
                 opt.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1, 0);
             });
 
+            services.AddCharityDataContext(_configuration["SqlDatabaseConnectionString"], _configuration["Environment"]);
+
             services
                 .AddHealthChecks()
-                .AddSqlServer(connectionString);
+                .AddDbContextCheck<CharitiesDataContext>();
 
-            services.AddCharityDataContext(connectionString, environment);
 
             services.AddMvc();
 
