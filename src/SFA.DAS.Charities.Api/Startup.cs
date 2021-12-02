@@ -5,11 +5,15 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using SFA.DAS.Api.Common.AppStart;
+using SFA.DAS.Api.Common.Configuration;
 using SFA.DAS.Api.Common.Infrastructure;
 using SFA.DAS.Charities.Data;
 using SFA.DAS.Charities.Data.Extensions;
 using SFA.DAS.Charities.Data.Repositories;
 using SFA.DAS.Configuration.AzureTableStorage;
+using System;
+using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace SFA.DAS.Charities.Api
@@ -34,6 +38,20 @@ namespace SFA.DAS.Charities.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
+            if (!ConfigurationIsLocalOrDev())
+            {
+                var azureAdConfiguration = _configuration
+                    .GetSection("AzureAd")
+                    .Get<AzureActiveDirectoryConfiguration>();
+
+                var policies = new Dictionary<string, string>
+                {
+                    {PolicyNames.Default, "Default"}
+                };
+
+                services.AddAuthentication(azureAdConfiguration, policies);
+            }
+
             services.AddApiVersioning(opt =>
             {
                 opt.ApiVersionReader = new HeaderApiVersionReader("X-Version");
@@ -54,12 +72,15 @@ namespace SFA.DAS.Charities.Api
                     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
                 });
 
+            services.AddApplicationInsightsTelemetry(_configuration["APPINSIGHTS_INSTRUMENTATIONKEY"]);
+
             services.AddTransient<ICharitiesReadRepository, CharitiesReadRepository>();
 
             services.AddSwaggerGen(options => 
             {
                 options.SwaggerDoc("v1", new OpenApiInfo { Title = "CharitiesAPI", Version = "v1" });
                 options.OperationFilter<SwaggerVersionHeaderFilter>();
+                options.OperationFilter<SwaggerAuthorizationHeaderFilter>();
             });
         }
 
@@ -89,6 +110,12 @@ namespace SFA.DAS.Charities.Api
             {
                 endpoints.MapControllers();
             });
+        }
+
+        private bool ConfigurationIsLocalOrDev()
+        {
+            return _configuration["Environment"].Equals("LOCAL", StringComparison.CurrentCultureIgnoreCase) ||
+                   _configuration["Environment"].Equals("DEV", StringComparison.CurrentCultureIgnoreCase);
         }
     }
 }
