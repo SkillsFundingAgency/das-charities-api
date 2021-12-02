@@ -34,7 +34,7 @@ namespace SFA.DAS.Charities.Import.Functions.LoadCharityCommissionsDataInToStagi
                 Name = model.TrusteeName,
                 IsChair = model.IsChair,
                 AppointmentDate = model.AppointmentDate,
-                TrusteeType = model.IndividualOrOrganisation == 'I' ? TrusteeType.Individual : TrusteeType.Organisation
+                TrusteeType = model.IndividualOrOrganisation == 'O' ? TrusteeType.Organisation : TrusteeType.Individual
             };
     }
 }

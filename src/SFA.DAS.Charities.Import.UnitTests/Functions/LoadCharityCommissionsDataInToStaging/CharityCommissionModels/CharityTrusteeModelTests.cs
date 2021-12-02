@@ -8,7 +8,7 @@ namespace SFA.DAS.Charities.Import.UnitTests.Functions.LoadCharityCommissionsDat
     [TestFixture]
     public class CharityTrusteeModelTests
     {
-        [TestCase('I', TrusteeType.Individual)]
+        [TestCase('P', TrusteeType.Individual)]
         [TestCase('O', TrusteeType.Organisation)]
         public void CharityTrusteeModel_Operator_ReturnsInstanceOfCharityTrusteeStaging(char individualOrOrganisation, TrusteeType expectedTrusteeType)
         {
