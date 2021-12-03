@@ -98,6 +98,8 @@ namespace SFA.DAS.Charities.Api
                 options.RoutePrefix = string.Empty;
             });
 
+            app.UseAuthentication();
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
