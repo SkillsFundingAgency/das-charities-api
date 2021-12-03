@@ -66,7 +66,7 @@ namespace SFA.DAS.Charities.Api
 
 
             services
-                .AddControllers()
+                .AddControllers(o => o.Conventions.Add(new AuthorizeControllerModelConvention(new List<string>())))
                 .AddJsonOptions(options => 
                 {
                     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
@@ -91,6 +91,8 @@ namespace SFA.DAS.Charities.Api
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseAuthentication();
+
             app.UseSwagger();
             app.UseSwaggerUI(options =>
             {
@@ -98,13 +100,9 @@ namespace SFA.DAS.Charities.Api
                 options.RoutePrefix = string.Empty;
             });
 
-            app.UseAuthentication();
-
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
-            app.UseAuthorization();
 
             app.UseHealthChecks("/health");
 
