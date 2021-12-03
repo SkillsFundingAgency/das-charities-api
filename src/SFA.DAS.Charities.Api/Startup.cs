@@ -80,7 +80,6 @@ namespace SFA.DAS.Charities.Api
             {
                 options.SwaggerDoc("v1", new OpenApiInfo { Title = "CharitiesAPI", Version = "v1" });
                 options.OperationFilter<SwaggerVersionHeaderFilter>();
-                options.OperationFilter<SwaggerAuthorizationHeaderFilter>();
             });
         }
 
