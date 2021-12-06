@@ -1,0 +1,72 @@
+{
+	"info": {
+		"_postman_id": "bd70cc8e-a583-4ef1-8d91-9528bd64a083",
+		"name": "Charities API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "AT Get Charity Details",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set(\"env\", \"at\");\r",
+							"pm.environment.set(\"charityRegistrationNumber\", 200055);\r",
+							"pm.environment.set(\"bearerToken\", \"\");"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Your test name\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.registrationNumber).to.eql(pm.environment.get(\"charityRegistrationNumber\"));\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Version",
+						"value": "1",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{bearerToken}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://{{env}}-charities-api.apprenticeships.education.gov.uk/api/Charities/{{charityRegistrationNumber}}",
+					"protocol": "https",
+					"host": [
+						"{{env}}-charities-api",
+						"apprenticeships",
+						"education",
+						"gov",
+						"uk"
+					],
+					"path": [
+						"api",
+						"Charities",
+						"{{charityRegistrationNumber}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
