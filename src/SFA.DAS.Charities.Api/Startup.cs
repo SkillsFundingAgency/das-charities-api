@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -103,7 +105,20 @@ namespace SFA.DAS.Charities.Api
 
             app.UseRouting();
 
-            app.UseHealthChecks("/health");
+            app.UseHealthChecks("/health", new HealthCheckOptions
+            {
+                ResponseWriter = HealthCheckResponseWriter.WriteJsonResponse
+            });
+
+            app.UseHealthChecks("/ping", new HealthCheckOptions
+            {
+                Predicate = (_) => false,
+                ResponseWriter = (context, report) =>
+                {
+                    context.Response.ContentType = "application/json";
+                    return context.Response.WriteAsync("");
+                }
+            });
 
             app.UseEndpoints(endpoints =>
             {
