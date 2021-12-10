@@ -68,7 +68,10 @@ namespace SFA.DAS.Charities.Api
 
 
             services
-                .AddControllers(o => o.Conventions.Add(new AuthorizeControllerModelConvention(new List<string>())))
+                .AddControllers(o =>
+                {
+                    if (!ConfigurationIsLocalOrDev()) o.Conventions.Add(new AuthorizeControllerModelConvention(new List<string>()));
+                })
                 .AddJsonOptions(options => 
                 {
                     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
