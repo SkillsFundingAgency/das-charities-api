@@ -1,20 +1,17 @@
-﻿using EFCore.BulkExtensions;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using EFCore.BulkExtensions;
+using Microsoft.EntityFrameworkCore;
 
 namespace SFA.DAS.Charities.Data.Repositories
 {
     public class CharitiesImportRepository : ICharitiesImportRepository
     {
         private readonly CharitiesDataContext _charitiesDataContext;
-        private readonly ILogger<CharitiesImportRepository> _logger;
 
-        public CharitiesImportRepository(CharitiesDataContext charitiesDataContext, ILogger<CharitiesImportRepository> logger)
+        public CharitiesImportRepository(CharitiesDataContext charitiesDataContext)
         {
             _charitiesDataContext = charitiesDataContext;
-            _logger = logger;
         }
 
         public async Task BulkInsert<T>(IList<T> data) where T : class
