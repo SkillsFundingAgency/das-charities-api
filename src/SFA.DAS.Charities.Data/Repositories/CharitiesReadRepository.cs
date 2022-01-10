@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using SFA.DAS.Charities.Domain.Entities;
-using System.Threading.Tasks;
 
 namespace SFA.DAS.Charities.Data.Repositories
 {
@@ -16,7 +16,7 @@ namespace SFA.DAS.Charities.Data.Repositories
         {
             return _charitiesDataContext.Charities
                 .Include(c => c.Trustees)
-                .FirstOrDefaultAsync(c => c.RegistrationNumber == registrationNumber && c.LinkedCharityId == 0);
+                .SingleOrDefaultAsync(c => c.RegistrationNumber == registrationNumber && c.LinkedCharityId == 0);
         }
     }
 }
