@@ -148,6 +148,27 @@
         },
         {
             "apiVersion": "2021-04-01",
+            "name": "function-app-subnet-charity-sql-firewall-rule",
+            "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('deploymentUrlBase'), 'sql-server-firewall-rules.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "serverName": {
+                        "value": "[parameters('sharedSQLServerName')]"
+                    },
+                    "subnetResourceIdList": {
+                        "value": "[createArray(reference('function-app-subnet-charity').outputs.SubnetResourceId.value)]"
+                    }
+                }
+            }
+        },
+        {
+            "apiVersion": "2021-04-01",
             "name": "app-service-plan",
             "type": "Microsoft.Resources/deployments",
             "resourceGroup": "[variables('resourceGroupName')]",
