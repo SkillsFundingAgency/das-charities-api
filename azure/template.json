@@ -93,7 +93,11 @@
         },
         "backEndAccessRestrictions": {
             "type": "array"
-        }
+        },
+        "utcValue": {
+            "type": "string",
+            "defaultValue": "[utcNow('yyMMddHHmmss')]"
+        }        
     },
     "variables": {
         "deploymentUrlBase": "https://raw.githubusercontent.com/SkillsFundingAgency/das-platform-building-blocks/master/templates/",
@@ -115,7 +119,7 @@
         },
         {
             "apiVersion": "2021-04-01",
-            "name": "function-app-subnet-charity",
+            "name": "[concat(parameters('subnetObject').name, '-function-app-subnet-charity-', parameters('utcValue'))]",
             "type": "Microsoft.Resources/deployments",
             "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
             "properties": {
@@ -148,7 +152,7 @@
         },
         {
             "apiVersion": "2021-04-01",
-            "name": "function-app-subnet-charity-sql-firewall-rule",
+            "name": "[concat(parameters('subnetObject').name, '-function-app-subnet-charity-sql-firewall-rule-', parameters('utcValue'))]",
             "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
             "type": "Microsoft.Resources/deployments",
             "properties": {
@@ -162,14 +166,14 @@
                         "value": "[parameters('sharedSQLServerName')]"
                     },
                     "subnetResourceIdList": {
-                        "value": "[createArray(reference('function-app-subnet-charity').outputs.SubnetResourceId.value)]"
+                        "value": "[createArray(reference(concat(parameters('subnetObject').name, '-function-app-subnet-charity-', parameters('utcValue'))).outputs.SubnetResourceId.value)]"
                     }
                 }
             }
         },
         {
             "apiVersion": "2021-04-01",
-            "name": "app-service-plan",
+            "name": "[concat(variables('functionAppName'), '-app-service-plan-', parameters('utcValue'))]",
             "type": "Microsoft.Resources/deployments",
             "resourceGroup": "[variables('resourceGroupName')]",
             "properties": {
@@ -196,7 +200,7 @@
         },
         {
             "apiVersion": "2021-04-01",
-            "name": "function-application-insights",
+            "name": "[concat(variables('functionAppName'), '-function-application-insights-', parameters('utcValue'))]",
             "type": "Microsoft.Resources/deployments",
             "resourceGroup": "[variables('resourceGroupName')]",
             "properties": {
@@ -220,7 +224,7 @@
         },
         {
             "apiVersion": "2021-04-01",
-            "name": "function-app",
+            "name": "[concat(variables('functionAppName'), '-function-app-', parameters('utcValue'))]",
             "type": "Microsoft.Resources/deployments",
             "resourceGroup": "[variables('resourceGroupName')]",
             "properties": {
@@ -240,7 +244,7 @@
                         "value": "[variables('resourceGroupName')]"
                     },
                     "subnetResourceId": {
-                        "value": "[reference('function-app-subnet-charity').outputs.SubnetResourceId.value]"
+                        "value": "[reference(concat(parameters('subnetObject').name, '-function-app-subnet-charity-', parameters('utcValue'))).outputs.SubnetResourceId.value]"
                     },
                     "functionAppAppSettings": {
                         "value": {
@@ -267,7 +271,7 @@
                                 },
                                 {
                                     "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
-                                    "value": "[reference('function-application-insights').outputs.InstrumentationKey.value]"
+                                    "value": "[reference(concat(variables('functionAppName'), '-function-application-insights-', parameters('utcValue'))).outputs.InstrumentationKey.value]"
                                 },
                                 {
                                     "name": "AzureWebJobsStorage",
@@ -303,12 +307,12 @@
             },
             "dependsOn": [
                 "[variables('resourceGroupName')]",
-                "app-service-plan"
+                "[concat(variables('functionAppName'), '-app-service-plan-', parameters('utcValue'))]"
             ]
         },
         {
             "apiVersion": "2021-04-01",
-            "name": "api-application-insights",
+            "name": "[concat(variables('apiAppServiceName'), '-api-application-insights-', parameters('utcValue'))]",
             "type": "Microsoft.Resources/deployments",
             "resourceGroup": "[variables('resourceGroupName')]",
             "properties": {
@@ -332,7 +336,7 @@
         },
         {
             "apiVersion": "2021-04-01",
-            "name": "api-app-service",
+            "name": "[concat(variables('apiAppServiceName'), '-api-app-service-', parameters('utcValue'))]",
             "type": "Microsoft.Resources/deployments",
             "resourceGroup": "[variables('resourceGroupName')]",
             "properties": {
@@ -379,7 +383,7 @@
                                 },
                                 {
                                     "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
-                                    "value": "[reference('api-application-insights').outputs.InstrumentationKey.value]"
+                                    "value": "[reference(concat(variables('apiAppServiceName'), '-api-application-insights-', parameters('utcValue'))).outputs.InstrumentationKey.value]"
                                 },
                                 {
                                     "name": "LoggingRedisConnectionString",
@@ -409,7 +413,7 @@
         },
         {
             "apiVersion": "2021-04-01",
-            "name": "api-app-service-certificate-charity",
+            "name": "[concat(variables('apiAppServiceName'), '-api-app-service-certificate-charity-', parameters('utcValue'))]",
             "type": "Microsoft.Resources/deployments",
             "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
             "properties": {
@@ -436,7 +440,7 @@
         },
         {
             "apiVersion": "2020-06-01",
-            "name": "sql-database-charities",
+            "name": "[concat(variables('databaseName'), '-sql-database-charities-', parameters('utcValue'))]",
             "type": "Microsoft.Resources/deployments",
             "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
             "properties": {
