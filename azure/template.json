@@ -400,7 +400,7 @@
                         "value": "[parameters('customHostname')]"
                     },
                     "certificateThumbprint": {
-                        "value": "[reference('api-app-service-certificate-charity').outputs.certificateThumbprint.value]"
+                        "value": "[reference(concat(variables('apiAppServiceName'), '-api-app-service-certificate-charity-', parameters('utcValue'))).outputs.certificateThumbprint.value]"
                     },
                     "ipSecurityRestrictions": {
                         "value": "[parameters('backEndAccessRestrictions')]"
