@@ -152,7 +152,7 @@
         },
         {
             "apiVersion": "2021-04-01",
-            "name": "[concat(parameters('subnetObject').name, '-function-app-subnet-charity-sql-firewall-rule-', parameters('utcValue'))]",
+            "name": "[concat(parameters('subnetObject').name, '-function-app-sql-firewall-rule-', parameters('utcValue'))]",
             "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
             "type": "Microsoft.Resources/deployments",
             "properties": {
