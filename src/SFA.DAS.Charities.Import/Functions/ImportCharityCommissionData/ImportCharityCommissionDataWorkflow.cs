@@ -1,11 +1,10 @@
-﻿using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.DurableTask;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using SFA.DAS.Charities.Import.Functions.ImportCharityCommissionData.Activities;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Azure.Functions.Worker;
 
 namespace SFA.DAS.Charities.Import.Functions.ImportCharityCommissionData
 {
@@ -18,7 +17,7 @@ namespace SFA.DAS.Charities.Import.Functions.ImportCharityCommissionData
             filenames = configuration["CharitiesDownloadFileNames"].Split(',', System.StringSplitOptions.RemoveEmptyEntries);
         }
 
-        [FunctionName(nameof(ImportCharityCommissionDataWorkflow))]
+        [Function(nameof(ImportCharityCommissionDataWorkflow))]
         public async Task ImportCharityCommissionData([OrchestrationTrigger] IDurableOrchestrationContext context, ILogger logger)
         {
             logger = context.CreateReplaySafeLogger(logger);

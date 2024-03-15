@@ -18,7 +18,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.Charities.Import.Un
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.Charities.Api.UnitTests", "SFA.DAS.Charities.Api.UnitTests\SFA.DAS.Charities.Api.UnitTests.csproj", "{20008F4C-3930-4566-AC8D-F058B260F6D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.Charities.Api.AcceptanceTests", "SFA.DAS.Charities.Api.AcceptanceTests\SFA.DAS.Charities.Api.AcceptanceTests.csproj", "{E5C0B33B-0134-496D-AF50-2E23AB3ABF2C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.Charities.Api.AcceptanceTests", "SFA.DAS.Charities.Api.AcceptanceTests\SFA.DAS.Charities.Api.AcceptanceTests.csproj", "{E5C0B33B-0134-496D-AF50-2E23AB3ABF2C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

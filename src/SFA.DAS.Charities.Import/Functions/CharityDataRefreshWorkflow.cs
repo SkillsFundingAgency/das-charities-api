@@ -1,11 +1,10 @@
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.DurableTask;
 using Microsoft.Extensions.Logging;
 using SFA.DAS.Charities.Import.Functions.ImportCharityCommissionData;
 using SFA.DAS.Charities.Import.Infrastructure;
 using SFA.DAS.Charities.Import.Functions.LoadActiveDataFromStaging.Activities;
 using System.Threading.Tasks;
 using SFA.DAS.Charities.Import.Functions.LoadCharityCommissionsDataInToStaging;
+using Microsoft.Azure.Functions.Worker;
 
 namespace SFA.DAS.Charities.Import.Functions
 {
@@ -18,7 +17,7 @@ namespace SFA.DAS.Charities.Import.Functions
             _timeProvider = timeProvider;
         }
 
-        [FunctionName(nameof(RefreshCharityDataTimerTrigger))]
+        [Function(nameof(RefreshCharityDataTimerTrigger))]
         public async Task RefreshCharityDataTimerTrigger(
             [TimerTrigger("%CharitiesDataImportTimerInterval%")] TimerInfo myTimer, 
             [DurableClient] IDurableOrchestrationClient  orchestrationClient,
@@ -36,7 +35,7 @@ namespace SFA.DAS.Charities.Import.Functions
             log.LogInformation("Started charity data workflow. Orchestration id: {instanceId}", instanceId);
         }
 
-        [FunctionName(nameof(CharityDataRefreshWorkflow))]
+        [Function(nameof(CharityDataRefreshWorkflow))]
         public async Task RefreshCharityDataOrchestrationTrigger(
             [OrchestrationTrigger] IDurableOrchestrationContext context,
             ILogger logger)

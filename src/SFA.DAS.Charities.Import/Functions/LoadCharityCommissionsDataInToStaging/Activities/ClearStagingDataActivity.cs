@@ -1,9 +1,8 @@
-﻿using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.DurableTask;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using SFA.DAS.Charities.Data.Repositories;
 using SFA.DAS.Charities.Domain;
 using System.Threading.Tasks;
+using Microsoft.Azure.Functions.Worker;
 
 namespace SFA.DAS.Charities.Import.Functions.LoadCharityCommissionsDataInToStaging.Activities
 {
@@ -16,7 +15,7 @@ namespace SFA.DAS.Charities.Import.Functions.LoadCharityCommissionsDataInToStagi
             _charityImportRepository = charityImportRepository;
         }
 
-        [FunctionName(nameof(ClearStagingDataActivity))]
+        [Function(nameof(ClearStagingDataActivity))]
         public async Task Run([ActivityTrigger] IDurableActivityContext context, ILogger logger)
         {
             using var performanceLogger = new PerformanceLogger($"Clear staging data", logger);
