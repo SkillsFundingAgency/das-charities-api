@@ -1,5 +1,5 @@
 ﻿using Microsoft.Azure.Functions.Worker;
-using Microsoft.Azure.WebJobs.Extensions.DurableTask;
+using Microsoft.DurableTask;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using SFA.DAS.Charities.Import.Functions.LoadCharityCommissionsDataInToStaging.Activities;
@@ -18,8 +18,12 @@ public class LoadCharityCommissionsDataInToStagingWorkflow
     }
 
     [Function(nameof(LoadCharityCommissionsDataInToStagingWorkflow))]
-    public async Task LoadCharityCommissionsDataInToStaging([Microsoft.Azure.Functions.Worker.OrchestrationTrigger] IDurableOrchestrationContext context, ILogger logger)
+    //public async Task LoadCharityCommissionsDataInToStaging([OrchestrationTrigger] IDurableOrchestrationContext context, ILogger logger)
+    public async Task LoadCharityCommissionsDataInToStaging([OrchestrationTrigger] TaskOrchestrationContext context, ILogger logger)
     {
+        // Does this need?
+        //     var log = context.CreateReplaySafeLogger<ILogger>();
+
         await context.CallActivityAsync(nameof(ClearStagingDataActivity), null);
 
         var charityTask = context.CallActivityAsync(nameof(LoadCharityDataInToStagingActivity), _charityFileName);

@@ -1,5 +1,6 @@
 using Microsoft.Azure.Functions.Worker;
-using Microsoft.Azure.WebJobs.Extensions.DurableTask;
+using Microsoft.DurableTask;
+using Microsoft.DurableTask.Client;
 using Microsoft.Extensions.Logging;
 using SFA.DAS.Charities.Import.Functions.ImportCharityCommissionData;
 using SFA.DAS.Charities.Import.Functions.LoadActiveDataFromStaging.Activities;
@@ -23,27 +24,35 @@ public class CharityDataRefreshWorkflow
     public async Task RefreshCharityDataTimerTrigger(
         //        [TimerTrigger("%CharitiesDataImportTimerInterval%")] TimerInfo myTimer,
         [TimerTrigger("0 0 19 * * 1-5", RunOnStartup = true)] TimerInfo myTimer,
-        [Microsoft.Azure.Functions.Worker.DurableClient] IDurableOrchestrationClient orchestrationClient,
+        //[DurableClient] IDurableOrchestrationClient orchestrationClient,
+        [DurableClient] DurableTaskClient orchestrationClient,
         ILogger log)
     {
         var instanceId = $"charity-data-refresh-instance-{_timeProvider.Today:yyyy-MM-dd}";
-        var existingInstance = await orchestrationClient.GetStatusAsync(instanceId);
-        if (existingInstance?.RuntimeStatus == (Microsoft.Azure.WebJobs.Extensions.DurableTask.OrchestrationRuntimeStatus)OrchestrationRuntimeStatus.Running)
+        //  var existingInstance = await orchestrationClient.GetStatusAsync(instanceId);
+        // https://learn.microsoft.com/en-us/azure/azure-functions/durable/durable-functions-dotnet-isolated-overview#public-api-changes
+        // https://stackoverflow.com/questions/77865212/durable-functions-get-status-in-isolated-functions
+        var existingInstance = await orchestrationClient.GetInstanceAsync(instanceId);
+
+        if (existingInstance?.RuntimeStatus == OrchestrationRuntimeStatus.Running)
         {
             log.LogError("An instance with ID {instanceId} already exists.", instanceId);
             return;
         }
 
-        await orchestrationClient.StartNewAsync(nameof(CharityDataRefreshWorkflow), instanceId);
+        // await orchestrationClient.StartNewAsync(nameof(CharityDataRefreshWorkflow), instanceId);
+        await orchestrationClient.ScheduleNewOrchestrationInstanceAsync(nameof(CharityDataRefreshWorkflow), instanceId);
+        // https://learn.microsoft.com/en-us/azure/azure-functions/durable/durable-functions-dotnet-isolated-overview#public-api-changes
         log.LogInformation("Started charity data workflow. Orchestration id: {instanceId}", instanceId);
     }
 
     [Function(nameof(CharityDataRefreshWorkflow))]
     public async Task RefreshCharityDataOrchestrationTrigger(
-        [Microsoft.Azure.Functions.Worker.OrchestrationTrigger] IDurableOrchestrationContext context,
+        //[OrchestrationTrigger] IDurableOrchestrationContext context,
+        [OrchestrationTrigger] TaskOrchestrationContext context,
         ILogger logger)
     {
-        var log = context.CreateReplaySafeLogger(logger);
+        var log = context.CreateReplaySafeLogger<ILogger>();
         log.LogInformation($"Starting refresh of charity data: {context.CurrentUtcDateTime:F}", context.InstanceId);
         await context.CallSubOrchestratorAsync<Task>(nameof(ImportCharityCommissionDataWorkflow), null);
         log.LogDebug($"Finished download orchestration, now performing import to staging", context.InstanceId);
