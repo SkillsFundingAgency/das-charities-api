@@ -28,6 +28,7 @@ public class CharityDataRefreshWorkflow
         [DurableClient] DurableTaskClient orchestrationClient,
         ILogger log)
     {
+
         var instanceId = $"charity-data-refresh-instance-{_timeProvider.Today:yyyy-MM-dd}";
         //  var existingInstance = await orchestrationClient.GetStatusAsync(instanceId);
         // https://learn.microsoft.com/en-us/azure/azure-functions/durable/durable-functions-dotnet-isolated-overview#public-api-changes
@@ -43,7 +44,7 @@ public class CharityDataRefreshWorkflow
         // await orchestrationClient.StartNewAsync(nameof(CharityDataRefreshWorkflow), instanceId);
         await orchestrationClient.ScheduleNewOrchestrationInstanceAsync(nameof(CharityDataRefreshWorkflow), instanceId);
         // https://learn.microsoft.com/en-us/azure/azure-functions/durable/durable-functions-dotnet-isolated-overview#public-api-changes
-        log.LogInformation("Started charity data workflow. Orchestration id: {instanceId}", instanceId);
+        // MFCMFC taken out to check issues // log.LogInformation("Started charity data workflow. Orchestration id: {instanceId}", instanceId);
     }
 
     [Function(nameof(CharityDataRefreshWorkflow))]
