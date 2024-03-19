@@ -6,7 +6,7 @@ namespace SFA.DAS.Charities.Import.Extensions;
 
 public static class AddConfigurationExtension
 {
-    public static void AddConfiguration(this IConfigurationBuilder builder)
+    public static IConfiguration AddConfiguration(this IConfigurationBuilder builder)
     {
         //var configuration = BuildConfiguration(builder);
 
@@ -22,14 +22,12 @@ public static class AddConfigurationExtension
             })
             .Build();
 
-        // builder.Services.Replace(ServiceDescriptor.Singleton(typeof(IConfiguration), config));
+        //MFCMFC I think this needs putting in!
+        //builder.Services.Replace(ServiceDescriptor.Singleton(typeof(IConfiguration), config));
+        // MFCMFC
 
 
-        //AddNLog(builder);
-
-        //var connectionString = configuration["SqlDatabaseConnectionString"];
-        //var environment = configuration["EnvironmentName"];
-
+        return config;
     }
 
     // private static void AddNLog(IConfigurationBuilder builder)
