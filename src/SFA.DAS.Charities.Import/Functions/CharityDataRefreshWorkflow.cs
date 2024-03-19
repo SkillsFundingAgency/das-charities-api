@@ -21,7 +21,8 @@ public class CharityDataRefreshWorkflow
 
     [Function(nameof(RefreshCharityDataTimerTrigger))]
     public async Task RefreshCharityDataTimerTrigger(
-        [TimerTrigger("%CharitiesDataImportTimerInterval%")] TimerInfo myTimer,
+        //        [TimerTrigger("%CharitiesDataImportTimerInterval%")] TimerInfo myTimer,
+        [TimerTrigger("0 0 19 * * 1-5", RunOnStartup = true)] TimerInfo myTimer,
         [Microsoft.Azure.Functions.Worker.DurableClient] IDurableOrchestrationClient orchestrationClient,
         ILogger log)
     {
