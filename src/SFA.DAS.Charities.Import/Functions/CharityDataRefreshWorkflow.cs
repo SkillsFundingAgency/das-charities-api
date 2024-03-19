@@ -50,16 +50,16 @@ public class CharityDataRefreshWorkflow
     [Function(nameof(CharityDataRefreshWorkflow))]
     public async Task RefreshCharityDataOrchestrationTrigger(
         //[OrchestrationTrigger] IDurableOrchestrationContext context,
-        [OrchestrationTrigger] TaskOrchestrationContext context,
-        ILogger logger)
+        [OrchestrationTrigger] TaskOrchestrationContext context)
+    // ILogger logger)
     {
-        var log = context.CreateReplaySafeLogger<ILogger>();
-        log.LogInformation($"Starting refresh of charity data: {context.CurrentUtcDateTime:F}", context.InstanceId);
+        //var log = context.CreateReplaySafeLogger<ILogger>();
+        //log.LogInformation($"Starting refresh of charity data: {context.CurrentUtcDateTime:F}", context.InstanceId);
         await context.CallSubOrchestratorAsync<Task>(nameof(ImportCharityCommissionDataWorkflow), null);
-        log.LogDebug($"Finished download orchestration, now performing import to staging", context.InstanceId);
+        //log.LogDebug($"Finished download orchestration, now performing import to staging", context.InstanceId);
         await context.CallSubOrchestratorAsync<Task>(nameof(LoadCharityCommissionsDataInToStagingWorkflow), null);
-        log.LogDebug("Finished populating staging tables workflow", context.InstanceId);
+        //log.LogDebug("Finished populating staging tables workflow", context.InstanceId);
         await context.CallActivityAsync<Task>(nameof(LoadActiveDataFromStagingActivity), null);
-        log.LogInformation($"Finished refreshing charity data: {context.CurrentUtcDateTime:F}", context.InstanceId);
+        //log.LogInformation($"Finished refreshing charity data: {context.CurrentUtcDateTime:F}", context.InstanceId);
     }
 }
