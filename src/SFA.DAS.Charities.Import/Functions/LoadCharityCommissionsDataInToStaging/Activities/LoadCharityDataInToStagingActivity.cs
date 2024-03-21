@@ -1,5 +1,4 @@
-﻿using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.DurableTask;
+﻿using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using SFA.DAS.Charities.Data.Repositories;
 using SFA.DAS.Charities.Domain;
@@ -10,32 +9,33 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SFA.DAS.Charities.Import.Functions.LoadCharityCommissionsDataInToStaging.Activities
+namespace SFA.DAS.Charities.Import.Functions.LoadCharityCommissionsDataInToStaging.Activities;
+
+public class LoadCharityDataInToStagingActivity
 {
-    public class LoadCharityDataInToStagingActivity
+    private readonly ICharitiesImportRepository _charityImportRepository;
+
+    public LoadCharityDataInToStagingActivity(ICharitiesImportRepository charityImportRepository)
     {
-        private readonly ICharitiesImportRepository _charityImportRepository;
+        _charityImportRepository = charityImportRepository;
+    }
 
-        public LoadCharityDataInToStagingActivity(ICharitiesImportRepository charityImportRepository)
-        {
-            _charityImportRepository = charityImportRepository;
-        }
+    [Function(nameof(LoadCharityDataInToStagingActivity))]
+    public async Task Run(
+        [ActivityTrigger] string fileName,
+        [BlobInput("charity-files/{fileName}", Connection = "CharitiesStorageConnectionString")] Stream fileStream,
+        FunctionContext executionContext)
+    {
+        var logger = executionContext.GetLogger(nameof(LoadCharityDataInToStagingActivity));
 
-        [FunctionName(nameof(LoadCharityDataInToStagingActivity))]
-        public async Task Run(
-            [ActivityTrigger] string fileName,
-            [Blob("charity-files/{fileName}", FileAccess.Read, Connection = "CharitiesStorageConnectionString")] Stream fileStream,
-            ILogger logger)
-        {
-            using var performanceLogger = new PerformanceLogger($"Load charities in staging", logger);
+        using var performanceLogger = new PerformanceLogger($"Load charities in staging", logger);
 
-            var charityData = CharityCommissionDataHelper.ExtractData<CharityModel>(fileStream);
+        var charityData = CharityCommissionDataHelper.ExtractData<CharityModel>(fileStream);
 
-            var data = charityData.Select(x => (CharityStaging)x).ToList();
+        var data = charityData.Select(x => (CharityStaging)x).ToList();
 
-            await _charityImportRepository.BulkInsert(data);
+        await _charityImportRepository.BulkInsert(data);
 
-            logger.LogInformation("Total charities {charitiesCount}", charityData.Count);
-        }
+        logger.LogInformation("Total charities {charitiesCount}", charityData.Count);
     }
 }
