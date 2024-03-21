@@ -21,10 +21,11 @@ public class ImportCharityCommissionDataActivity
     [Function(nameof(ImportCharityCommissionDataActivity))]
     public async Task Run(
         [ActivityTrigger] string fileName,
-        //       [Blob("charity-files/{fileName}", FileAccess.Read, Connection = "CharitiesStorageConnectionString")] Stream fileStream,
         [BlobInput("charity-files/{fileName}", Connection = "CharitiesStorageConnectionString")] Stream file,
-        ILogger log)
+        FunctionContext executionContext)
     {
+        var log = executionContext.GetLogger(nameof(ImportCharityCommissionDataActivity));
+
         using var performanceLogger = new PerformanceLogger($"Download and save file {fileName}", log);
         var client = _httpClientFactory.CreateClient("CharityCommissions");
 

@@ -16,18 +16,15 @@ var host = new HostBuilder()
     .ConfigureAppConfiguration(
         builder =>
         {
-            var configuration = builder.AddConfiguration();
-            config.AddConfiguration(configuration);
-
-            /// how to inject this config into context.Configuration??
+            builder.AddConfiguration();
         })
     .ConfigureServices(
         (context, services) =>
         {
-            context.Configuration = config.Build();
+
             services
-                //.Replace(ServiceDescriptor.Singleton(typeof(IConfiguration), config.Build()))  //MFCMFC last thing added
-                .AddOptions()
+                 //.Replace(ServiceDescriptor.Singleton(typeof(IConfiguration), config.Build()))  //MFCMFC last thing added
+                 .AddOptions()
                 .AddCharityDataContext(context.Configuration)
                 .AddApplicationRegistrations()
                 .RegisterCharityCommissionsHttpClient(context.Configuration)

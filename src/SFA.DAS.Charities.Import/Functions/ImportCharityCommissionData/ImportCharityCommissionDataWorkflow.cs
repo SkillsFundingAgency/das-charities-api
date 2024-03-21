@@ -19,10 +19,10 @@ public class ImportCharityCommissionDataWorkflow
     }
 
     [Function(nameof(ImportCharityCommissionDataWorkflow))]
-    // public async Task ImportCharityCommissionData([Microsoft.Azure.Functions.Worker.OrchestrationTrigger] IDurableOrchestrationContext context, ILogger logger)
-    public async Task ImportCharityCommissionData([OrchestrationTrigger] TaskOrchestrationContext context, ILogger logger)
+    public async Task ImportCharityCommissionData([OrchestrationTrigger] TaskOrchestrationContext context, FunctionContext executionContext)
     {
-        logger = context.CreateReplaySafeLogger<ILogger>();
+
+        var logger = executionContext.GetLogger(nameof(ImportCharityCommissionDataWorkflow));
         logger.LogDebug($"Downloading charity data files");
 
         var tasks = filenames.Select(f => context.CallActivityAsync(nameof(ImportCharityCommissionDataActivity), f.Trim()));

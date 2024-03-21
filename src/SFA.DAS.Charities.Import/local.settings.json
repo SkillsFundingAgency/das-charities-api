@@ -8,6 +8,7 @@
     "EnvironmentName": "LOCAL",
     "LoggingRedisConnectionString": "",
     "APPINSIGHTS_INSTRUMENTATIONKEY": "",
-    "Files:CharityTrusteeFileName": "publicextract.charity_trustee.zip"
+    "Files:CharityTrusteeFileName": "publicextract.charity_trustee.zip",
+    "CharitiesDataImportTimerInterval": "0 0 19 * * 1-5"
   }
 }

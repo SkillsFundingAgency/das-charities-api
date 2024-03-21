@@ -1,6 +1,5 @@
 ﻿using Microsoft.Azure.Functions.Worker;
 using Microsoft.DurableTask;
-using Microsoft.Extensions.Logging;
 using SFA.DAS.Charities.Data.Repositories;
 using SFA.DAS.Charities.Domain;
 using System.Threading.Tasks;
@@ -17,12 +16,10 @@ public class ClearStagingDataActivity
     }
 
     [Function(nameof(ClearStagingDataActivity))]
-    // public async Task Run([Microsoft.Azure.Functions.Worker.ActivityTrigger] IDurableActivityContext context, ILogger logger)
-    public async Task Run([ActivityTrigger] TaskOrchestrationContext context, ILogger logger)
+    public async Task Run([ActivityTrigger] TaskOrchestrationContext context, FunctionContext executionContext)
     {
-        // Does this need?
-        //     var log = context.CreateReplaySafeLogger<ILogger>();
-        //     using var performanceLogger = new PerformanceLogger($"Load staging data to live", log);
+        var logger = executionContext.GetLogger(nameof(ClearStagingDataActivity));
+
         using var performanceLogger = new PerformanceLogger($"Clear staging data", logger);
         await _charityImportRepository.ClearStagingData();
     }
