@@ -18,6 +18,7 @@ namespace SFA.DAS.Charities.Api.UnitTests
     {
         private const int ValidRegistrationNumber = 1;
         private const int InvalidRegistrationNumber = 9;
+        private const int MaximumResults = 200;
         private const string FoundSearchTerm = "FoundSearchTerm";
         private const string MissingSearchTerm = "MissingSearchTerm";
         private Charity _charityByRegistrationNumberResponse;
@@ -37,8 +38,8 @@ namespace SFA.DAS.Charities.Api.UnitTests
             _repositoryMock.Setup(r => r.GetCharityById(ValidRegistrationNumber)).ReturnsAsync(_charityByRegistrationNumberResponse);
             _repositoryMock.Setup(r => r.GetCharityById(InvalidRegistrationNumber)).ReturnsAsync((Charity)null);
 
-            _repositoryMock.Setup(r => r.SearchCharities(FoundSearchTerm)).ReturnsAsync(_charityByTextResponse);
-            _repositoryMock.Setup(r => r.SearchCharities(MissingSearchTerm)).ReturnsAsync(new List<Charity>());
+            _repositoryMock.Setup(r => r.SearchCharities(FoundSearchTerm, MaximumResults)).ReturnsAsync(_charityByTextResponse);
+            _repositoryMock.Setup(r => r.SearchCharities(MissingSearchTerm, MaximumResults)).ReturnsAsync(new List<Charity>());
 
             _subject = new CharitiesController(_repositoryMock.Object, Mock.Of<ILogger<CharitiesController>>());
         }
@@ -56,7 +57,7 @@ namespace SFA.DAS.Charities.Api.UnitTests
         [TestCase(FoundSearchTerm, StatusCodes.Status200OK)]
         public async Task SearchCharities_OnRequest_ReturnsAppropriateResults(string searchTerm, int expectedStatusCode)
         {
-            var response = await _subject.SearchCharities(searchTerm) as ObjectResult;
+            var response = await _subject.SearchCharities(searchTerm, MaximumResults) as ObjectResult;
             response.StatusCode.Should().Be(expectedStatusCode);
 
             var model = response.Value as List<Charity>;
@@ -68,7 +69,7 @@ namespace SFA.DAS.Charities.Api.UnitTests
         [TestCase(MissingSearchTerm, StatusCodes.Status404NotFound)]
         public async Task SearchCharities_WhenNotFound_Returns_NotFound(string searchTerm, int expectedStatusCode)
         {
-            var response = await _subject.SearchCharities(searchTerm) as ObjectResult;
+            var response = await _subject.SearchCharities(searchTerm, MaximumResults) as ObjectResult;
             response.StatusCode.Should().Be(expectedStatusCode);
         }
 
@@ -76,7 +77,7 @@ namespace SFA.DAS.Charities.Api.UnitTests
         [TestCase(null, StatusCodes.Status400BadRequest)]
         public async Task SearchCharities_OnRequest_ReturnsBadRequest(string searchTerm, int expectedStatusCode)
         {
-            var response = await _subject.SearchCharities(searchTerm) as ObjectResult;
+            var response = await _subject.SearchCharities(searchTerm, MaximumResults) as ObjectResult;
             response.StatusCode.Should().Be(expectedStatusCode);
         }
     }

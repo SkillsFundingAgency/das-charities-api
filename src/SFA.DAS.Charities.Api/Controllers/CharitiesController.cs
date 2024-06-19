@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using SFA.DAS.Charities.Data.Repositories;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace SFA.DAS.Charities.Api.Controllers
 {
@@ -42,22 +43,24 @@ namespace SFA.DAS.Charities.Api.Controllers
 
         [HttpGet]
         [Route("search/{searchTerm}")]
-        public async Task<IActionResult> SearchCharities(string searchTerm)
+        public async Task<IActionResult> SearchCharities(string searchTerm, int maximumResults = 500)
         {
             if (string.IsNullOrEmpty(searchTerm))
             {
                 return new BadRequestObjectResult(new { Error = "SearchTerm is empty" });
             }
 
-            var charities = await _charityReadRepository.SearchCharities(searchTerm);
+            string decodedSearchTerm = HttpUtility.UrlDecode(searchTerm);
+
+            var charities = await _charityReadRepository.SearchCharities(decodedSearchTerm, maximumResults);
 
             if (charities == null || charities.Count == 0)
             {
-                _logger.LogInformation("Not Charities found with search term: {searchTerm}", searchTerm);
+                _logger.LogInformation("No Charities found with search term: {searchTerm}", decodedSearchTerm);
                 return NotFound("No charities found matching the search criteria.");
             }
 
-            _logger.LogInformation("Found {count} charities matching:search term {searchTerm}", charities.Count, searchTerm);
+            _logger.LogInformation("Found {count} charities matching:search term {searchTerm}", charities.Count, decodedSearchTerm);
             return new OkObjectResult(charities);
         }
     }

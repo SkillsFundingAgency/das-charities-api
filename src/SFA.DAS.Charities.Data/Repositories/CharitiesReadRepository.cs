@@ -21,7 +21,7 @@ namespace SFA.DAS.Charities.Data.Repositories
                 .SingleOrDefaultAsync(c => c.RegistrationNumber == registrationNumber && c.LinkedCharityId == 0);
         }
 
-        public async Task<List<Charity>> SearchCharities(string searchTerm)
+        public async Task<List<Charity>> SearchCharities(string searchTerm, int maximumResults = 500)
         {
             if (string.IsNullOrWhiteSpace(searchTerm))
             {
@@ -35,6 +35,7 @@ namespace SFA.DAS.Charities.Data.Repositories
                 .Where(c => c.RegistrationStatus == RegistrationStatus.Registered
                     && c.LinkedCharityId == 0
                     && c.Name.Contains(searchTerm))
+                .Take(maximumResults)
                     .ToListAsync();
         }
 
