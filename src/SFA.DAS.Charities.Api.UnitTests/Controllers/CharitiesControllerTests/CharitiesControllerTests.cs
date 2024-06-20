@@ -14,7 +14,7 @@ using SFA.DAS.Charities.Domain.Entities;
 
 namespace SFA.DAS.Charities.Api.UnitTests
 {
-    public class GetCharityDetailsTests
+    public class CharitiesControllerTests
     {
         private const int ValidRegistrationNumber = 1;
         private const int InvalidRegistrationNumber = 9;
