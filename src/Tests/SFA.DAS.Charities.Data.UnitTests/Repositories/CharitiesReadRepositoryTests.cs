@@ -39,8 +39,7 @@ namespace SFA.DAS.Charities.Data.UnitTests.Repositories
 
         [Test]
         public async Task GetCharityById_ShouldReturnCharity_WhenCharityExists()
-        {
-            // Arrange
+        {        
             var registrationNumber = 12345;
             var expectedCharity = _fixture.Build<Charity>()
                                           .With(c => c.RegistrationNumber, registrationNumber)
@@ -49,31 +48,22 @@ namespace SFA.DAS.Charities.Data.UnitTests.Repositories
 
             await _context.Charities.AddAsync(expectedCharity);
             await _context.SaveChangesAsync();
-
-            // Act
-            var result = await _sut.GetCharityById(registrationNumber);
-
-            // Assert
+         
+            var result = await _sut.GetCharityById(registrationNumber);        
             result.Should().BeEquivalentTo(expectedCharity);
         }
 
         [Test]
         public async Task GetCharityById_ShouldReturnNull_WhenCharityDoesNotExist()
-        {
-            // Arrange
-            var registrationNumber = 12345;
-
-            // Act
+        {          
+            var registrationNumber = 12345;  
             var result = await _sut.GetCharityById(registrationNumber);
-
-            // Assert
             result.Should().BeNull();
         }
 
         [Test]
         public async Task SearchCharities_ShouldReturnCharities_WhenSearchTermMatches()
-        {
-            // Arrange
+        {       
             var searchTerm = "charity";
             var expectedCharities = _fixture.Build<Charity>()
                                             .With(c => c.RegistrationStatus, RegistrationStatus.Registered)
@@ -84,36 +74,24 @@ namespace SFA.DAS.Charities.Data.UnitTests.Repositories
 
             await _context.Charities.AddRangeAsync(expectedCharities);
             await _context.SaveChangesAsync();
-
-            // Act
-            var result = await _sut.SearchCharities(searchTerm);
-
-            // Assert
+            
+            var result = await _sut.SearchCharities(searchTerm);           
             result.Should().BeEquivalentTo(expectedCharities);
         }
 
         [Test]
         public async Task SearchCharities_ShouldReturnEmptyList_WhenSearchTermIsWhitespace()
-        {
-            // Act
+        {            
             var result = await _sut.SearchCharities(" ");
-
-            // Assert
             result.Should().BeEmpty();
         }
 
         [Test]
         public async Task SearchCharities_ShouldReturnEmptyList_WhenNoCharitiesMatchSearchTerm()
-        {
-            // Arrange
-            var searchTerm = "nonexistent";
-
-            // Act
+        {            
+            var searchTerm = "nonexistent";   
             var result = await _sut.SearchCharities(searchTerm);
-
-            // Assert
             result.Should().BeEmpty();
         }
-
     }
 }
