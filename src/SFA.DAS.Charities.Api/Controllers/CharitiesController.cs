@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using SFA.DAS.Charities.Data.Repositories;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using SFA.DAS.Charities.Data.Repositories;
+using SFA.DAS.Charities.Domain.Entities;
 
 namespace SFA.DAS.Charities.Api.Controllers
 {
@@ -26,7 +28,7 @@ namespace SFA.DAS.Charities.Api.Controllers
         {
             if (registrationNumber <= 0)
             {
-                return new BadRequestObjectResult(new {Error = "RegistrationNumber is expected to have a positive non-zero value."});
+                return new BadRequestObjectResult(new { Error = "RegistrationNumber is expected to have a positive non-zero value." });
             }
 
             var charity = await _charityReadRepository.GetCharityById(registrationNumber);
@@ -47,7 +49,7 @@ namespace SFA.DAS.Charities.Api.Controllers
         {
             if (string.IsNullOrEmpty(searchTerm))
             {
-                return new BadRequestObjectResult(new { Error = "SearchTerm is empty" });
+                return new OkObjectResult(new List<Charity>());
             }
 
             string decodedSearchTerm = HttpUtility.UrlDecode(searchTerm);

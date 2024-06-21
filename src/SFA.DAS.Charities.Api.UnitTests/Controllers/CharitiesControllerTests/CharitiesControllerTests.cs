@@ -73,12 +73,16 @@ namespace SFA.DAS.Charities.Api.UnitTests
             response.StatusCode.Should().Be(expectedStatusCode);
         }
 
-        [TestCase("", StatusCodes.Status400BadRequest)]
-        [TestCase(null, StatusCodes.Status400BadRequest)]
-        public async Task SearchCharities_OnRequest_ReturnsBadRequest(string searchTerm, int expectedStatusCode)
+        [TestCase("", StatusCodes.Status200OK)]
+        [TestCase(null, StatusCodes.Status200OK)]
+        public async Task SearchCharities_OnRequest_Returns_EmptyList(string searchTerm, int expectedStatusCode)
         {
             var response = await _subject.SearchCharities(searchTerm, MaximumResults) as ObjectResult;
             response.StatusCode.Should().Be(expectedStatusCode);
+
+            var model = response.Value as List<Charity>;
+            model.Should().NotBeNull();
+            model.Should().BeEquivalentTo(new List<Charity>());
         }
     }
 }
