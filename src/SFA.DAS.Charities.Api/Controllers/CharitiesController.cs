@@ -45,7 +45,7 @@ namespace SFA.DAS.Charities.Api.Controllers
 
         [HttpGet]
         [Route("search/{searchTerm}")]
-        public async Task<IActionResult> SearchCharities(string searchTerm, int maximumResults = 500)
+        public async Task<IActionResult> SearchCharities(string searchTerm, [FromQuery] int maximumResults = 500)
         {
             if (string.IsNullOrEmpty(searchTerm))
             {
