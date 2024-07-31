@@ -2,7 +2,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 15.0.26124.0
-Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "SFA.DAS.Charities.Database", "SFA.DAS.Charities.Database\SFA.DAS.Charities.Database.sqlproj", "{CB774422-DDA1-4DE9-8406-E23A037A4379}"
+Project("{76E22BD3-C2EC-47F1-802B-53197756DAE8}") = "SFA.DAS.Charities.Database", "SFA.DAS.Charities.Database\SFA.DAS.Charities.Database.sqlproj", "{CB774422-DDA1-4DE9-8406-E23A037A4379}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.Charities.Data", "SFA.DAS.Charities.Data\SFA.DAS.Charities.Data.csproj", "{9B149034-FE8A-4104-9CCF-E8E4113D8608}"
 EndProject
@@ -18,7 +18,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.Charities.Import.Un
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.Charities.Api.UnitTests", "SFA.DAS.Charities.Api.UnitTests\SFA.DAS.Charities.Api.UnitTests.csproj", "{20008F4C-3930-4566-AC8D-F058B260F6D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.Charities.Api.AcceptanceTests", "SFA.DAS.Charities.Api.AcceptanceTests\SFA.DAS.Charities.Api.AcceptanceTests.csproj", "{E5C0B33B-0134-496D-AF50-2E23AB3ABF2C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SFA.DAS.Charities.Api.AcceptanceTests", "SFA.DAS.Charities.Api.AcceptanceTests\SFA.DAS.Charities.Api.AcceptanceTests.csproj", "{E5C0B33B-0134-496D-AF50-2E23AB3ABF2C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SFA.DAS.Charities.Data.UnitTests", "Tests\SFA.DAS.Charities.Data.UnitTests\SFA.DAS.Charities.Data.UnitTests.csproj", "{F5895F83-D0B1-46C7-8553-25495E956A36}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -132,6 +134,18 @@ Global
 		{E5C0B33B-0134-496D-AF50-2E23AB3ABF2C}.Release|x64.Build.0 = Release|Any CPU
 		{E5C0B33B-0134-496D-AF50-2E23AB3ABF2C}.Release|x86.ActiveCfg = Release|Any CPU
 		{E5C0B33B-0134-496D-AF50-2E23AB3ABF2C}.Release|x86.Build.0 = Release|Any CPU
+		{F5895F83-D0B1-46C7-8553-25495E956A36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5895F83-D0B1-46C7-8553-25495E956A36}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5895F83-D0B1-46C7-8553-25495E956A36}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F5895F83-D0B1-46C7-8553-25495E956A36}.Debug|x64.Build.0 = Debug|Any CPU
+		{F5895F83-D0B1-46C7-8553-25495E956A36}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F5895F83-D0B1-46C7-8553-25495E956A36}.Debug|x86.Build.0 = Debug|Any CPU
+		{F5895F83-D0B1-46C7-8553-25495E956A36}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5895F83-D0B1-46C7-8553-25495E956A36}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5895F83-D0B1-46C7-8553-25495E956A36}.Release|x64.ActiveCfg = Release|Any CPU
+		{F5895F83-D0B1-46C7-8553-25495E956A36}.Release|x64.Build.0 = Release|Any CPU
+		{F5895F83-D0B1-46C7-8553-25495E956A36}.Release|x86.ActiveCfg = Release|Any CPU
+		{F5895F83-D0B1-46C7-8553-25495E956A36}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -140,6 +154,7 @@ Global
 		{7DB1B8E2-AAAD-437D-BAB2-FCFDD11ED77E} = {85C56D6C-C5FE-452C-8C15-23776F4652D0}
 		{20008F4C-3930-4566-AC8D-F058B260F6D3} = {85C56D6C-C5FE-452C-8C15-23776F4652D0}
 		{E5C0B33B-0134-496D-AF50-2E23AB3ABF2C} = {85C56D6C-C5FE-452C-8C15-23776F4652D0}
+		{F5895F83-D0B1-46C7-8553-25495E956A36} = {85C56D6C-C5FE-452C-8C15-23776F4652D0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {95E2B9FE-B119-433A-A4DE-6E2D2D3CA522}
