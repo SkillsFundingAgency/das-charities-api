@@ -22,12 +22,12 @@ namespace SFA.DAS.Charities.Import.Functions.ImportCharityCommissionData
         public async Task ImportCharityCommissionData([OrchestrationTrigger] IDurableOrchestrationContext context, ILogger logger)
         {
             logger = context.CreateReplaySafeLogger(logger);
-            logger.LogDebug($"Downloading charity data files");
+            logger.LogInformation($"Downloading charity data files");
 
             var tasks = filenames.Select(f => context.CallActivityAsync(nameof(ImportCharityCommissionDataActivity), f.Trim()));
 
             await Task.WhenAll(tasks);
-            logger.LogDebug($"Finished Downloading charity data files");
+            logger.LogInformation($"Finished Downloading charity data files");
         }
     }
 }

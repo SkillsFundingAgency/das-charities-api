@@ -20,7 +20,11 @@ namespace SFA.DAS.Charities.Import.Functions.LoadCharityCommissionsDataInToStagi
         public async Task Run([ActivityTrigger] IDurableActivityContext context, ILogger logger)
         {
             using var performanceLogger = new PerformanceLogger($"Clear staging data", logger);
+            logger.LogInformation("Starting ClearStagingDataActivity");
+
             await _charityImportRepository.ClearStagingData();
+            logger.LogInformation("Finishing ClearStagingDataActivity");
+
         }
     }
 }

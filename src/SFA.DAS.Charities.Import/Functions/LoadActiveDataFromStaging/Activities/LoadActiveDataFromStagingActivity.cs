@@ -19,7 +19,9 @@ namespace SFA.DAS.Charities.Import.Functions.LoadActiveDataFromStaging.Activitie
         public async Task LoadActiveDataFromStaging([ActivityTrigger] IDurableActivityContext context, ILogger logger)
         {
             using var performanceLogger = new PerformanceLogger($"Load staging data to live", logger);
+            logger.LogInformation("Starting LoadActiveDataFromStagingActivity");
             await _charityImportRepository.LoadDataFromStagingInToLive();
+            logger.LogInformation("Finishing LoadActiveDataFromStagingActivity");
         }
 
     }

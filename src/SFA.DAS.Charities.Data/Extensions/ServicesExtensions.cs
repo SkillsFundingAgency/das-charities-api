@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using Microsoft.Data.SqlClient;
+using System.Data.SqlClient;
 using System.Threading.Tasks;
 
 namespace SFA.DAS.Charities.Data.Extensions
