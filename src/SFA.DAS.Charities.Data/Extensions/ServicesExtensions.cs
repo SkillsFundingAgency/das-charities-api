@@ -1,9 +1,9 @@
-﻿using Microsoft.Azure.Services.AppAuthentication;
+﻿using System;
+using System.Threading.Tasks;
+using Microsoft.Azure.Services.AppAuthentication;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Data.SqlClient;
-using System.Threading.Tasks;
 
 namespace SFA.DAS.Charities.Data.Extensions
 {
@@ -22,7 +22,7 @@ namespace SFA.DAS.Charities.Data.Extensions
                 }
 
                 options.UseSqlServer(
-                    connection, 
+                    connection,
                     options => options.CommandTimeout((int)TimeSpan.FromMinutes(5).TotalSeconds));
             });
             return services;
