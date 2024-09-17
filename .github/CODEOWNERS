@@ -5,4 +5,4 @@ azure-pipelines.yml     @SkillsFundingAgency/das-platform-engineering
 /pipeline-templates/    @SkillsFundingAgency/das-platform-engineering
 GitVersion.yml          @SkillsFundingAgency/das-platform-engineering
 
-* @DevenKShah @MarkFCain @abroodie @raviudari01 @ogrwill @cofaulco @johrs @pauljgraham
+* @DevenKShah @MarkFCain @abroodie @ogrwill @cofaulco @johrs @pauljgraham
