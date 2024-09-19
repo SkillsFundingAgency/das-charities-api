@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using EFCore.BulkExtensions;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,7 @@ namespace SFA.DAS.Charities.Data.Repositories
         public CharitiesImportRepository(CharitiesDataContext charitiesDataContext)
         {
             _charitiesDataContext = charitiesDataContext;
+            _charitiesDataContext.Database.SetCommandTimeout(TimeSpan.FromMinutes(5));
         }
 
         public async Task BulkInsert<T>(IList<T> data) where T : class
