@@ -1,36 +1,25 @@
-﻿using Newtonsoft.Json;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
-using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace SFA.DAS.Charities.Import.Infrastructure
 {
-    public static class CharityCommissionDataHelper 
-    {
-        public static List<T> ExtractData<T>(Stream zipFile)
-        {
-            using var archive = new ZipArchive(zipFile, ZipArchiveMode.Read);
-            var zipEntry = archive.Entries.FirstOrDefault();
-
-            var reader = new StreamReader(zipEntry.Open());
-            var json = reader.ReadToEnd();
-            var result = JsonConvert.DeserializeObject<List<T>>(json);
-
-            return result;
-        }
-
+    public static class CharityCommissionDataHelper
+    {      
         public static IEnumerable<T> ExtractDataStream<T>(Stream zipFile)
         {
             using var archive = new ZipArchive(zipFile, ZipArchiveMode.Read);
             var zipEntry = archive.Entries.FirstOrDefault();
-            var reader = new StreamReader(zipEntry.Open());
 
-            while (!reader.EndOfStream)
+            using var reader = new StreamReader(zipEntry.Open());
+            var json = reader.ReadToEnd();
+            var result = JsonConvert.DeserializeObject<List<T>>(json);
+
+            foreach (var item in result)
             {
-                var line = reader.ReadLine();
-                yield return JsonConvert.DeserializeObject<T>(line);
+                yield return item;
             }
         }
 
@@ -42,10 +31,8 @@ namespace SFA.DAS.Charities.Import.Infrastructure
                 contentStream.Position = 0;
             }
 
-            using (var archive = new ZipArchive(contentStream, ZipArchiveMode.Read, leaveOpen: true))
-            {
-                return archive.Entries.Count;
-            }
+            using var archive = new ZipArchive(contentStream, ZipArchiveMode.Read, leaveOpen: true);
+            return archive.Entries.Count;
         }
 
     }

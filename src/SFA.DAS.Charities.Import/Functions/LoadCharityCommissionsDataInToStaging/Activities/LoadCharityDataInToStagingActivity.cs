@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.DurableTask;
@@ -52,7 +51,7 @@ namespace SFA.DAS.Charities.Import.Functions.LoadCharityCommissionsDataInToStagi
                 await _charityImportRepository.BulkInsert(batch);
             }
 
-            logger.LogInformation("Total charities {charitiesCount}", charityData.Count());
+            logger.LogInformation("Finished Loading Charities into Staging");
         }
     }
 }
