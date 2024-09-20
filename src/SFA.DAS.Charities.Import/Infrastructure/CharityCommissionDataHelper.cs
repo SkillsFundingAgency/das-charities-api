@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace SFA.DAS.Charities.Import.Infrastructure
 {
@@ -20,11 +21,32 @@ namespace SFA.DAS.Charities.Import.Infrastructure
             return result;
         }
 
-        public static int GetZipFileEntriesCount(byte[] content)
+        public static IEnumerable<T> ExtractDataStream<T>(Stream zipFile)
         {
-            using (var memoryStream = new MemoryStream(content))
-            using (var archive = new ZipArchive(memoryStream, ZipArchiveMode.Read))
-            return archive.Entries.Count;
+            using var archive = new ZipArchive(zipFile, ZipArchiveMode.Read);
+            var zipEntry = archive.Entries.FirstOrDefault();
+            var reader = new StreamReader(zipEntry.Open());
+
+            while (!reader.EndOfStream)
+            {
+                var line = reader.ReadLine();
+                yield return JsonConvert.DeserializeObject<T>(line);
+            }
         }
+
+        public static int GetZipFileEntriesCount(Stream contentStream)
+        {
+            // Ensure the stream position is at the beginning before processing
+            if (contentStream.CanSeek)
+            {
+                contentStream.Position = 0;
+            }
+
+            using (var archive = new ZipArchive(contentStream, ZipArchiveMode.Read, leaveOpen: true))
+            {
+                return archive.Entries.Count;
+            }
+        }
+
     }
 }

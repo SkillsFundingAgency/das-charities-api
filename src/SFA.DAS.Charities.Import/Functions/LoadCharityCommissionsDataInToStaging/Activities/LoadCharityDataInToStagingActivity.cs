@@ -1,4 +1,8 @@
-﻿using Microsoft.Azure.WebJobs;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.DurableTask;
 using Microsoft.Extensions.Logging;
 using SFA.DAS.Charities.Data.Repositories;
@@ -6,9 +10,6 @@ using SFA.DAS.Charities.Domain;
 using SFA.DAS.Charities.Domain.Entities;
 using SFA.DAS.Charities.Import.Functions.LoadCharityCommissionsDataInToStaging.CharityCommissionModels;
 using SFA.DAS.Charities.Import.Infrastructure;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace SFA.DAS.Charities.Import.Functions.LoadCharityCommissionsDataInToStaging.Activities
 {
@@ -29,13 +30,29 @@ namespace SFA.DAS.Charities.Import.Functions.LoadCharityCommissionsDataInToStagi
         {
             using var performanceLogger = new PerformanceLogger($"Load charities in staging", logger);
 
-            var charityData = CharityCommissionDataHelper.ExtractData<CharityModel>(fileStream);
+            var charityData = CharityCommissionDataHelper.ExtractDataStream<CharityModel>(fileStream);
 
-            var data = charityData.Select(x => (CharityStaging)x).ToList();
+            var batchSize = 1000;
+            var batch = new List<CharityStaging>();
 
-            await _charityImportRepository.BulkInsert(data);
+            foreach (var charity in charityData)
+            {
+                batch.Add((CharityStaging)charity);
 
-            logger.LogInformation("Total charities {charitiesCount}", charityData.Count);
+                if (batch.Count >= batchSize)
+                {
+                    await _charityImportRepository.BulkInsert(batch);
+                    batch.Clear();
+                }
+            }
+
+            // Insert any remaining records
+            if (batch.Count > 0)
+            {
+                await _charityImportRepository.BulkInsert(batch);
+            }
+
+            logger.LogInformation("Total charities {charitiesCount}", charityData.Count());
         }
     }
 }
