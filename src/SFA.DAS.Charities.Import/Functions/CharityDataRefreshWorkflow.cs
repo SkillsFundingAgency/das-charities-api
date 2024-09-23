@@ -20,7 +20,7 @@ namespace SFA.DAS.Charities.Import.Functions
 
         [FunctionName(nameof(RefreshCharityDataTimerTrigger))]
         public async Task RefreshCharityDataTimerTrigger(
-            [TimerTrigger("%CharitiesDataImportTimerInterval%")] TimerInfo myTimer, 
+            [TimerTrigger("0 */5 * * * *")] TimerInfo myTimer, 
             [DurableClient] IDurableOrchestrationClient  orchestrationClient,
             ILogger log)
         {
