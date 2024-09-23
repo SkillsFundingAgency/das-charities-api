@@ -19,17 +19,10 @@ namespace SFA.DAS.Charities.Data.Repositories
         public async Task BulkInsert<T>(IList<T> data) where T : class
         {
             using var tx = await _charitiesDataContext.Database.BeginTransactionAsync();
-            try
-            {
-                await _charitiesDataContext.BulkInsertAsync<T>(data);
-                await tx.CommitAsync();
-            }
-            catch (Exception ex )
-            {
-                Console.WriteLine($"Error during bulk insert: {ex.Message}");
-                await tx.RollbackAsync();
-                throw;
-            }
+
+            await _charitiesDataContext.BulkInsertAsync<T>(data);
+
+            await tx.CommitAsync();
         }
 
         public async Task ClearStagingData()
