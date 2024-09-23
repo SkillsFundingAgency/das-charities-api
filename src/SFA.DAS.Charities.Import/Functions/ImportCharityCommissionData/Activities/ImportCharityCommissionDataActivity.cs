@@ -13,10 +13,12 @@ namespace SFA.DAS.Charities.Import.Functions.ImportCharityCommissionData.Activit
     public class ImportCharityCommissionDataActivity
     {
         private readonly IHttpClientFactory _httpClientFactory;
+        private readonly ICharityCommissionDataHelper _dataHelper;
 
-        public ImportCharityCommissionDataActivity(IHttpClientFactory factory)
+        public ImportCharityCommissionDataActivity(IHttpClientFactory factory , ICharityCommissionDataHelper dataHelper)
         {
             _httpClientFactory = factory;
+            _dataHelper = dataHelper;
         }
 
         [FunctionName(nameof(ImportCharityCommissionDataActivity))]
@@ -57,7 +59,7 @@ namespace SFA.DAS.Charities.Import.Functions.ImportCharityCommissionData.Activit
 
         private void ValidateDownloadedFile(MemoryStream stream, ILogger logger, string fileName)
         {
-            var entriesCount = CharityCommissionDataHelper.GetZipFileEntriesCount(stream);
+            var entriesCount = _dataHelper.GetZipFileEntriesCount(stream);
             if (entriesCount == 0)
                 throw new InvalidOperationException(
                     $"Unsupported charity data zip file for {fileName}. File contained no files.");
@@ -71,5 +73,4 @@ namespace SFA.DAS.Charities.Import.Functions.ImportCharityCommissionData.Activit
             stream.Position = 0;
         }
     }
-
 }

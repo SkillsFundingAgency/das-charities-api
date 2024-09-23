@@ -1,11 +1,11 @@
-﻿using Newtonsoft.Json;
-using NUnit.Framework;
-using SFA.DAS.Charities.Import.Infrastructure;
+﻿using System;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using FluentAssertions;
-using System;
+using Newtonsoft.Json;
+using NUnit.Framework;
+using SFA.DAS.Charities.Import.Infrastructure;
 
 namespace SFA.DAS.Charities.Import.UnitTests.Infrastructure
 {
@@ -15,8 +15,9 @@ namespace SFA.DAS.Charities.Import.UnitTests.Infrastructure
         [Test]
         public void ExtractDataStream_ValidDataFile_ReturnsData()
         {
+            var sut = new CharityCommissionDataHelper();
             var jsonData = @"[{'name':'Pumbaa','type':'Warthog'},{'name':'Timon','type':'Meerkat'}]";
-            var charityData = CharityCommissionDataHelper.ExtractDataStream<Character>(GetZipFile(jsonData)).ToList();
+            var charityData = sut.ExtractDataStream<Character>(GetZipFile(jsonData)).ToList();
 
             charityData.Should().NotBeNull();
             charityData.Count().Should().Be(2);
@@ -26,10 +27,12 @@ namespace SFA.DAS.Charities.Import.UnitTests.Infrastructure
         public void ExtractDataStream_InvalidDataFile_ThrowsException()
         {
             // Arrange
+            var sut = new CharityCommissionDataHelper();
+
             var stream = GetZipFile("bad json data");
 
             // Act & Assert
-            Action action = () => CharityCommissionDataHelper.ExtractDataStream<Character>(stream).ToList();
+            Action action = () => sut.ExtractDataStream<Character>(stream).ToList();
 
             action.Should().Throw<JsonReaderException>();
         }

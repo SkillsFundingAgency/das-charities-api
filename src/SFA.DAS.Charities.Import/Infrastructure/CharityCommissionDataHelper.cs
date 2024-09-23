@@ -6,9 +6,9 @@ using Newtonsoft.Json;
 
 namespace SFA.DAS.Charities.Import.Infrastructure
 {
-    public static class CharityCommissionDataHelper
+    public class CharityCommissionDataHelper : ICharityCommissionDataHelper
     {      
-        public static IEnumerable<T> ExtractDataStream<T>(Stream zipFile)
+        public IEnumerable<T> ExtractDataStream<T>(Stream zipFile)
         {
             using var archive = new ZipArchive(zipFile, ZipArchiveMode.Read);
             var zipEntry = archive.Entries.FirstOrDefault();
@@ -23,7 +23,7 @@ namespace SFA.DAS.Charities.Import.Infrastructure
             }
         }
 
-        public static int GetZipFileEntriesCount(Stream contentStream)
+        public int GetZipFileEntriesCount(Stream contentStream)
         {
             // Ensure the stream position is at the beginning before processing
             if (contentStream.CanSeek)
@@ -35,5 +35,11 @@ namespace SFA.DAS.Charities.Import.Infrastructure
             return archive.Entries.Count;
         }
 
+    }
+
+    public interface ICharityCommissionDataHelper
+    {
+        int GetZipFileEntriesCount(Stream contentStream);
+        IEnumerable<T> ExtractDataStream<T>(Stream zipFile);
     }
 }

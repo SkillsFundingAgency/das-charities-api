@@ -15,10 +15,12 @@ namespace SFA.DAS.Charities.Import.Functions.LoadCharityCommissionsDataInToStagi
     public class LoadCharityDataInToStagingActivity
     {
         private readonly ICharitiesImportRepository _charityImportRepository;
+        private readonly ICharityCommissionDataHelper _dataHelper;
 
-        public LoadCharityDataInToStagingActivity(ICharitiesImportRepository charityImportRepository)
+        public LoadCharityDataInToStagingActivity(ICharitiesImportRepository charityImportRepository, ICharityCommissionDataHelper dataHelper)
         {
             _charityImportRepository = charityImportRepository;
+            _dataHelper = dataHelper;
         }
 
         [FunctionName(nameof(LoadCharityDataInToStagingActivity))]
@@ -29,7 +31,7 @@ namespace SFA.DAS.Charities.Import.Functions.LoadCharityCommissionsDataInToStagi
         {
             using var performanceLogger = new PerformanceLogger($"Load charities in staging", logger);
 
-            var charityData = CharityCommissionDataHelper.ExtractDataStream<CharityModel>(fileStream);
+            var charityData = _dataHelper.ExtractDataStream<CharityModel>(fileStream);
 
             var batchSize = 1000;
             var batch = new List<CharityStaging>();
