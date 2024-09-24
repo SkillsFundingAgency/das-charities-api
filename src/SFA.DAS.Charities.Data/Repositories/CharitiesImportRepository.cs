@@ -20,7 +20,10 @@ namespace SFA.DAS.Charities.Data.Repositories
         {
             using var tx = await _charitiesDataContext.Database.BeginTransactionAsync();
 
-            await _charitiesDataContext.BulkInsertAsync<T>(data);
+            await _charitiesDataContext.BulkInsertAsync(data, options =>
+            {
+                options.BatchSize = 10000;
+            });
 
             await tx.CommitAsync();
         }
