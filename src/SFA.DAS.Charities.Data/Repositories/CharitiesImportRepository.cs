@@ -22,7 +22,7 @@ namespace SFA.DAS.Charities.Data.Repositories
 
             await _charitiesDataContext.BulkInsertAsync(data, options =>
             {
-                options.BatchSize = 10000;
+                options.BatchSize = 1000;
             });
 
             await tx.CommitAsync();
