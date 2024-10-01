@@ -34,6 +34,7 @@ namespace SFA.DAS.Charities.Import.Functions
 
             builder.Services.AddTransient<IDateTimeProvider, DateTimeProvider>();
             builder.Services.AddTransient<ICharitiesImportRepository, CharitiesImportRepository>();
+            builder.Services.AddTransient<ICharityCommissionDataHelper, CharityCommissionDataHelper>();
         }
 
         private static void AddNLog(IFunctionsHostBuilder builder)
