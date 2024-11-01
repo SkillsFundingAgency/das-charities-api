@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
@@ -115,21 +114,6 @@ namespace SFA.DAS.Charities.Api
             });
 
             app.UseHttpsRedirection();
-
-            app.Use(async (context, next) =>
-            {
-                context.Response.OnStarting(() =>
-                {
-                    if (context.Response.Headers.ContainsKey("X-Powered-By"))
-                    {
-                        context.Response.Headers.Remove("X-Powered-By");
-                    }
-
-                    return Task.CompletedTask;
-                });
-
-                await next();
-            });
 
             app.UseRouting();
 
