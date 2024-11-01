@@ -16,7 +16,8 @@ namespace SFA.DAS.Charities.Api
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
+                    webBuilder.ConfigureKestrel(c => c.AddServerHeader = false)
+                    .UseStartup<Startup>();
                     webBuilder.UseNLog();
                 });
     }
