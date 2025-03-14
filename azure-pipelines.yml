@@ -145,6 +145,7 @@ stages:
   variables:
   - group: DevTest Management Resources
   - group: DEMO DevTest Shared Resources
+  - group: DEMO das-charities-api
   jobs:
   - template: pipeline-templates/job/deploy.yml
     parameters:
