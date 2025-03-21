@@ -60,7 +60,6 @@ jobs:
             Environment: ${{ parameters.Environment }}
             ServerName: $(SharedSQLServerFQDN)
             SqlUsername: $(SharedSQLServerUsername)
-            SqlPassword: $(SharedSQLServerPassword)
             DatabaseName: $(DatabaseName)
             OverrideBlockOnPossibleDataLoss: ${{ parameters.OverrideBlockOnPossibleDataLoss }}
         - template: azure-pipelines-templates/deploy/step/app-deploy.yml@das-platform-building-blocks
