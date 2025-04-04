@@ -1,9 +1,9 @@
-﻿using Microsoft.Azure.Functions.Extensions.DependencyInjection;
+﻿using System;
+using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
-using NLog.Extensions.Logging;
 using Polly;
 using Polly.Extensions.Http;
 using SFA.DAS.Charities.Data.Extensions;
@@ -11,7 +11,6 @@ using SFA.DAS.Charities.Data.Repositories;
 using SFA.DAS.Charities.Import.Functions;
 using SFA.DAS.Charities.Import.Infrastructure;
 using SFA.DAS.Configuration.AzureTableStorage;
-using System;
 
 [assembly: FunctionsStartup(typeof(Startup))]
 
@@ -23,13 +22,11 @@ namespace SFA.DAS.Charities.Import.Functions
         {
             var configuration = BuildConfiguration(builder);
 
-            AddNLog(builder);
-
             var connectionString = configuration["SqlDatabaseConnectionString"];
             var environment = configuration["EnvironmentName"];
 
             builder.Services.AddCharityDataContext(connectionString, environment);
-            
+
             RegisterCharityCommissionsHttpClient(builder, configuration);
 
             builder.Services.AddTransient<IDateTimeProvider, DateTimeProvider>();
@@ -37,31 +34,12 @@ namespace SFA.DAS.Charities.Import.Functions
             builder.Services.AddTransient<ICharityCommissionDataHelper, CharityCommissionDataHelper>();
         }
 
-        private static void AddNLog(IFunctionsHostBuilder builder)
-        {
-            var nLogConfiguration = new NLogConfiguration();
-
-            builder.Services.AddLogging((options) =>
-            {
-                options.AddFilter(typeof(Startup).Namespace, LogLevel.Information);
-                options.SetMinimumLevel(LogLevel.Trace);
-                options.AddNLog(new NLogProviderOptions
-                {
-                    CaptureMessageTemplates = true,
-                    CaptureMessageProperties = true
-                });
-                options.AddConsole();
-
-                nLogConfiguration.ConfigureNLog();
-            });
-        }
-
         private static IConfiguration BuildConfiguration(IFunctionsHostBuilder builder)
         {
             var configuration = builder.GetContext().Configuration;
             var config = new ConfigurationBuilder()
                 .AddConfiguration(configuration)
-                .AddAzureTableStorage(options => 
+                .AddAzureTableStorage(options =>
                 {
                     options.ConfigurationKeys = new[] { "SFA.DAS.Charities.Import.Functions" };
                     options.StorageConnectionString = configuration["ConfigurationStorageConnectionString"];
