@@ -97,7 +97,20 @@
         "utcValue": {
             "type": "string",
             "defaultValue": "[utcNow('yyMMddHHmmss')]"
-        }        
+        },
+        "EnableRouteTableAssociation": {
+            "type": "bool",
+            "defaultValue": false,
+            "metadata": {
+                "description": "Determines whether to enable route table association on subnet"
+            }
+        },
+        "SharedRouteTableName": {
+            "type": "string",
+            "metadata": {
+                "description": "Determines whether to enable route table association on subnet"
+            }
+        }
     },
     "variables": {
         "deploymentUrlBase": "https://raw.githubusercontent.com/SkillsFundingAgency/das-platform-building-blocks/master/templates/",
@@ -106,7 +119,11 @@
         "functionAppName": "[concat(variables('resourceNamePrefix'), 'wkr-fa')]",
         "apiAppServiceName": "[concat(variables('resourceNamePrefix'), 'api-as')]",
         "appServicePlanName": "[concat(variables('resourceNamePrefix'), 'wkr-asp')]",
-        "databaseName": "[concat(variables('resourceNamePrefix'), '-db')]"
+        "databaseName": "[concat(variables('resourceNamePrefix'), '-db')]",
+        "routeTableId": {
+            "id": "[resourceId(subscription().subscriptionId, parameters('sharedEnvResourceGroup'), 'Microsoft.Network/routeTables', parameters('SharedRouteTableName'))]"
+        },
+        "emptyObject": {}
     },
     "resources": [
         {
@@ -143,6 +160,9 @@
                     },
                     "delegations": {
                         "value": "[parameters('subnetDelegations')]"
+                    },
+                    "routeTable": {
+                        "value": "[if(parameters('enableRouteTableAssociation'), variables('routeTableId') , variables('emptyObject'))]"
                     }
                 }
             },
