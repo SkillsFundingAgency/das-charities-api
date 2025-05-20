@@ -4,7 +4,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.ApplicationInsights;
 using Polly;
 using Polly.Extensions.Http;
 using SFA.DAS.Charities.Data.Extensions;
@@ -23,8 +22,6 @@ namespace SFA.DAS.Charities.Import.Functions
         {
             var configuration = BuildConfiguration(builder);
 
-            AddNLog(builder);
-
             var connectionString = configuration["SqlDatabaseConnectionString"];
             var environment = configuration["EnvironmentName"];
 
@@ -36,19 +33,6 @@ namespace SFA.DAS.Charities.Import.Functions
             builder.Services.AddTransient<ICharitiesImportRepository, CharitiesImportRepository>();
             builder.Services.AddTransient<ICharityCommissionDataHelper, CharityCommissionDataHelper>();
         }
-
-        private static void AddNLog(IFunctionsHostBuilder builder)
-        {
-
-            builder.Services.AddLogging(builder =>
-            {
-                builder.AddFilter<ApplicationInsightsLoggerProvider>(string.Empty, LogLevel.Information);
-                builder.AddFilter<ApplicationInsightsLoggerProvider>("Microsoft", LogLevel.Information);
-            });
-
-            builder.Services.AddApplicationInsightsTelemetry();
-        }
-
         private static IConfiguration BuildConfiguration(IFunctionsHostBuilder builder)
         {
             var configuration = builder.GetContext().Configuration;
