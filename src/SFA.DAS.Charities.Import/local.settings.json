@@ -2,12 +2,12 @@
   "IsEncrypted": false,
   "Values": {
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
-    "FUNCTIONS_WORKER_RUNTIME": "dotnet",
-    "ConfigNames": "",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
+    "ConfigNames": "SF.DAS.Charities.Import.Functions",
     "ConfigurationStorageConnectionString": "UseDevelopmentStorage=true",
     "EnvironmentName": "LOCAL",
     "LoggingRedisConnectionString": "",
     "APPINSIGHTS_INSTRUMENTATIONKEY": "",
-    "Files:CharityTrusteeFileName": "publicextract.charity_trustee.zip"
+    "CharitiesDataImportTimerInterval": "* * * 1 * *"
   }
 }

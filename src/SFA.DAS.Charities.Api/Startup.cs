@@ -10,8 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.ApplicationInsights;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using SFA.DAS.Api.Common.AppStart;
 using SFA.DAS.Api.Common.Configuration;
 using SFA.DAS.Api.Common.Infrastructure;
@@ -20,81 +19,63 @@ using SFA.DAS.Charities.Data.Extensions;
 using SFA.DAS.Charities.Data.Repositories;
 using SFA.DAS.Configuration.AzureTableStorage;
 
-namespace SFA.DAS.Charities.Api
+namespace SFA.DAS.Charities.Api;
+
+public class Startup
 {
-    public class Startup
+    public const string EnvironmentAppSettingName = "Environment";
+    private readonly IConfigurationRoot _configuration;
+    private readonly string _initialEnvironment;
+    private bool _isRunningAcceptanceTests => _initialEnvironment.Equals("DEV", StringComparison.CurrentCultureIgnoreCase);
+    public Startup(IConfiguration configuration)
     {
-        private readonly IConfigurationRoot _configuration;
-        private readonly string _initialEnvironment;
-        private bool _isRunningAcceptanceTests => _initialEnvironment.Equals("DEV", StringComparison.CurrentCultureIgnoreCase);
-        public Startup(IConfiguration configuration)
+        var config = new ConfigurationBuilder()
+            .AddConfiguration(configuration);
+
+        _initialEnvironment = configuration[EnvironmentAppSettingName];
+
+        if (!_isRunningAcceptanceTests)
         {
-            var config = new ConfigurationBuilder()
-                .AddConfiguration(configuration);
-
-            _initialEnvironment = configuration["Environment"];
-
-            if (!_isRunningAcceptanceTests)
-            {
-                config.AddAzureTableStorage(options =>
-                    {
-                        options.ConfigurationKeys = configuration["ConfigNames"].Split(",");
-                        options.StorageConnectionString = configuration["ConfigurationStorageConnectionString"];
-                        options.EnvironmentName = configuration["Environment"];
-                        options.PreFixConfigurationKeys = false;
-                    });
-            }
-
-            _configuration = config.Build();
+            config.AddAzureTableStorage(options =>
+                {
+                    options.ConfigurationKeys = configuration["ConfigNames"].Split(",");
+                    options.StorageConnectionString = configuration["ConfigurationStorageConnectionString"];
+                    options.EnvironmentName = configuration[EnvironmentAppSettingName];
+                    options.PreFixConfigurationKeys = false;
+                });
         }
 
-        public void ConfigureServices(IServiceCollection services)
+        _configuration = config.Build();
+    }
+
+    public void ConfigureServices(IServiceCollection services)
+    {
+        if (!IsEnvironmentLocalOrDev)
         {
-            if (!IsEnvironmentLocalOrDev)
+            var azureAdConfiguration = _configuration
+                .GetSection("AzureAd")
+                .Get<AzureActiveDirectoryConfiguration>();
+
+            var policies = new Dictionary<string, string>
             {
-                var azureAdConfiguration = _configuration
-                    .GetSection("AzureAd")
-                    .Get<AzureActiveDirectoryConfiguration>();
+                {PolicyNames.Default, "Default"}
+            };
 
-                var policies = new Dictionary<string, string>
-                {
-                    {PolicyNames.Default, "Default"}
-                };
+            services.AddAuthentication(azureAdConfiguration, policies);
+        }
 
-                services.AddAuthentication(azureAdConfiguration, policies);
-            }
+        services.AddApiVersioning(opt =>
+        {
+            opt.ApiVersionReader = new HeaderApiVersionReader("X-Version");
+            opt.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1, 0);
+        });
 
-            services.AddApiVersioning(opt =>
-            {
-                opt.ApiVersionReader = new HeaderApiVersionReader("X-Version");
-                opt.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1, 0);
-            });
-
-            if (!_isRunningAcceptanceTests)
-            {
-                services
-                .AddHealthChecks()
-                .AddDbContextCheck<CharitiesDataContext>();
-                services.AddCharityDataContext(_configuration["SqlDatabaseConnectionString"], _initialEnvironment);
-            }
-
-            services.AddTransient<ICharitiesReadRepository, CharitiesReadRepository>();
-
+        if (!_isRunningAcceptanceTests)
+        {
             services
-                .AddControllers(o =>
-                {
-                    if (!IsEnvironmentLocalOrDev) o.Conventions.Add(new AuthorizeControllerModelConvention(new List<string>()));
-                })
-                .AddJsonOptions(options =>
-                {
-                    options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-                });
-
-            services.AddLogging(builder =>
-            {
-                builder.AddFilter<ApplicationInsightsLoggerProvider>(string.Empty, LogLevel.Information);
-                builder.AddFilter<ApplicationInsightsLoggerProvider>("Microsoft", LogLevel.Information);
-            });
+            .AddHealthChecks()
+            .AddDbContextCheck<CharitiesDataContext>();
+            services.AddCharityDataContext(_configuration["SqlDatabaseConnectionString"], _initialEnvironment);
 
             services.AddApplicationInsightsTelemetry();
 
@@ -105,51 +86,68 @@ namespace SFA.DAS.Charities.Api
             });
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            if (env.IsDevelopment())
+        services.AddTransient<ICharitiesReadRepository, CharitiesReadRepository>();
+
+        services
+            .AddControllers(o =>
             {
-                app.UseDeveloperExceptionPage();
-            }
+                if (!IsEnvironmentLocalOrDev) o.Conventions.Add(new AuthorizeControllerModelConvention(new List<string>()));
+            })
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });
 
+        services.AddLogging();
+    }
+
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+        if (env.IsDevelopment())
+        {
+            app.UseDeveloperExceptionPage();
+        }
+
+
+        if (!_isRunningAcceptanceTests)
+        {
             app.UseAuthentication();
-
             app.UseSwagger();
             app.UseSwaggerUI(options =>
             {
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
                 options.RoutePrefix = string.Empty;
             });
+        }
 
-            app.UseHttpsRedirection();
+        app.UseHttpsRedirection();
 
-            app.UseRouting();
+        app.UseRouting();
 
-            if (!_isRunningAcceptanceTests)
+        if (!_isRunningAcceptanceTests)
+        {
+            app.UseHealthChecks("/health", new HealthCheckOptions
             {
-                app.UseHealthChecks("/health", new HealthCheckOptions
-                {
-                    ResponseWriter = HealthCheckResponseWriter.WriteJsonResponse
-                });
+                ResponseWriter = HealthCheckResponseWriter.WriteJsonResponse
+            });
 
-                app.UseHealthChecks("/ping", new HealthCheckOptions
-                {
-                    Predicate = (_) => false,
-                    ResponseWriter = (context, report) =>
-                    {
-                        context.Response.ContentType = "application/json";
-                        return context.Response.WriteAsync("");
-                    }
-                });
-            }
-
-            app.UseEndpoints(endpoints =>
+            app.UseHealthChecks("/ping", new HealthCheckOptions
             {
-                endpoints.MapControllers();
+                Predicate = (_) => false,
+                ResponseWriter = (context, report) =>
+                {
+                    context.Response.ContentType = "application/json";
+                    return context.Response.WriteAsync("");
+                }
             });
         }
-        private bool IsEnvironmentLocalOrDev
-            => _configuration["Environment"].Equals("LOCAL", StringComparison.CurrentCultureIgnoreCase)
-            || _configuration["Environment"].Equals("DEV", StringComparison.CurrentCultureIgnoreCase);
+
+        app.UseEndpoints(endpoints =>
+        {
+            endpoints.MapControllers();
+        });
     }
+    private bool IsEnvironmentLocalOrDev
+        => _configuration[EnvironmentAppSettingName].Equals("LOCAL", StringComparison.CurrentCultureIgnoreCase)
+        || _configuration[EnvironmentAppSettingName].Equals("DEV", StringComparison.CurrentCultureIgnoreCase);
 }

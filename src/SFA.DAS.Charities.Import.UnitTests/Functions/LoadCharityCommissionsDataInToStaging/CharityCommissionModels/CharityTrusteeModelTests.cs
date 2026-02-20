@@ -1,4 +1,5 @@
 ﻿using AutoFixture;
+using FluentAssertions;
 using NUnit.Framework;
 using SFA.DAS.Charities.Domain.Entities;
 using SFA.DAS.Charities.Import.Functions.LoadCharityCommissionsDataInToStaging.CharityCommissionModels;
@@ -20,13 +21,13 @@ namespace SFA.DAS.Charities.Import.UnitTests.Functions.LoadCharityCommissionsDat
 
             CharityTrusteeStaging outcome = subject;
 
-            Assert.AreEqual(subject.CharityId, outcome.CharityId);
-            Assert.AreEqual(subject.RegisteredCharityNumber, outcome.RegistrationNumber);
-            Assert.AreEqual(subject.TrusteeId, outcome.TrusteeId);
-            Assert.AreEqual(subject.TrusteeName, outcome.Name);
-            Assert.AreEqual(subject.IsChair, outcome.IsChair);
-            Assert.AreEqual(subject.AppointmentDate, outcome.AppointmentDate);
-            Assert.AreEqual(expectedTrusteeType, outcome.TrusteeType);
+            subject.CharityId.Should().Be(outcome.CharityId);
+            subject.RegisteredCharityNumber.Should().Be(outcome.RegistrationNumber);
+            subject.TrusteeId.Should().Be(outcome.TrusteeId);
+            subject.TrusteeName.Should().Be(outcome.Name);
+            subject.IsChair.Should().Be(outcome.IsChair);
+            subject.AppointmentDate.Should().Be(outcome.AppointmentDate);
+            expectedTrusteeType.Should().Be(outcome.TrusteeType);
         }
     }
 }

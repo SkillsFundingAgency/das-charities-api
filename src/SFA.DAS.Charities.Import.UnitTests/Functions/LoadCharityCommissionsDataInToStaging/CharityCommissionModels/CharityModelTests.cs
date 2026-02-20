@@ -1,4 +1,5 @@
 ﻿using AutoFixture;
+using FluentAssertions;
 using NUnit.Framework;
 using SFA.DAS.Charities.Domain.Entities;
 using SFA.DAS.Charities.Import.Functions.LoadCharityCommissionsDataInToStaging.CharityCommissionModels;
@@ -21,24 +22,24 @@ namespace SFA.DAS.Charities.Import.UnitTests.Functions.LoadCharityCommissionsDat
 
             CharityStaging outcome = model;
 
-            Assert.AreEqual(model.CharityId, outcome.Id);
-            Assert.AreEqual(model.Name, outcome.Name);
-            Assert.AreEqual(model.CompaniesHouseNumber, outcome.CompaniesHouseNumber);
-            Assert.AreEqual(model.RegisteredCharityNumber, outcome.RegistrationNumber);
-            Assert.AreEqual(model.LinkedCharityNumber, outcome.LinkedCharityId);
-            Assert.AreEqual(model.RegistrationDate, outcome.RegistrationDate);
-            Assert.AreEqual(model.AddressLine1, outcome.AddressLine1);
-            Assert.AreEqual(model.AddressLine2, outcome.AddressLine2);
-            Assert.AreEqual(model.AddressLine3, outcome.AddressLine3);
-            Assert.AreEqual(model.AddressLine4, outcome.AddressLine4);
-            Assert.AreEqual(model.AddressLine5, outcome.AddressLine5);
-            Assert.AreEqual(model.PostCode, outcome.Postcode);
-            Assert.AreEqual(model.IsInsolvent, outcome.IsInsolvent);
-            Assert.AreEqual(model.IsInAdministration, outcome.IsInAdministration);
-            Assert.AreEqual(model.WasPreviouslyExcepted, outcome.WasPreviouslyExcepted);
-            Assert.AreEqual(model.RemovalDate, outcome.RemovalDate);
-            Assert.AreEqual(model.RegistrationStatus, outcome.RegistrationStatus.ToString());
-            Assert.AreEqual(model.Type, outcome.Type.ToString());
+            model.CharityId.Should().Be(outcome.Id);
+            model.Name.Should().Be(outcome.Name);
+            model.CompaniesHouseNumber.Should().Be(outcome.CompaniesHouseNumber);
+            model.RegisteredCharityNumber.Should().Be(outcome.RegistrationNumber);
+            model.LinkedCharityNumber.Should().Be(outcome.LinkedCharityId);
+            model.RegistrationDate.Should().Be(outcome.RegistrationDate);
+            model.AddressLine1.Should().Be(outcome.AddressLine1);
+            model.AddressLine2.Should().Be(outcome.AddressLine2);
+            model.AddressLine3.Should().Be(outcome.AddressLine3);
+            model.AddressLine4.Should().Be(outcome.AddressLine4);
+            model.AddressLine5.Should().Be(outcome.AddressLine5);
+            model.PostCode.Should().Be(outcome.Postcode);
+            model.IsInsolvent.Should().Be(outcome.IsInsolvent);
+            model.IsInAdministration.Should().Be(outcome.IsInAdministration);
+            model.WasPreviouslyExcepted.Should().Be(outcome.WasPreviouslyExcepted);
+            model.RemovalDate.Should().Be(outcome.RemovalDate);
+            model.RegistrationStatus.Should().Be(outcome.RegistrationStatus.ToString());
+            model.Type.Should().Be(outcome.Type.ToString());
         }
 
         [Test]
@@ -53,7 +54,7 @@ namespace SFA.DAS.Charities.Import.UnitTests.Functions.LoadCharityCommissionsDat
                 .Create();
 
             CharityStaging outcome = model;
-            Assert.AreEqual(model.RegistrationStatus, outcome.RegistrationStatus.ToString());
+            model.RegistrationStatus.Should().Be(outcome.RegistrationStatus.ToString());
         }
 
         [Test]
@@ -68,7 +69,7 @@ namespace SFA.DAS.Charities.Import.UnitTests.Functions.LoadCharityCommissionsDat
                 .Create();
 
             CharityStaging outcome = model;
-            Assert.AreEqual(model.Type, outcome.Type.ToString());
+            model.Type.Should().Be(outcome.Type.ToString());
         }
     }
 }
