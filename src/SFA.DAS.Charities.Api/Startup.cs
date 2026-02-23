@@ -28,6 +28,10 @@ public class Startup
     private readonly IConfigurationRoot _configuration;
     private readonly string _initialEnvironment;
     private bool _isRunningAcceptanceTests => _initialEnvironment.Equals("DEV", StringComparison.CurrentCultureIgnoreCase);
+    private bool IsEnvironmentLocalOrDev =>
+        _initialEnvironment.Equals("LOCAL", StringComparison.CurrentCultureIgnoreCase) ||
+        _isRunningAcceptanceTests;
+
     public Startup(IConfiguration configuration)
     {
         var config = new ConfigurationBuilder().AddConfiguration(configuration);
@@ -68,7 +72,8 @@ public class Startup
                 .AddDbContextCheck<CharitiesDataContext>();
         }
 
-        services.AddCharityDataContext(_configuration["SqlDatabaseConnectionString"], _initialEnvironment);
+        if (!_isRunningAcceptanceTests)
+            services.AddCharityDataContext(_configuration["SqlDatabaseConnectionString"], _initialEnvironment);
 
         var connStr = _configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"];
         if (!string.IsNullOrWhiteSpace(connStr))
@@ -147,8 +152,4 @@ public class Startup
             endpoints.MapControllers();
         });
     }
-
-    private bool IsEnvironmentLocalOrDev
-        => _initialEnvironment.Equals("LOCAL", StringComparison.CurrentCultureIgnoreCase)
-        || _initialEnvironment.Equals("DEV", StringComparison.CurrentCultureIgnoreCase);
 }

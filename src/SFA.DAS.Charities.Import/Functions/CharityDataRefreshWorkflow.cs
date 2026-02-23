@@ -26,7 +26,7 @@ public class CharityDataRefreshWorkflow
 
     [Function(nameof(RefreshCharityDataTimerTrigger))]
     public async Task RefreshCharityDataTimerTrigger(
-        [TimerTrigger("%CharitiesDataImportTimerInterval%", RunOnStartup = true)] TimerInfo myTimer,
+        [TimerTrigger("%CharitiesDataImportTimerInterval%")] TimerInfo myTimer,
         [DurableClient] DurableTaskClient orchestrationClient)
     {
         _durableTaskClientWrapper.Client = orchestrationClient;
