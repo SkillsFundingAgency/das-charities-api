@@ -46,6 +46,16 @@ public class ImportCharityCommissionDataActivityTests
     }
 
     [Test]
+    public async Task Run_FileNameMissing_ThrowsArgumentException()
+    {
+        // Act
+        Func<Task> action = async () => await _sut.Run(null, _mockedFunctionContext);
+        // Assert
+        await action.Should().ThrowAsync<ArgumentException>()
+            .WithMessage("fileName is required (Parameter 'fileName')");
+    }
+
+    [Test]
     public async Task Run_ShouldDownloadAndSaveFileSuccessfully()
     {
         // Arrange

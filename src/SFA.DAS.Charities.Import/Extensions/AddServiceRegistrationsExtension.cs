@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Polly;
@@ -8,6 +9,8 @@ using SFA.DAS.Charities.Import.Infrastructure;
 using SFA.DAS.Charities.Import.Services;
 
 namespace SFA.DAS.Charities.Import.Extensions;
+
+[ExcludeFromCodeCoverage]
 
 public static class AddServiceRegistrationsExtension
 {

@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
@@ -5,6 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace SFA.DAS.Charities.Import.Functions;
 
+[ExcludeFromCodeCoverage]
 public class PingFunction
 {
     private readonly ILogger<PingFunction> _logger;

@@ -48,9 +48,9 @@ Configure the [SFA.DAS.Charities.Api](https://github.com/SkillsFundingAgency/das
 
 
 ## Technologies
-* .NetCore 3.1
+* .NetCore 10.0
 * AspDotNetCore MVC Web API
-* Azure Durable Functions V3
+* Azure Durable Functions V4
 * SQL Service
 * Azure Table Storage
 * Azure Blob Storage

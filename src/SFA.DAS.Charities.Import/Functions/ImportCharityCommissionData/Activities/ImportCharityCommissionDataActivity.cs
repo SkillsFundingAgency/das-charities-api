@@ -16,8 +16,8 @@ public class ImportCharityCommissionDataActivity
 
     public ImportCharityCommissionDataActivity(IHttpClientFactory factory, ICharityCommissionDataHelper dataHelper)
     {
-        _httpClientFactory = factory ?? throw new ArgumentNullException(nameof(factory));
-        _dataHelper = dataHelper ?? throw new ArgumentNullException(nameof(dataHelper));
+        _httpClientFactory = factory;
+        _dataHelper = dataHelper;
     }
 
     [Function(nameof(ImportCharityCommissionDataActivity))]
