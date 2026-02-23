@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using Asp.Versioning;
+using Azure.Monitor.OpenTelemetry.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
@@ -10,7 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi;
+using Microsoft.OpenApi.Models;
 using SFA.DAS.Api.Common.AppStart;
 using SFA.DAS.Api.Common.Configuration;
 using SFA.DAS.Api.Common.Infrastructure;
@@ -62,14 +63,16 @@ public class Startup
 
             services.AddAuthentication(azureAdConfiguration, policies);
 
-            services.AddCharityDataContext(_configuration["SqlDatabaseConnectionString"], _initialEnvironment);
-
             services
                 .AddHealthChecks()
                 .AddDbContextCheck<CharitiesDataContext>();
-
-            services.AddApplicationInsightsTelemetry();
         }
+
+        services.AddCharityDataContext(_configuration["SqlDatabaseConnectionString"], _initialEnvironment);
+
+        var connStr = _configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"];
+        if (!string.IsNullOrWhiteSpace(connStr))
+            services.AddOpenTelemetry().UseAzureMonitor(o => o.ConnectionString = connStr);
 
         services.AddApiVersioning(opt =>
         {
@@ -80,7 +83,6 @@ public class Startup
         services.AddSwaggerGen(options =>
         {
             options.SwaggerDoc("v1", new OpenApiInfo { Title = "CharitiesAPI", Version = "v1" });
-            options.OperationFilter<SwaggerVersionHeaderFilter>();
         });
 
         services.AddTransient<ICharitiesReadRepository, CharitiesReadRepository>();
@@ -122,7 +124,7 @@ public class Startup
 
         app.UseAuthorization();
 
-        if (!_isRunningAcceptanceTests)
+        if (!IsEnvironmentLocalOrDev)
         {
             app.UseHealthChecks("/health", new HealthCheckOptions
             {
