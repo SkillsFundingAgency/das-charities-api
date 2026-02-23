@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
+using Asp.Versioning;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -29,8 +29,7 @@ public class Startup
     private bool _isRunningAcceptanceTests => _initialEnvironment.Equals("DEV", StringComparison.CurrentCultureIgnoreCase);
     public Startup(IConfiguration configuration)
     {
-        var config = new ConfigurationBuilder()
-            .AddConfiguration(configuration);
+        var config = new ConfigurationBuilder().AddConfiguration(configuration);
 
         _initialEnvironment = configuration[EnvironmentAppSettingName];
 
@@ -62,41 +61,43 @@ public class Startup
             };
 
             services.AddAuthentication(azureAdConfiguration, policies);
+
+            services.AddCharityDataContext(_configuration["SqlDatabaseConnectionString"], _initialEnvironment);
+
+            services
+                .AddHealthChecks()
+                .AddDbContextCheck<CharitiesDataContext>();
+
+            services.AddApplicationInsightsTelemetry();
         }
 
         services.AddApiVersioning(opt =>
         {
             opt.ApiVersionReader = new HeaderApiVersionReader("X-Version");
-            opt.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1, 0);
+            opt.DefaultApiVersion = new ApiVersion(1, 0);
         });
 
-        if (!_isRunningAcceptanceTests)
+        services.AddSwaggerGen(options =>
         {
-            services
-            .AddHealthChecks()
-            .AddDbContextCheck<CharitiesDataContext>();
-            services.AddCharityDataContext(_configuration["SqlDatabaseConnectionString"], _initialEnvironment);
-
-            services.AddApplicationInsightsTelemetry();
-
-            services.AddSwaggerGen(options =>
-            {
-                options.SwaggerDoc("v1", new OpenApiInfo { Title = "CharitiesAPI", Version = "v1" });
-                options.OperationFilter<SwaggerVersionHeaderFilter>();
-            });
-        }
+            options.SwaggerDoc("v1", new OpenApiInfo { Title = "CharitiesAPI", Version = "v1" });
+            options.OperationFilter<SwaggerVersionHeaderFilter>();
+        });
 
         services.AddTransient<ICharitiesReadRepository, CharitiesReadRepository>();
 
         services
             .AddControllers(o =>
             {
-                if (!IsEnvironmentLocalOrDev) o.Conventions.Add(new AuthorizeControllerModelConvention(new List<string>()));
+                if (!IsEnvironmentLocalOrDev)
+                {
+                    o.Conventions.Add(new AuthorizeControllerModelConvention(new List<string>()));
+                }
             })
             .AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
             });
+
 
         services.AddLogging();
     }
@@ -108,21 +109,18 @@ public class Startup
             app.UseDeveloperExceptionPage();
         }
 
-
-        if (!_isRunningAcceptanceTests)
+        app.UseSwagger();
+        app.UseSwaggerUI(options =>
         {
-            app.UseAuthentication();
-            app.UseSwagger();
-            app.UseSwaggerUI(options =>
-            {
-                options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
-                options.RoutePrefix = string.Empty;
-            });
-        }
+            options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+            options.RoutePrefix = string.Empty;
+        });
 
         app.UseHttpsRedirection();
 
         app.UseRouting();
+
+        app.UseAuthorization();
 
         if (!_isRunningAcceptanceTests)
         {
@@ -147,7 +145,8 @@ public class Startup
             endpoints.MapControllers();
         });
     }
+
     private bool IsEnvironmentLocalOrDev
-        => _configuration[EnvironmentAppSettingName].Equals("LOCAL", StringComparison.CurrentCultureIgnoreCase)
-        || _configuration[EnvironmentAppSettingName].Equals("DEV", StringComparison.CurrentCultureIgnoreCase);
+        => _initialEnvironment.Equals("LOCAL", StringComparison.CurrentCultureIgnoreCase)
+        || _initialEnvironment.Equals("DEV", StringComparison.CurrentCultureIgnoreCase);
 }

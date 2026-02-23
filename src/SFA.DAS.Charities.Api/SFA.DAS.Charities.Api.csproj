@@ -5,16 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="web.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="3.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks" Version="10.0.3" />
     <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="10.0.3" />
+    <PackageReference Include="Reqnroll.NUnit" Version="3.3.3" />
     <PackageReference Include="SFA.DAS.Api.Common" Version="17.1.164" />
     <PackageReference Include="SFA.DAS.Configuration.AzureTableStorage" Version="17.1.138" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.3" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.4" />
   </ItemGroup>
 
   <ItemGroup>
