@@ -353,7 +353,7 @@
                                 },
                                 {
                                     "name": "CharitiesDataImportTimerInterval",
-                                    "value": "[parameters('charitiesDataImportTimerInterval')]"
+                                    "value": "[variables('charitiesDataImportTimerInterval')]"
                                 }
                             ]
                         }
