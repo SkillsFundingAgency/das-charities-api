@@ -15,10 +15,13 @@ host.ConfigureServices((context, services) =>
     {
         var connectionString = context.Configuration["SqlDatabaseConnectionString"];
         var environment = context.Configuration["EnvironmentName"];
-        services
-            .AddOpenTelemetry()
-            .UseAzureMonitor()
-            .UseFunctionsWorkerDefaults();
+        if (!context.HostingEnvironment.IsDevelopment())
+        {
+            services
+                .AddOpenTelemetry()
+                .UseAzureMonitor()
+                .UseFunctionsWorkerDefaults();
+        }
 
         services.AddCharityDataContext(connectionString, environment)
             .AddServiceRegistrations(context.Configuration);

@@ -39,10 +39,9 @@ In the `SFA.DAS.Charities.Import.Jobs` project, if not exist already, add local.
   "Values": {
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
-    "ConfigNames": "",
+    "ConfigNames": "SFA.DAS.Charities.Import.Functions",
     "ConfigurationStorageConnectionString": "UseDevelopmentStorage=true",
     "EnvironmentName": "LOCAL",
-    "LoggingRedisConnectionString": "",
     "APPLICATIONINSIGHTS_CONNECTION_STRING": "",
     "CharitiesDataImportTimerInterval": "0 0 19 * * 1-5"
   }
@@ -70,10 +69,9 @@ In the `SFA.DAS.Charities.Api` project, if not exist already, add local.settings
   "Values": {
     "AzureWebJobsStorage": "UseDevelopmentStorage=true",
     "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
-    "ConfigNames": "",
+    "ConfigNames": "SFA.DAS.Charities.Api",
     "ConfigurationStorageConnectionString": "UseDevelopmentStorage=true",
     "EnvironmentName": "LOCAL",
-    "LoggingRedisConnectionString": "",
     "APPLICATIONINSIGHTS_CONNECTION_STRING": "",
     "SqlConnectionString": "<SQL_CONNECTION_STRING>"
   }
