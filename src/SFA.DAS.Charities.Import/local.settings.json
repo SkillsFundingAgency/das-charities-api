@@ -7,7 +7,7 @@
     "ConfigurationStorageConnectionString": "UseDevelopmentStorage=true",
     "EnvironmentName": "LOCAL",
     "LoggingRedisConnectionString": "",
-    "APPINSIGHTS_INSTRUMENTATIONKEY": "",
+    "APPLICATIONINSIGHTS_CONNECTION_STRING": "",
     "CharitiesDataImportTimerInterval": "* * * 1 * *"
   }
 }

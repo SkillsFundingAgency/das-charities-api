@@ -1,5 +1,6 @@
 ﻿using System.Linq;
-using Microsoft.Azure.Functions.Worker;
+using Azure.Monitor.OpenTelemetry.AspNetCore;
+using Microsoft.Azure.Functions.Worker.OpenTelemetry;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -15,9 +16,11 @@ host.ConfigureServices((context, services) =>
         var connectionString = context.Configuration["SqlDatabaseConnectionString"];
         var environment = context.Configuration["EnvironmentName"];
         services
-            .AddApplicationInsightsTelemetryWorkerService()
-            .ConfigureFunctionsApplicationInsights()
-            .AddCharityDataContext(connectionString, environment)
+            .AddOpenTelemetry()
+            .UseAzureMonitor()
+            .UseFunctionsWorkerDefaults();
+
+        services.AddCharityDataContext(connectionString, environment)
             .AddServiceRegistrations(context.Configuration);
     })
     .ConfigureLogging(logging =>
