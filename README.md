@@ -32,6 +32,23 @@ The functions app uses the standard Apprenticeship Service configuration.
 
 Alternatively you could configure the [SFA.DAS.Charities.Import](https://github.com/SkillsFundingAgency/das-charities-api) project as per its config file in [das-employer-config](https://github.com/SkillsFundingAgency/das-employer-config/blob/master/das-charities-api/SFA.DAS.Charities.Import.Functions.json)
 
+In the `SFA.DAS.Charities.Import.Jobs` project, if not exist already, add local.settings.json file with following content:
+```
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
+    "ConfigNames": "",
+    "ConfigurationStorageConnectionString": "UseDevelopmentStorage=true",
+    "EnvironmentName": "LOCAL",
+    "LoggingRedisConnectionString": "",
+    "APPLICATIONINSIGHTS_CONNECTION_STRING": "",
+    "CharitiesDataImportTimerInterval": "0 0 19 * * 1-5"
+  }
+}
+```
+
 ### 🔗 External Dependencies
 The import functions uses the [Charities commissions website](https://ccewuksprdoneregsadata1.blob.core.windows.net/data/json/) to import data from. 
 
@@ -46,6 +63,22 @@ There is one endpoint that takes charity registration number as argument, querie
 ### Config
 Configure the [SFA.DAS.Charities.Api](https://github.com/SkillsFundingAgency/das-charities-api) project as per its config file in [das-employer-config](https://github.com/SkillsFundingAgency/das-employer-config/blob/master/das-charities-api/SFA.DAS.Charities.Api.json)
 
+In the `SFA.DAS.Charities.Api` project, if not exist already, add local.settings.json file with following content:
+```
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
+    "ConfigNames": "",
+    "ConfigurationStorageConnectionString": "UseDevelopmentStorage=true",
+    "EnvironmentName": "LOCAL",
+    "LoggingRedisConnectionString": "",
+    "APPLICATIONINSIGHTS_CONNECTION_STRING": "",
+    "SqlConnectionString": "<SQL_CONNECTION_STRING>"
+  }
+}
+```
 
 ## Technologies
 * .NetCore 10.0
