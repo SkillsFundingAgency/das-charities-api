@@ -16,7 +16,7 @@ public static class AddConfigurationExtension
             .AddConfiguration(configuration)
             .AddAzureTableStorage(options =>
             {
-                options.ConfigurationKeys = new[] { "SFA.DAS.Charities.Import.Functions" };
+                options.ConfigurationKeys = configuration["ConfigNames"]!.Split(",");
                 options.StorageConnectionString = configuration["ConfigurationStorageConnectionString"];
                 options.EnvironmentName = configuration["EnvironmentName"];
                 options.PreFixConfigurationKeys = false;
