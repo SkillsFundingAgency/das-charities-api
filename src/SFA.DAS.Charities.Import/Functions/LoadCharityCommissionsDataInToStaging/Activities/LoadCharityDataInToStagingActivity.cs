@@ -31,12 +31,10 @@ public class LoadCharityDataInToStagingActivity
         ILogger logger = context.GetLogger(nameof(LoadCharityDataInToStagingActivity));
         using var performanceLogger = new PerformanceLogger($"Load charities in staging", logger);
 
-        var charityData = _dataHelper.ExtractDataStream<CharityModel>(fileStream);
-
         var batchSize = 1000;
         var batch = new List<CharityStaging>();
 
-        foreach (var charity in charityData)
+        foreach (var charity in _dataHelper.ExtractDataStream<CharityModel>(fileStream))
         {
             batch.Add((CharityStaging)charity);
 

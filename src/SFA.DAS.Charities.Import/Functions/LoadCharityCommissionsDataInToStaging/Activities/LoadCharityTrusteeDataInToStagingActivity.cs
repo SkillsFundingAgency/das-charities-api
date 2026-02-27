@@ -31,12 +31,10 @@ public class LoadCharityTrusteeDataInToStagingActivity
         var logger = context.GetLogger(nameof(LoadCharityTrusteeDataInToStagingActivity));
         using var performanceLogger = new PerformanceLogger($"Load trustees in staging", logger);
 
-        var trusteeData = _dataHelper.ExtractDataStream<CharityTrusteeModel>(fileStream);
-
         var batchSize = 1000;
         var batch = new List<CharityTrusteeStaging>();
 
-        foreach (var trustee in trusteeData)
+        foreach (var trustee in _dataHelper.ExtractDataStream<CharityTrusteeModel>(fileStream))
         {
             batch.Add((CharityTrusteeStaging)trustee);
 
