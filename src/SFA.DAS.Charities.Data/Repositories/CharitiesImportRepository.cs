@@ -18,36 +18,53 @@ namespace SFA.DAS.Charities.Data.Repositories
 
         public async Task BulkInsert<T>(IList<T> data) where T : class
         {
-            using var tx = await _charitiesDataContext.Database.BeginTransactionAsync();
+            var strategy = _charitiesDataContext.Database.CreateExecutionStrategy();
 
-            await _charitiesDataContext.BulkInsertAsync(data, options =>
+            await strategy.ExecuteAsync(async () =>
             {
-                options.BatchSize = 1000;
-            });
+                using var tx = await _charitiesDataContext.Database.BeginTransactionAsync();
 
-            await tx.CommitAsync();
+                _charitiesDataContext.Database.CreateExecutionStrategy();
+
+                await _charitiesDataContext.BulkInsertAsync(data, options =>
+                {
+                    options.BatchSize = 1000;
+                });
+
+                await tx.CommitAsync();
+            });
         }
 
         public async Task ClearStagingData()
         {
-            using var tx = await _charitiesDataContext.Database.BeginTransactionAsync();
+            var strategy = _charitiesDataContext.Database.CreateExecutionStrategy();
 
-            await _charitiesDataContext.Database.ExecuteSqlInterpolatedAsync($"TRUNCATE TABLE CharityTrusteeStaging");
-            await _charitiesDataContext.Database.ExecuteSqlInterpolatedAsync($"TRUNCATE TABLE CharityStaging");
+            await strategy.ExecuteAsync(async () =>
+            {
+                using var tx = await _charitiesDataContext.Database.BeginTransactionAsync();
 
-            await tx.CommitAsync();
+                await _charitiesDataContext.Database.ExecuteSqlInterpolatedAsync($"TRUNCATE TABLE CharityTrusteeStaging");
+                await _charitiesDataContext.Database.ExecuteSqlInterpolatedAsync($"TRUNCATE TABLE CharityStaging");
+
+                await tx.CommitAsync();
+            });
         }
 
         public async Task LoadDataFromStagingInToLive()
         {
-            using var tx = await _charitiesDataContext.Database.BeginTransactionAsync();
+            var strategy = _charitiesDataContext.Database.CreateExecutionStrategy();
 
-            await _charitiesDataContext.Database.ExecuteSqlInterpolatedAsync($"TRUNCATE TABLE CharityTrustee");
-            await _charitiesDataContext.Database.ExecuteSqlInterpolatedAsync($"TRUNCATE TABLE Charity");
-            await _charitiesDataContext.Database.ExecuteSqlRawAsync("INSERT INTO Charity SELECT * FROM CharityStaging");
-            await _charitiesDataContext.Database.ExecuteSqlRawAsync("INSERT INTO CharityTrustee SELECT * FROM CharityTrusteeStaging");
+            await strategy.ExecuteAsync(async () =>
+            {
+                using var tx = await _charitiesDataContext.Database.BeginTransactionAsync();
 
-            await tx.CommitAsync();
+                await _charitiesDataContext.Database.ExecuteSqlInterpolatedAsync($"TRUNCATE TABLE CharityTrustee");
+                await _charitiesDataContext.Database.ExecuteSqlInterpolatedAsync($"TRUNCATE TABLE Charity");
+                await _charitiesDataContext.Database.ExecuteSqlRawAsync("INSERT INTO Charity SELECT * FROM CharityStaging");
+                await _charitiesDataContext.Database.ExecuteSqlRawAsync("INSERT INTO CharityTrustee SELECT * FROM CharityTrusteeStaging");
+
+                await tx.CommitAsync();
+            });
         }
     }
 }

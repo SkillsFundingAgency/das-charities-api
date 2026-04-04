@@ -1,54 +1,61 @@
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.DurableTask;
+using System.Threading.Tasks;
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.DurableTask;
+using Microsoft.DurableTask.Client;
 using Microsoft.Extensions.Logging;
 using SFA.DAS.Charities.Import.Functions.ImportCharityCommissionData;
-using SFA.DAS.Charities.Import.Infrastructure;
 using SFA.DAS.Charities.Import.Functions.LoadActiveDataFromStaging.Activities;
-using System.Threading.Tasks;
 using SFA.DAS.Charities.Import.Functions.LoadCharityCommissionsDataInToStaging;
+using SFA.DAS.Charities.Import.Infrastructure;
+using SFA.DAS.Charities.Import.Services;
 
-namespace SFA.DAS.Charities.Import.Functions
+namespace SFA.DAS.Charities.Import.Functions;
+
+public class CharityDataRefreshWorkflow
 {
-    public class CharityDataRefreshWorkflow
+    private readonly IDateTimeProvider _timeProvider;
+    private readonly ILogger<CharityDataRefreshWorkflow> _logger;
+    private readonly IDurableTaskClientWrapper _durableTaskClientWrapper;
+
+    public CharityDataRefreshWorkflow(IDateTimeProvider timeProvider, ILogger<CharityDataRefreshWorkflow> logger, IDurableTaskClientWrapper durableTaskClientWrapper)
     {
-        private readonly IDateTimeProvider _timeProvider;
+        _timeProvider = timeProvider;
+        _logger = logger;
+        _durableTaskClientWrapper = durableTaskClientWrapper;
+    }
 
-        public CharityDataRefreshWorkflow(IDateTimeProvider timeProvider)
+    [Function(nameof(RefreshCharityDataTimerTrigger))]
+    public async Task RefreshCharityDataTimerTrigger(
+        [TimerTrigger("%CharitiesDataImportTimerInterval%")] TimerInfo myTimer,
+        [DurableClient] DurableTaskClient orchestrationClient)
+    {
+        _durableTaskClientWrapper.Client = orchestrationClient;
+        var instanceId = $"charity-data-refresh-instance-{_timeProvider.Today:yyyy-MM-dd}";
+        OrchestrationMetadata existingInstance = await _durableTaskClientWrapper.GetInstanceAsync(instanceId);
+        if (existingInstance?.RuntimeStatus == OrchestrationRuntimeStatus.Running)
         {
-            _timeProvider = timeProvider;
+            _logger.LogWarning("An instance with ID {InstanceId} already exists.", instanceId);
+            return;
         }
 
-        [FunctionName(nameof(RefreshCharityDataTimerTrigger))]
-        public async Task RefreshCharityDataTimerTrigger(
-            [TimerTrigger("%CharitiesDataImportTimerInterval%")] TimerInfo myTimer,
-            [DurableClient] IDurableOrchestrationClient  orchestrationClient,
-            ILogger log)
-        {
-            var instanceId = $"charity-data-refresh-instance-{_timeProvider.Today:yyyy-MM-dd}";
-            var existingInstance = await orchestrationClient.GetStatusAsync(instanceId);
-            if (existingInstance?.RuntimeStatus == OrchestrationRuntimeStatus.Running)
-            {
-                log.LogError("An instance with ID {instanceId} already exists.", instanceId);
-                return;
-            }
+        await _durableTaskClientWrapper.ScheduleNewOrchestrationInstanceAsync(nameof(CharityDataRefreshWorkflow), instanceId);
 
-            await orchestrationClient.StartNewAsync(nameof(CharityDataRefreshWorkflow), instanceId);
-            log.LogInformation("Started charity data workflow. Orchestration id: {instanceId}", instanceId);
-        }
+        _logger.LogInformation("Started charity data workflow. Orchestration id: {InstanceId}", instanceId);
+    }
 
-        [FunctionName(nameof(CharityDataRefreshWorkflow))]
-        public async Task RefreshCharityDataOrchestrationTrigger(
-            [OrchestrationTrigger] IDurableOrchestrationContext context,
-            ILogger logger)
-        {
-            var log = context.CreateReplaySafeLogger(logger);
-            log.LogInformation($"Starting refresh of charity data: {context.CurrentUtcDateTime:F}", context.InstanceId);
-            await context.CallSubOrchestratorAsync<Task>(nameof(ImportCharityCommissionDataWorkflow), null);
-            log.LogInformation($"Finished download orchestration, now performing import to staging", context.InstanceId);
-            await context.CallSubOrchestratorAsync<Task>(nameof(LoadCharityCommissionsDataInToStagingWorkflow), null);
-            log.LogInformation("Finished populating staging tables workflow", context.InstanceId);
-            await context.CallActivityAsync<Task>(nameof(LoadActiveDataFromStagingActivity), null);
-            log.LogInformation($"Finished refreshing charity data: {context.CurrentUtcDateTime:F}", context.InstanceId);
-        }
+    [Function(nameof(CharityDataRefreshWorkflow))]
+    public async Task RefreshCharityDataOrchestrationTrigger([OrchestrationTrigger] TaskOrchestrationContext context)
+    {
+        ILogger log = context.CreateReplaySafeLogger(nameof(CharityDataRefreshWorkflow));
+
+        log.LogInformation("{InstanceId}: Starting charities data import", context.InstanceId);
+
+        await context.CallSubOrchestratorAsync<Task>(nameof(ImportCharityCommissionDataWorkflow), null);
+
+        await context.CallSubOrchestratorAsync<Task>(nameof(LoadCharityCommissionsDataInToStagingWorkflow), null);
+
+        await context.CallActivityAsync<Task>(nameof(LoadActiveDataFromStagingActivity), null);
+
+        log.LogInformation("{InstanceId}: Finished charities data import", context.InstanceId);
     }
 }

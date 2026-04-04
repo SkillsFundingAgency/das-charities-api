@@ -1,51 +1,50 @@
-﻿using Microsoft.Azure.WebJobs.Extensions.DurableTask;
+﻿using System;
+using System.Threading.Tasks;
+using Microsoft.DurableTask.Client;
 using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.Charities.Import.Functions;
 using SFA.DAS.Charities.Import.Infrastructure;
-using System;
-using System.Threading.Tasks;
+using SFA.DAS.Charities.Import.Services;
 
-namespace SFA.DAS.Charities.Import.UnitTests.Functions.CharityDataRefreshWorkflowTests
+namespace SFA.DAS.Charities.Import.UnitTests.Functions.CharityDataRefreshWorkflowTests;
+
+[TestFixture]
+public class RefreshCharityDataTimerTriggerTests
 {
-    [TestFixture]
-    public class RefreshCharityDataTimerTriggerTests
+    private readonly DateTime _today = new DateTime(2021, 11, 11, 0, 0, 0, DateTimeKind.Unspecified);
+    private Mock<IDateTimeProvider> _timeProviderMock;
+    private Mock<IDurableTaskClientWrapper> _durableTaskClientMock;
+    private string _instanceId;
+
+    private CharityDataRefreshWorkflow _subject;
+
+    [SetUp]
+    public void SetUp()
     {
-        private readonly DateTime _today = new DateTime(2021, 11, 11);
-        private readonly Mock<ILogger> _loggerMock = new Mock<ILogger>();
-        private Mock<IDateTimeProvider> _timeProviderMock;
-        private Mock<IDurableOrchestrationClient> _durableOrchestrationClientMock;
-        private string _instanceId;
+        _timeProviderMock = new Mock<IDateTimeProvider>();
+        _durableTaskClientMock = new Mock<IDurableTaskClientWrapper>();
+        _timeProviderMock.Setup(t => t.Today).Returns(_today);
+        _subject = new CharityDataRefreshWorkflow(_timeProviderMock.Object, Mock.Of<ILogger<CharityDataRefreshWorkflow>>(), _durableTaskClientMock.Object);
+        _instanceId = $"charity-data-refresh-instance-{_today:yyyy-MM-dd}";
+    }
 
-        private CharityDataRefreshWorkflow _subject;
+    [Test]
+    public async Task TimerTrigger_FirstInstance_InvokesWorkflow()
+    {
+        await _subject.RefreshCharityDataTimerTrigger(null, null);
 
-        [SetUp]
-        public void SetUp()
-        {
-            _timeProviderMock = new Mock<IDateTimeProvider>();
-            _durableOrchestrationClientMock = new Mock<IDurableOrchestrationClient>();
-            _timeProviderMock.Setup(t => t.Today).Returns(_today);
-            _subject = new CharityDataRefreshWorkflow(_timeProviderMock.Object);
-            _instanceId = $"charity-data-refresh-instance-{_today:yyyy-MM-dd}";
-        }
+        _durableTaskClientMock.Verify(s => s.ScheduleNewOrchestrationInstanceAsync(nameof(CharityDataRefreshWorkflow), _instanceId));
+    }
 
-        [Test]
-        public async Task TimerTrigger_FirstInstance_InvokesWorkflow()
-        {
-            await _subject.RefreshCharityDataTimerTrigger(null, _durableOrchestrationClientMock.Object, _loggerMock.Object);
+    [Test]
+    public async Task TimerTrigger_SimultaneousInstance_DoesNotInvokeWorkflow()
+    {
+        _durableTaskClientMock.Setup(d => d.GetInstanceAsync(_instanceId)).ReturnsAsync(new OrchestrationMetadata(It.IsAny<string>(), _instanceId) { RuntimeStatus = OrchestrationRuntimeStatus.Running });
 
-            _durableOrchestrationClientMock.Verify(s => s.StartNewAsync(nameof(CharityDataRefreshWorkflow), _instanceId));
-        }
+        await _subject.RefreshCharityDataTimerTrigger(null, null);
 
-        [Test]
-        public async Task TimerTrigger_SimultaneousInstance_DoesNotInvokeWorkflow()
-        {
-            _durableOrchestrationClientMock.Setup(d => d.GetStatusAsync(_instanceId, false, false, true)).ReturnsAsync(new DurableOrchestrationStatus { RuntimeStatus = OrchestrationRuntimeStatus.Running });
-
-            await _subject.RefreshCharityDataTimerTrigger(null, _durableOrchestrationClientMock.Object, _loggerMock.Object);
-
-            _durableOrchestrationClientMock.Verify(s => s.StartNewAsync(nameof(CharityDataRefreshWorkflow), It.IsAny<string>()), Times.Never);
-        }
+        _durableTaskClientMock.Verify(s => s.ScheduleNewOrchestrationInstanceAsync(nameof(CharityDataRefreshWorkflow), It.IsAny<string>()), Times.Never);
     }
 }
