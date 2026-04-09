@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Web;
 using Asp.Versioning;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SFA.DAS.Charities.Data.Repositories;
@@ -25,6 +26,7 @@ public class CharitiesController : ControllerBase
 
     [HttpGet]
     [Route("{registrationNumber}")]
+    [ProducesResponseType(typeof(Charity), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetCharityDetails(int registrationNumber)
     {
         if (registrationNumber <= 0)
@@ -32,7 +34,7 @@ public class CharitiesController : ControllerBase
             return new BadRequestObjectResult(new { Error = "RegistrationNumber is expected to have a positive non-zero value." });
         }
 
-        var charity = await _charityReadRepository.GetCharityById(registrationNumber);
+        Charity charity = await _charityReadRepository.GetCharityById(registrationNumber);
 
         if (charity == null)
         {
@@ -46,6 +48,7 @@ public class CharitiesController : ControllerBase
 
     [HttpGet]
     [Route("search")]
+    [ProducesResponseType(typeof(IEnumerable<Charity>), StatusCodes.Status200OK)]
     public async Task<IActionResult> SearchCharities([FromQuery] string searchTerm, [FromQuery] int maximumResults = 500)
     {
         if (string.IsNullOrEmpty(searchTerm))
