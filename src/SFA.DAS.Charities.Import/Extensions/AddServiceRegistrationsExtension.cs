@@ -46,6 +46,7 @@ public static class AddServiceRegistrationsExtension
         services.AddTransient<ICharitiesImportRepository, CharitiesImportRepository>();
         services.AddTransient<ICharityCommissionDataHelper, CharityCommissionDataHelper>();
         services.AddTransient<IDurableTaskClientWrapper, DurableTaskClientWrapper>();
+        services.AddTransient<ICharitiesImportService, CharitiesImportService>();
         return services;
     }
 }

@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace SFA.DAS.Charities.Data.Repositories
+namespace SFA.DAS.Charities.Data.Repositories;
+
+public interface ICharitiesImportRepository
 {
-    public interface ICharitiesImportRepository
-    {
-        Task BulkInsert<T>(IList<T> data) where T : class;
-        Task ClearStagingData();
-        Task LoadDataFromStagingInToLive();
-    }
+    Task BulkInsert<T>(IEnumerable<T> data) where T : class;
+    Task ClearStagingData();
+    Task DeleteStagingData(string tableName);
+    Task LoadDataFromStagingInToLive();
 }

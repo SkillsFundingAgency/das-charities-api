@@ -34,7 +34,7 @@ public class LoadCharityDataInToStagingActivity
         var batchSize = 1000;
         var batch = new List<CharityStaging>();
 
-        foreach (var charity in _dataHelper.ExtractDataStream<CharityModel>(fileStream))
+        await foreach (var charity in _dataHelper.ExtractDataStream<CharityModel>(fileStream))
         {
             batch.Add((CharityStaging)charity);
 

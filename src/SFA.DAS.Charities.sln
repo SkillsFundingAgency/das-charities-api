@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.0.31903.59
+# Visual Studio Version 18
+VisualStudioVersion = 18.4.11612.150 stable
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "SFA.DAS.Charities.Database", "SFA.DAS.Charities.Database\SFA.DAS.Charities.Database.sqlproj", "{CB774422-DDA1-4DE9-8406-E23A037A4379}"
 EndProject
