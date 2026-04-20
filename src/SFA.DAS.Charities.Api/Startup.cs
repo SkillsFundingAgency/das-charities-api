@@ -82,7 +82,7 @@ public class Startup
         services.AddApiVersioning(opt =>
         {
             opt.ApiVersionReader = new HeaderApiVersionReader("X-Version");
-            opt.DefaultApiVersion = new ApiVersion(1, 0);
+            opt.ReportApiVersions = true;
         });
 
         services.AddSwaggerGen(options =>
@@ -127,7 +127,7 @@ public class Startup
 
         app.UseRouting();
 
-        app.UseAuthorization();
+        app.UseAuthentication();
 
         if (!IsEnvironmentLocalOrDev)
         {
