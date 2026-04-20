@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 using Asp.Versioning;
 using Azure.Monitor.OpenTelemetry.AspNetCore;
@@ -22,6 +23,7 @@ using SFA.DAS.Configuration.AzureTableStorage;
 
 namespace SFA.DAS.Charities.Api;
 
+[ExcludeFromCodeCoverage]
 public class Startup
 {
     public const string EnvironmentAppSettingName = "Environment";

@@ -11,7 +11,6 @@ using SFA.DAS.Charities.Import.Services;
 namespace SFA.DAS.Charities.Import.Extensions;
 
 [ExcludeFromCodeCoverage]
-
 public static class AddServiceRegistrationsExtension
 {
     public static IServiceCollection AddServiceRegistrations(this IServiceCollection services, IConfiguration configuration)
@@ -42,10 +41,8 @@ public static class AddServiceRegistrationsExtension
 
     private static IServiceCollection RegisterServices(this IServiceCollection services)
     {
-        services.AddTransient<IDateTimeProvider, DateTimeProvider>();
         services.AddTransient<ICharitiesImportRepository, CharitiesImportRepository>();
         services.AddTransient<ICharityCommissionDataHelper, CharityCommissionDataHelper>();
-        services.AddTransient<IDurableTaskClientWrapper, DurableTaskClientWrapper>();
         services.AddTransient<ICharitiesImportService, CharitiesImportService>();
         return services;
     }

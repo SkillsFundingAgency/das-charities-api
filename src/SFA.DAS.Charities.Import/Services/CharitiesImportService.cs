@@ -9,8 +9,8 @@ using Microsoft.Extensions.Logging;
 using SFA.DAS.Charities.Data.Repositories;
 using SFA.DAS.Charities.Domain;
 using SFA.DAS.Charities.Domain.Entities;
+using SFA.DAS.Charities.Import.CharityCommissionModels;
 using SFA.DAS.Charities.Import.Extensions;
-using SFA.DAS.Charities.Import.Functions.LoadCharityCommissionsDataInToStaging.CharityCommissionModels;
 using SFA.DAS.Charities.Import.Infrastructure;
 
 namespace SFA.DAS.Charities.Import.Services;

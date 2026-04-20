@@ -22,22 +22,7 @@ public class CharityCommissionDataHelperTests
         charityData.Count.Should().Be(2);
     }
 
-    //[Test]
-    //public async Task ExtractDataStream_InvalidDataFile_ThrowsException()
-    //{
-    //    // Arrange
-    //    var sut = new CharityCommissionDataHelper();
-
-    //    var stream = GetZipFile("bad json data");
-
-    //    // Act & Assert
-    //    Action action = () => sut.ExtractDataStream<Character>(stream).ToListAsync();
-
-    //    action.Should().Throw<JsonReaderException>();
-    //}
-
-
-    private Stream GetZipFile(string json)
+    private static Stream GetZipFile(string json)
     {
         var memoryStream = new MemoryStream();
         using var archive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true);
@@ -57,5 +42,4 @@ public class CharityCommissionDataHelperTests
         public string Name { get; set; }
         public string Type { get; set; }
     }
-
 }

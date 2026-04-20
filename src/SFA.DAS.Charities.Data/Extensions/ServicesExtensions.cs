@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using Microsoft.Azure.Services.AppAuthentication;
 using Microsoft.Data.SqlClient;
@@ -7,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace SFA.DAS.Charities.Data.Extensions;
 
+[ExcludeFromCodeCoverage]
 public static class ServicesExtensions
 {
     public static IServiceCollection AddCharityDataContext(this IServiceCollection services, string connectionString, string environmentName)

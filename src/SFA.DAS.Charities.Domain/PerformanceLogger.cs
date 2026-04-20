@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Logging;
 
 namespace SFA.DAS.Charities.Domain;
 
+[ExcludeFromCodeCoverage]
 public class PerformanceLogger : IDisposable
 {
     private readonly Stopwatch _sw;

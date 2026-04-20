@@ -11,7 +11,6 @@ namespace SFA.DAS.Charities.Import.Infrastructure;
 
 public interface ICharityCommissionDataHelper
 {
-    int GetZipFileEntriesCount(Stream contentStream);
     IAsyncEnumerable<T> ExtractDataStream<T>(Stream zipFile, CancellationToken cancellationToken = default);
 }
 
@@ -42,17 +41,4 @@ public class CharityCommissionDataHelper : ICharityCommissionDataHelper
             }
         }
     }
-
-    public int GetZipFileEntriesCount(Stream contentStream)
-    {
-        // Ensure the stream position is at the beginning before processing
-        if (contentStream.CanSeek)
-        {
-            contentStream.Position = 0;
-        }
-
-        using var archive = new ZipArchive(contentStream, ZipArchiveMode.Read, leaveOpen: true);
-        return archive.Entries.Count;
-    }
-
 }

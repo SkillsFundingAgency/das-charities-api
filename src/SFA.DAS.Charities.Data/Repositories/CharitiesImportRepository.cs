@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using EFCore.BulkExtensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace SFA.DAS.Charities.Data.Repositories;
 
+[ExcludeFromCodeCoverage]
 public class CharitiesImportRepository : ICharitiesImportRepository
 {
     private readonly CharitiesDataContext _charitiesDataContext;
@@ -42,21 +44,6 @@ public class CharitiesImportRepository : ICharitiesImportRepository
         };
 
         await _charitiesDataContext.Database.ExecuteSqlRawAsync(command);
-    }
-
-    public async Task ClearStagingData()
-    {
-        var strategy = _charitiesDataContext.Database.CreateExecutionStrategy();
-
-        await strategy.ExecuteAsync(async () =>
-        {
-            using var tx = await _charitiesDataContext.Database.BeginTransactionAsync();
-
-            await _charitiesDataContext.Database.ExecuteSqlInterpolatedAsync($"TRUNCATE TABLE CharityTrusteeStaging");
-            await _charitiesDataContext.Database.ExecuteSqlInterpolatedAsync($"TRUNCATE TABLE CharityStaging");
-
-            await tx.CommitAsync();
-        });
     }
 
     public async Task LoadDataFromStagingInToLive()
