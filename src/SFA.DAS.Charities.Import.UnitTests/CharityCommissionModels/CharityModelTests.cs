@@ -4,7 +4,7 @@ using NUnit.Framework;
 using SFA.DAS.Charities.Domain.Entities;
 using SFA.DAS.Charities.Import.CharityCommissionModels;
 
-namespace SFA.DAS.Charities.Import.UnitTests.Functions.LoadCharityCommissionsDataInToStaging.CharityCommissionModels;
+namespace SFA.DAS.Charities.Import.UnitTests.CharityCommissionModels;
 
 [TestFixture]
 public class CharityModelTests

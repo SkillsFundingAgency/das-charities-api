@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Threading;
 using System.Threading.Tasks;
 using EFCore.BulkExtensions;
 using Microsoft.EntityFrameworkCore;
@@ -18,23 +19,22 @@ public class CharitiesImportRepository : ICharitiesImportRepository
         _charitiesDataContext.Database.SetCommandTimeout(TimeSpan.FromMinutes(5));
     }
 
-    public async Task BulkInsert<T>(IEnumerable<T> data) where T : class
+    public async Task BulkInsert<T>(IEnumerable<T> data, CancellationToken cancellationToken) where T : class
     {
         var strategy = _charitiesDataContext.Database.CreateExecutionStrategy();
 
         await strategy.ExecuteAsync(async () =>
         {
-            using var tx = await _charitiesDataContext.Database.BeginTransactionAsync();
+            using var tx = await _charitiesDataContext.Database.BeginTransactionAsync(cancellationToken);
 
             _charitiesDataContext.Database.CreateExecutionStrategy();
 
-            await _charitiesDataContext.BulkInsertAsync(data);
-
-            await tx.CommitAsync();
+            await _charitiesDataContext.BulkInsertAsync(data, cancellationToken: cancellationToken);
+            await tx.CommitAsync(cancellationToken);
         });
     }
 
-    public async Task DeleteStagingData(string tableName)
+    public async Task DeleteStagingData(string tableName, CancellationToken cancellationToken)
     {
         string command = tableName switch
         {
@@ -43,23 +43,23 @@ public class CharitiesImportRepository : ICharitiesImportRepository
             _ => throw new ArgumentException("Unknown table", nameof(tableName))
         };
 
-        await _charitiesDataContext.Database.ExecuteSqlRawAsync(command);
+        await _charitiesDataContext.Database.ExecuteSqlRawAsync(command, cancellationToken);
     }
 
-    public async Task LoadDataFromStagingInToLive()
+    public async Task LoadDataFromStagingInToLive(CancellationToken cancellationToken)
     {
         var strategy = _charitiesDataContext.Database.CreateExecutionStrategy();
 
         await strategy.ExecuteAsync(async () =>
         {
-            using var tx = await _charitiesDataContext.Database.BeginTransactionAsync();
+            using var tx = await _charitiesDataContext.Database.BeginTransactionAsync(cancellationToken);
 
-            await _charitiesDataContext.Database.ExecuteSqlInterpolatedAsync($"TRUNCATE TABLE CharityTrustee");
-            await _charitiesDataContext.Database.ExecuteSqlInterpolatedAsync($"TRUNCATE TABLE Charity");
-            await _charitiesDataContext.Database.ExecuteSqlRawAsync("INSERT INTO Charity SELECT * FROM CharityStaging");
-            await _charitiesDataContext.Database.ExecuteSqlRawAsync("INSERT INTO CharityTrustee SELECT * FROM CharityTrusteeStaging");
+            await _charitiesDataContext.Database.ExecuteSqlInterpolatedAsync($"TRUNCATE TABLE CharityTrustee", cancellationToken);
+            await _charitiesDataContext.Database.ExecuteSqlInterpolatedAsync($"TRUNCATE TABLE Charity", cancellationToken);
+            await _charitiesDataContext.Database.ExecuteSqlRawAsync("INSERT INTO Charity SELECT * FROM CharityStaging", cancellationToken);
+            await _charitiesDataContext.Database.ExecuteSqlRawAsync("INSERT INTO CharityTrustee SELECT * FROM CharityTrusteeStaging", cancellationToken);
 
-            await tx.CommitAsync();
+            await tx.CommitAsync(cancellationToken);
         });
     }
 }
