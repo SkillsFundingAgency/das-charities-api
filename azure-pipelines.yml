@@ -38,6 +38,12 @@ resources:
     project: Digital Apprenticeship Service
     source: das-employer-config
     branch: master
+
+pool:
+  name: DAS - Continuous Integration
+  demands:
+    - Agent.OS -equals Windows_NT
+
 stages:
 - stage: Build
   jobs:
