@@ -10,6 +10,8 @@
 
 
 ## About
+das-charities-import is a function app to load charities organisation data from the charities commisssion into live charities database tables.
+
 das-charities-api is an inner api for charities lookup. Here you can query a charity details like it's name, registration number, trustees etc. The data files are in json format and are uploaded to charity commissions website in individual compressed (zip) files. Since we cannot consume this as is, it was required that we create our own cache of this data and store in a structure format to be able to query it. 
 
 ## Import Functions
