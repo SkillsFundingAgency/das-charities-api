@@ -29,7 +29,7 @@ A timer triggered function which runs ones daily at 7pm from Monday to Friday, i
 * SQL Server instance for data
 
 ### Config
-Configure the [SFA.DAS.Charities.Import](https://github.com/SkillsFundingAgency/das-charities-api) project as per its config file in [das-employer-config](https://github.com/SkillsFundingAgency/das-employer-config/blob/master/das-charities-api/SFA.DAS.Charities.Import.Functions.json)
+Configure the SFA.DAS.Charities.Import project as per its config file in [das-employer-config](https://github.com/SkillsFundingAgency/das-employer-config/blob/master/das-charities-api/SFA.DAS.Charities.Import.Functions.json)
 
 In the `SFA.DAS.Charities.Import.Jobs` project, if not exist already, add local.settings.json file with following content:
 ```
@@ -61,7 +61,7 @@ There is one endpoint that takes charity registration number as argument, querie
 * SQL Server instance populated with charities data
 
 ### Config
-Configure the [SFA.DAS.Charities.Api](https://github.com/SkillsFundingAgency/das-charities-api) project as per its config file in [das-employer-config](https://github.com/SkillsFundingAgency/das-employer-config/blob/master/das-charities-api/SFA.DAS.Charities.Api.json)
+Configure the SFA.DAS.Charities.Api project as per its config file in [das-employer-config](https://github.com/SkillsFundingAgency/das-employer-config/blob/master/das-charities-api/SFA.DAS.Charities.Api.json)
 
 In the `SFA.DAS.Charities.Api` project, if not exist already, add local.settings.json file with following content:
 ```
@@ -84,6 +84,5 @@ In the `SFA.DAS.Charities.Api` project, if not exist already, add local.settings
 * AspDotNetCore MVC Web API
 * SQL Service
 * Azure Table Storage
-* Azure Blob Storage
 * NUnit
 * Moq
