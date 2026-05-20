@@ -5,32 +5,31 @@
 <img src="https://avatars.githubusercontent.com/u/9841374?s=200&v=4" align="right" alt="UK Government logo">
 
 [![Build Status](https://dev.azure.com/sfa-gov-uk/Digital%20Apprenticeship%20Service/_apis/build/status/das-charities-api?branchName=main)](https://dev.azure.com/sfa-gov-uk/Digital%20Apprenticeship%20Service/_build/latest?definitionId=2670&branchName=main)
-[![Confluence Project](https://img.shields.io/badge/Confluence-Project-blue)](https://skillsfundingagency.atlassian.net/wiki/spaces/NDL/pages/3486253077/RoATP+-+Charities+API+Technical+Design)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=SkillsFundingAgency_das-charities-api&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=SkillsFundingAgency_das-charities-api)
 [![License](https://img.shields.io/badge/license-MIT-lightgrey.svg?longCache=true&style=flat-square)](https://en.wikipedia.org/wiki/MIT_License)
 
 
 ## About
+das-charities-import is a function app to load charities organisation data from the charities commisssion into live charities database tables.
+
 das-charities-api is an inner api for charities lookup. Here you can query a charity details like it's name, registration number, trustees etc. The data files are in json format and are uploaded to charity commissions website in individual compressed (zip) files. Since we cannot consume this as is, it was required that we create our own cache of this data and store in a structure format to be able to query it. 
 
 ## Import Functions
 ### How it works
-In short, a timer triggered function which runs ones daily at 7pm from Monday to Friday, invokes durable function that executes following steps 
-* Downloads the zip files and stores them in a blob storage.
-* Extracts data from blob storage and uploads into staging tables.
+A timer triggered function which runs ones daily at 7pm from Monday to Friday, invokes a function that executes following steps 
+* Downloads the zip files.
+* Extracts the data and uploads into staging tables.
 * Refreshes data into live tables from staging tables. 
-
-The details specification is documented on confluence page linked above. 
 
 ### Pre-Requisites
 * A clone of this repository
-* A code editor that supports Azure functions and .NetCore 3.1
-* A storage account/emulator for blobs
+* Visual Studio or similar IDE
+* .NET 10 
+* A storage emulator (for example Azurite)
 * SQL Server instance for data
 
 ### Config
-The functions app uses the standard Apprenticeship Service configuration. 
-
-Alternatively you could configure the [SFA.DAS.Charities.Import](https://github.com/SkillsFundingAgency/das-charities-api) project as per its config file in [das-employer-config](https://github.com/SkillsFundingAgency/das-employer-config/blob/master/das-charities-api/SFA.DAS.Charities.Import.Functions.json)
+Configure the SFA.DAS.Charities.Import project as per its config file in [das-employer-config](https://github.com/SkillsFundingAgency/das-employer-config/blob/master/das-charities-api/SFA.DAS.Charities.Import.Functions.json)
 
 In the `SFA.DAS.Charities.Import.Jobs` project, if not exist already, add local.settings.json file with following content:
 ```
@@ -56,11 +55,13 @@ There is one endpoint that takes charity registration number as argument, querie
 
 ### Pre-Requisites
 * A clone of this repository
-* A code editor that supports Azure functions and .NetCore 3.1
+* Visual Studio or similar IDE
+* .NET 10 
+* A storage emulator (for example Azurite)
 * SQL Server instance populated with charities data
 
 ### Config
-Configure the [SFA.DAS.Charities.Api](https://github.com/SkillsFundingAgency/das-charities-api) project as per its config file in [das-employer-config](https://github.com/SkillsFundingAgency/das-employer-config/blob/master/das-charities-api/SFA.DAS.Charities.Api.json)
+Configure the SFA.DAS.Charities.Api project as per its config file in [das-employer-config](https://github.com/SkillsFundingAgency/das-employer-config/blob/master/das-charities-api/SFA.DAS.Charities.Api.json)
 
 In the `SFA.DAS.Charities.Api` project, if not exist already, add local.settings.json file with following content:
 ```
@@ -81,9 +82,7 @@ In the `SFA.DAS.Charities.Api` project, if not exist already, add local.settings
 ## Technologies
 * .NetCore 10.0
 * AspDotNetCore MVC Web API
-* Azure Durable Functions V4
 * SQL Service
 * Azure Table Storage
-* Azure Blob Storage
 * NUnit
 * Moq
